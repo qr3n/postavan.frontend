@@ -8,7 +8,7 @@ import { EnableNewYearUI } from "@features/new-year-ui";
 
 export default function Home() {
     return (
-        <div className='p-24 dark'>
+        <div className='dark'>
             <Button
             >
                 Продолжить
