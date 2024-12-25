@@ -1,16 +1,23 @@
 import Image, { ImageProps } from 'next/image'
+import { useState }          from "react";
 
 export const ImageLoader = (props: ImageProps) => {
+    const [loaded, setLoaded] = useState(false)
+
     return (
         <>
             <Image
                 {...props}
+                alt={'image'}
                 data-loaded='false'
-                onLoad={event => {
-                    event.currentTarget.setAttribute('data-loaded', 'true')
-                }}
-                className='data-[loaded=false]:animate-pulse data-[loaded=false]:bg-gray-100/10'
+                onLoad={() => setLoaded(true)}
+                style={{ display: loaded ? 'block' : 'none' }}
             />
+            {!loaded &&
+                <div
+                    style={{ width: props.width, height: props.height }}
+                    className='data-[loaded=false]:animate-pulse rounded-xl data-[loaded=false]:bg-gray-100/10'
+                />}
         </>
     );
 };
