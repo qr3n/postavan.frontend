@@ -53,8 +53,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
             const button = event.currentTarget;
             const rect = button.getBoundingClientRect();
-
-            // Вычисление центра кнопки
             const centerX = rect.left + rect.width / 2;
 
             rippleLeftRef.current = event.clientX - centerX;

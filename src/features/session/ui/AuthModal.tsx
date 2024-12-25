@@ -20,7 +20,7 @@ export const AuthModal = () => {
             trigger={<Button>Войти</Button>}
             title={<>
                 <ImageLoader priority src={lockImg} alt={'christmasTree'} width={24} height={24} className='w-[24px] h-[24px'/>
-                Авторизация
+                {step === 1 ? 'Авторизация' : 'Добро пожаловать!'}
             </>}
             description={step === 1 ? 'Вам придет пятизначный код' : 'Введите полученный код'}
             footer={(
@@ -42,9 +42,9 @@ export const AuthModal = () => {
                     {step === 1 && (
                         <motion.div
                             key="step-1"
-                            initial={{ opacity: 0, y: -50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 50 }}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0 }}
                             transition={{ duration: 0.15 }}
                         >
                             <Tabs defaultValue={'phone'}>
@@ -83,9 +83,9 @@ export const AuthModal = () => {
                     {step === 2 && (
                         <motion.div
                             key="step-2"
-                            initial={{ opacity: 0, y: -50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 50 }}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0 }}
                             transition={{ duration: 0.15 }}
                             className='flex items-center justify-center flex-col h-full'
                         >
