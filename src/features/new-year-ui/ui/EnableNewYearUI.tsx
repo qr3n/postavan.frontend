@@ -1,3 +1,5 @@
+'use client';
+
 import { Modal }  from "@shared/ui/modal/ui/Modal";
 import Snowfall from "react-snowfall";
 import { Button }  from "@shared/shadcn/components/button";
