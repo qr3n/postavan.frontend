@@ -1,16 +1,16 @@
 import { Modal }  from "@shared/ui/modal/ui/Modal";
-import Image    from "next/image";
 import Snowfall from "react-snowfall";
 import { Button }  from "@shared/shadcn/components/button";
-import { Garland } from "./Girland";
-import { christmasTree } from "./assets";
+import { Garland }          from "./Girland";
+import { christmasTreeImg } from "./assets";
+import { ImageLoader }      from "@shared/ui/image-loader";
 
 export const EnableNewYearUI = () => {
     return (
         <Modal
             trigger={<Button>Отпразнуем!</Button>}
             title={(<>
-                <Image priority src={christmasTree} alt={'e'} width={24} height={24}/>
+                <ImageLoader priority src={christmasTreeImg} alt={'christmasTree'} width={24} height={24} className='w-[24px] h-[24px]'/>
                 Новогодний UI
             </>)}
             preHeader={(<>

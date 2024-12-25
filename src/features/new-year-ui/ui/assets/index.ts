@@ -1,3 +1,3 @@
-import christmasTree from "./christmas-tree.gif";
+import christmasTreeImg from "./christmas-tree.gif";
 
-export { christmasTree }
+export { christmasTreeImg }
