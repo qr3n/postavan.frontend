@@ -67,7 +67,7 @@ export const Modal = (props: IProps) => {
                             </DialogDescription>
                         </DialogHeader>
                         {props.children}
-                        <DialogFooter className='w-full flex items-start mt-2'>
+                        <DialogFooter className='w-full flex flex-col'>
                             {props.footer}
                         </DialogFooter>
                     </div>

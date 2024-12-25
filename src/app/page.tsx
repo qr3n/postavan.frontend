@@ -5,6 +5,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot }                    from "@share
 import { Button }                                   from "@shared/shadcn/components/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger }                        from "@shared/shadcn/components/tabs";
 import { EnableNewYearUI } from "@features/new-year-ui";
+import { Auth } from "@features/session";
 
 export default function Home() {
     return (
@@ -36,6 +37,7 @@ export default function Home() {
             </Tabs>
             <div className='mt-24'>
                 <EnableNewYearUI/>
+                <Auth/>
             </div>
         </div>
     );

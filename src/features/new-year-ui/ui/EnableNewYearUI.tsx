@@ -18,7 +18,12 @@ export const EnableNewYearUI = () => {
                 <div className='absolute bottom-0 left-0 bg-gradient-to-t from-zinc-950 -z-50 to-transparent w-full h-full'/>
             </>)}
             description={'Отметим наступление 2025 года вместе!'}
-            footer={<Button variant="outline" className='w-full mt-1'>Отмена</Button>}
+            footer={(
+                <>
+                    <Button className='w-full mt-8'>Поехали!</Button>
+                    <Button variant="outline" className='w-full mt-1 md:mt-3'>Отмена</Button>
+                </>
+            )}
         >
             <div className='px-4 md:px-0 z-50'>
                 <Garland/>
@@ -34,7 +39,6 @@ export const EnableNewYearUI = () => {
                         <span className='text-[#aaa]'>Праздничная атмосфера!</span>
                     </li>
                 </ul>
-                <Button className='w-full mt-8'>Поехали!</Button>
             </div>
         </Modal>
     )
