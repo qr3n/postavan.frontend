@@ -35,7 +35,7 @@ export const AuthModal = () => {
                 </>
             )}
         >
-            <div className='px-4 md:px-0 h-[140px]'>
+            <div className='px-4 md:px-0 h-[140px] overflow-hidden'>
                 <AnimatePresence mode="wait">
                     {step === 1 && (
                         <motion.div
