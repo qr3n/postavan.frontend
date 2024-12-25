@@ -45,7 +45,7 @@ export interface ButtonProps
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, onClick, size, asChild = false, ...props }, ref) => {
+    ({ className, variant, size, asChild = false, ...props }, ref) => {
         const Comp = asChild ? Slot : "button";
         const { ripples, onClear, onPress } = useRipple();
         const rippleLeftRef = useRef<number>(0);
@@ -60,8 +60,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             onPress(event);
-
-            if (onClick) onClick(event);
         };
 
         return (

@@ -25,12 +25,7 @@ export const AuthModal = () => {
             description={step === 1 ? 'Вам придет пятизначный код' : 'Введите полученный код'}
             footer={(
                 <>
-                    {step === 1 && (
-                        <Button className='w-full mt-8' onClick={handleNextStep}>Отправить код</Button>
-                    )}
-                    {step === 2 && (
-                        <Button className='w-full mt-8'>Подтвердить</Button>
-                    )}
+                    <Button className='w-full mt-8' onClick={handleNextStep}>{step === 1 ? 'Отправить код' : 'Подтвердить'}</Button>
                     <Button variant="outline" className='w-full mt-1 md:mt-3' onClick={handlePrevStep}>
                         {step === 1 ? 'Отмена' : 'Назад'}
                     </Button>
