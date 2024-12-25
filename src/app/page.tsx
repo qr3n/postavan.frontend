@@ -9,7 +9,7 @@ import { AuthModal }       from "@features/session";
 
 export default function Home() {
     return (
-        <div className='dark'>
+        <div className='dark' vaul-drawer-wrapper="">
             <Button
             >
                 Продолжить

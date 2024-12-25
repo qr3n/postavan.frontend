@@ -42,7 +42,7 @@ export const AuthModal = () => {
                                 </svg>
                                 +7
                             </div>
-                            <Input type='number' label={'Телефон'}/>
+                            <Input type='number' placeholder='9117629553'/>
                         </div>
                     </TabsContent>
 
