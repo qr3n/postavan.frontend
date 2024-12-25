@@ -22,8 +22,8 @@ export const EnableNewYearUI = () => {
         >
             <div className='px-4 md:px-0 z-50'>
                 <Garland/>
-                <h1 className='text-lg md:text-base font-medium text-white mt-8'>Что нового?</h1>
-                <ul className='md:text-sm list-disc pl-6 mt-2 space-y-1'>
+                <h1 className='text-base font-medium text-white mt-8'>Что нового?</h1>
+                <ul className='text-sm list-disc pl-6 mt-2 space-y-1'>
                     <li className='text-blue-500'>
                         <span className='text-[#aaa]'>Бета-функции версии 2.0</span>
                     </li>

@@ -8,7 +8,7 @@ import { forwardRef, useRef } from "react";
 import { Ripple, useRipple } from "@nextui-org/ripple";
 
 const buttonVariants = cva(
-    "inline-flex active:scale-95 text-lg md:text-base transition-all items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+    "inline-flex active:scale-95 text-base transition-all items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
     {
         variants: {
             variant: {
