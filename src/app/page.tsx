@@ -35,7 +35,7 @@ export default function Home() {
                 <TabsContent value="account">Make changes to your account here.</TabsContent>
                 <TabsContent value="password">Change your password here.</TabsContent>
             </Tabs>
-            <div className='mt-24'>
+            <div className='mt-24 flex flex-col'>
                 <EnableNewYearUI/>
                 <AuthModal/>
             </div>
