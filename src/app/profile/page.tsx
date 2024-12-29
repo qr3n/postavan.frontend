@@ -19,11 +19,11 @@ export default function ProfilePage() {
     });
 
     return (
-        <div className="flex items-center justify-center mt-12 flex-col" vaul-drawer-wrapper="">
+        <div className="flex items-center justify-center mt-6 sm:mt-12 flex-col" vaul-drawer-wrapper="">
             <h1 className="font-semibold text-4xl sm:text-5xl">Мои заказы</h1>
             <Button
                 variant="outline"
-                className="mt-2 flex gap-1 dark:text-zinc-100 font-normal"
+                className="mt-3 sm:mt-4 flex gap-1 dark:text-zinc-100 font-normal"
                 size="sm"
             >
                 <ImageLoader
