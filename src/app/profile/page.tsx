@@ -8,14 +8,14 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { useRef }                       from "react";
 
 export default function ProfilePage() {
-    const orders = Array.from({ length: 100 }); // Ваши данные
+    const orders = Array.from({ length: 1000 }); // Ваши данные
     const parentRef = useRef<HTMLDivElement>(null);
 
     // Настройка виртуализатора
     const rowVirtualizer = useVirtualizer({
         count: orders.length,
         getScrollElement: () => parentRef.current,
-        estimateSize: () => 60, 
+        estimateSize: () => 100,
     });
 
     return (
