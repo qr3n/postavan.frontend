@@ -1,3 +1,5 @@
+'use client';
+
 import { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import {
     Dialog,
@@ -7,7 +9,6 @@ import {
     DialogTitle,
     DialogTrigger
 }                                                               from "@shared/shadcn/components/dialog";
-import { Button }        from "@shared/shadcn/components/button";
 import {
     Drawer,
     DrawerContent,
@@ -50,7 +51,7 @@ export const Modal = (props: IProps) => {
     if (isDesktop) {
         return (
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
+                <DialogTrigger asChild className='w-min'>
                     <a href={'#modal'}>
                         {props.trigger}
                     </a>
@@ -78,16 +79,14 @@ export const Modal = (props: IProps) => {
 
     return (
         <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>
+            <DrawerTrigger asChild className='w-min'>
                 <a href={'#modal'}>
-                    <Button>
-                        Продолжить
-                    </Button>
+                    {props.trigger}
                 </a>
             </DrawerTrigger>
             <DrawerContent className='dark'>
                 <div className='relative'>
-                    {props.preHeader}
+                {props.preHeader}
                     <DrawerHeader className="text-left">
                         <DrawerTitle className='text-white flex gap-2 items-center'>
                             {props.title}

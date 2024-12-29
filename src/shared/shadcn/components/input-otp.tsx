@@ -49,16 +49,16 @@ const InputOTPSlot = React.forwardRef<
         >
             <motion.div
                 key={char} // Обновляем анимацию при изменении символа
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{type: "spring", stiffness: 500, damping: 30}}
                 className="absolute"
             >
                 {char}
             </motion.div>
             {hasFakeCaret && (
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                    <div className="h-7 w-px animate-caret-blink bg-zinc-950 duration-1000 dark:bg-white" />
+                    <div className="h-7 w-px animate-caret-blink bg-zinc-950 duration-1000 dark:bg-white"/>
                 </div>
             )}
         </div>

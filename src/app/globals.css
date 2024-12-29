@@ -12,6 +12,7 @@ body {
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
+  color: white;
 }
 
 @layer base {

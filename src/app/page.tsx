@@ -1,5 +1,6 @@
 import { EnableNewYearUI } from "@features/new-year-ui";
 import { AuthModal }       from "@features/session";
+import { Chat }            from "@shared/ui/chat/ui";
 
 export default function Home() {
     return (
@@ -7,6 +8,7 @@ export default function Home() {
             <div className='flex flex-col'>
                 <EnableNewYearUI/>
                 <AuthModal/>
+                <Chat/>
             </div>
         </div>
     );
