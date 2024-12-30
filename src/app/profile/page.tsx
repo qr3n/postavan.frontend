@@ -12,7 +12,7 @@ export default function ProfilePage() {
     const rowVirtualizer = useVirtualizer({
         count: orders.length,
         getScrollElement: () => parentRef.current,
-        estimateSize: () => 100,
+        estimateSize: () => 85,
     });
 
     return (
