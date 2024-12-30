@@ -46,5 +46,24 @@ input::-webkit-inner-spin-button {
 }
 
 input[type=number] {
-  -moz-appearance:textfield; /* Firefox */
+  -moz-appearance:textfield;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 18px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272727;
+  border-radius: 18px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 18px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #575757;
 }
