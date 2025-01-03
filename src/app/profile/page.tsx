@@ -4,6 +4,8 @@ import { OrderCard, OrderDetailsModal }             from "@entities/order";
 import { useVirtualizer }                           from "@tanstack/react-virtual";
 import { useRef }                                   from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/shadcn/components/tabs";
+import { Button }                                   from "@shared/shadcn/components/button";
+import { OrderWrapper }                             from "@entities/order/ui/OrderWrapper";
 
 export default function ProfilePage() {
     const orders = Array.from({ length: 1000 }); // Ваши данные
@@ -53,10 +55,10 @@ export default function ProfilePage() {
                                 transform: `translateY(${virtualRow.start}px)`,
                             }}
                         >
-                            <div className="relative">
+                            <OrderWrapper>
                                 <OrderDetailsModal />
-                                <OrderCard />
-                            </div>
+                                <OrderCard actions={<Button>Закрыть</Button>}/>
+                            </OrderWrapper>
                         </div>
                     ))}
                 </div>

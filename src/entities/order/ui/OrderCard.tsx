@@ -1,14 +1,17 @@
-import { Button } from "@shared/shadcn/components/button";
 import Image                             from 'next/image'
-import { aliIcon } from "@shared/assets";
+import { yandexIcon } from "@shared/assets";
+import { ReactElement } from "react";
 
+interface IProps {
+    actions?: ReactElement
+}
 
-export const OrderCard = () => {
+export const OrderCard = (props: IProps) => {
     return (
-        <div className='bg-zinc-900 flex justify-between rounded-2xl p-3 sm:p-4 w-full items-center'>
-            <div className='flex items-center justify-center gap-5'>
+        <>
+            <div className='flex items-center w-full gap-5'>
                 <Image
-                    src={aliIcon}
+                    src={yandexIcon}
                     placeholder='blur'
                     alt={'icon'}
                     width={48}
@@ -20,7 +23,9 @@ export const OrderCard = () => {
                     <p className='text-zinc-400 text-sm'>Test test test</p>
                 </div>
             </div>
-            <Button>Закрыть</Button>
-        </div>
+            <div>
+                {props.actions}
+            </div>
+        </>
     );
 };
