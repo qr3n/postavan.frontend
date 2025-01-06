@@ -11,7 +11,7 @@ export default {
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
 			blue: {
-				500: '#2174ff'
+				500: '#1464e6'
 			},
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import "./styles.css";
 import { Button } from "@shared/shadcn/components/button";
+import { ChooseMarketplaceStep } from "@features/order/create/ui/steps/ChooseMarketplaceStep";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -22,10 +23,8 @@ const sliderVariants = {
 };
 
 const sliderTransition = {
-    type: "spring",
-    stiffness: 200,
-    damping: 20,
-    duration: 1,
+    duration: 1, // Увеличим длительность для плавного эффекта
+    ease: [0.22, 1, 0.36, 1], // Кастомная кривая Bezier (easeOutExpo)
 };
 
 const App = () => {
@@ -41,7 +40,7 @@ const App = () => {
     return (
         <main>
             <div className="slider-container">
-                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-250px)]">
+                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-220px)] sm:h-[calc(100dvh-250px)]">
                     <div
                         className='absolute left-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-r from-black z-50 to-transparent'/>
                     <AnimatePresence initial={false} custom={direction}>
@@ -55,17 +54,16 @@ const App = () => {
                             exit="exit"
                             transition={sliderTransition}
                         >
-                            <h1 className='font-semibold text-4xl sm:text-5xl'>Какой груз?</h1>
-                            <p className='text-zinc-500 text-sm sm:text-base mt-1 sm:mt-2'>Тестовое описание</p>
+                            <ChooseMarketplaceStep/>
                         </motion.div>
                     </AnimatePresence>
                     <div
                         className='absolute right-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-l from-black z-50 to-transparent'/>
                 </div>
 
-                <div className="flex flex-col px-4 w-full max-w-[600px] gap-4">
-                    <Button onClick={() => swipeToImage(1)}>Продолжить</Button>
-                    <Button variant="outline" onClick={() => swipeToImage(-1)}>Назад</Button>
+                <div className="flex flex-col px-8 w-full max-w-[600px] gap-4">
+                    <Button disabled={imageCount === 4} onClick={() => swipeToImage(1)}>Продолжить</Button>
+                    <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>Назад</Button>
                 </div>
             </div>
         </main>

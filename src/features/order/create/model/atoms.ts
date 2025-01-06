@@ -2,7 +2,7 @@ import { atom } from 'jotai'
 import { IOrder } from "@entities/order";
 
 const shipmentType = atom<IOrder['shipmentType']>('marketplace')
-const warehouse = atom<IOrder['warehouse']>('Яндекс маркет')
+const marketplace = atom<IOrder['marketplace']>('Яндекс маркет')
 const whatToDeliver = atom<IOrder['whatToDeliver']>([])
 const packing = atom<IOrder['packing']>('box')
 const packageLength  = atom<IOrder['packageLength']>(0)
@@ -14,7 +14,7 @@ const comment = atom<IOrder['comment']>('')
 
 export const createOrderAtoms = {
     shipmentType,
-    warehouse,
+    marketplace,
     whatToDeliver,
     packing,
     packageLength,

@@ -1,11 +1,13 @@
 type TOrderShipmentType = 'marketplace' | 'anything'
-type TOrderWarehouse = 'Яндекс маркет' | 'Wildberries' | 'Ozon' | 'AliExpress' | 'Lamoda'
+type TOrderMarketplace = 'Яндекс маркет' | 'Wildberries' | 'Ozon' | 'AliExpress' | 'Lamoda'
 type TOrderPacking = 'box' | 'palette'
+
+export const MARKETPLACES: TOrderMarketplace[] = ['Яндекс маркет', 'Wildberries', 'Ozon', 'AliExpress', 'Lamoda']
 
 export interface IOrder {
     id: string,
     shipmentType: TOrderShipmentType,
-    warehouse: TOrderWarehouse,
+    marketplace: TOrderMarketplace,
     packing: TOrderPacking,
     whatToDeliver: string[],
     packageLength: number,
