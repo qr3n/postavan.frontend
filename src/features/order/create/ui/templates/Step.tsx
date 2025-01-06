@@ -1,10 +1,6 @@
 import React, { PropsWithChildren } from "react";
 
-interface IProps extends PropsWithChildren {
-
-}
-
-export const Step = (props: IProps) => {
+export const Step = (props: PropsWithChildren) => {
     return (
         <>
             <h1 className='font-semibold text-4xl sm:text-5xl'>Какой груз?</h1>
