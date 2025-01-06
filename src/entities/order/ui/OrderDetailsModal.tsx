@@ -5,13 +5,6 @@ import { Button } from "@shared/shadcn/components/button";
 import {ScrollArea} from "@shared/shadcn/components/scroll-area";
 import {Separator} from "@shared/shadcn/components/separator";
 
-const DetailsBlock = () => {
-    return (
-        <>
-
-        </>
-    )
-}
 
 export const OrderDetailsModal = () => {
     return (
