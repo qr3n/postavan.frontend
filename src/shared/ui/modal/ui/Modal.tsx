@@ -1,6 +1,6 @@
 'use client';
 
-import { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import {ComponentProps, PropsWithChildren, ReactElement, useEffect, useState} from "react";
 import {
     Dialog,
     DialogContent,
@@ -17,6 +17,7 @@ import {
     DrawerTitle,
     DrawerTrigger
 }                        from "@shared/shadcn/components/drawer";
+import {cn} from "@shared/shadcn/lib/utils";
 
 interface IProps extends PropsWithChildren {
     trigger: ReactElement,
@@ -24,6 +25,8 @@ interface IProps extends PropsWithChildren {
     description: string | ReactElement | ReactElement[],
     preHeader?: string | ReactElement | ReactElement[],
     footer?: string | ReactElement | ReactElement[],
+    dialogStyle?: ComponentProps<'div'>['className'],
+    modalStyle?: ComponentProps<'div'>['className'],
 }
 
 const useMediaQuery = (query: string) => {
@@ -56,7 +59,7 @@ export const Modal = (props: IProps) => {
                         {props.trigger}
                     </a>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className={cn('max-w-[425px]', props.dialogStyle)}>
                     <div className='relative'>
                         {props.preHeader}
                         <DialogHeader>
@@ -84,7 +87,7 @@ export const Modal = (props: IProps) => {
                     {props.trigger}
                 </a>
             </DrawerTrigger>
-            <DrawerContent className='dark'>
+            <DrawerContent className={props.modalStyle}>
                 <div className='relative'>
                 {props.preHeader}
                     <DrawerHeader className="text-left">

@@ -4,11 +4,10 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 import { cn } from "../lib/utils";
-import { forwardRef, useRef } from "react";
-import { Ripple, useRipple } from "@nextui-org/ripple";
+import { forwardRef } from "react";
 
 const buttonVariants = cva(
-    "inline-flex text-white active:scale-95 transition-all items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+    "inline-flex text-white active:scale-[97%] transition-all items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
     {
         variants: {
             variant: {
@@ -47,24 +46,9 @@ export interface ButtonProps
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, ...props }, ref) => {
         const Comp = asChild ? Slot : "button";
-        const { ripples, onClear, onPress } = useRipple();
-        const rippleLeftRef = useRef<number>(0);
-
-        const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
-            const button = event.currentTarget;
-            const rect = button.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-
-            rippleLeftRef.current = event.clientX - centerX;
-
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            onPress(event);
-        };
 
         return (
             <Comp
-                onMouseDown={handleMouseDown}
                 className={cn(buttonVariants({ variant, size, className }))}
                 style={{ position: "relative", overflow: "hidden" }}
                 {...props}
@@ -78,11 +62,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 ) : (
                     props.children
                 )}
-                <Ripple
-                    style={{ position: "absolute", left: `${rippleLeftRef.current}px`, top: `-20px` }}
-                    ripples={ripples}
-                    onClear={onClear}
-                />
             </Comp>
         );
     }
