@@ -8,7 +8,7 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import {  useState } from "react";
 import { IOrder, MARKETPLACES } from "@entities/order";
 import { marketplacesMap } from "@entities/order/ui/images";
-import { motion } from 'framer-motion';
+import { AnimatedCheck } from "@shared/ui/animated-check";
 
 interface IVariantProps {
     isChecked: boolean,
@@ -17,48 +17,10 @@ interface IVariantProps {
     name: string
 }
 
-const Check = () => {
-    return (
-        <motion.div
-            initial={{scale: 0}}
-            animate={{scale: 1}}
-            transition={{duration: 0.3}}
-            style={{
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                backgroundColor: '#1464e6',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <motion.svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <motion.path
-                    d="M5 12l5 5L20 7"
-                    stroke="white"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    initial={{pathLength: 0}}
-                    animate={{pathLength: 1}}
-                    transition={{duration: 0.3, delay: 0.23, ease: 'easeInOut'}}
-                />
-            </motion.svg>
-        </motion.div>
-    );
-};
-
 const Variant = (props: IVariantProps) => {
     return (
         <div onMouseDown={props.onClick}
-             className={cn(' cursor-pointer w-full py-3.5 max-w-[400px] rounded-full border-2 border-transparent overflow-hidden relative flex items-center justify-between px-8', props.isChecked ? 'bg-blue-500/5 border-blue-500' : '')}
+             className={cn(' cursor-pointer w-full py-3.5 max-w-[400px] rounded-full border-2 border-transparent overflow-hidden relative flex items-center justify-between px-8', props.isChecked ? 'bg-blue-500/10 border-blue-500' : '')}
         >
             {props.isChecked &&
                 (
@@ -77,7 +39,7 @@ const Variant = (props: IVariantProps) => {
                 <h1 className='font-medium text-lg sm:text-xl'>{props.name}</h1>
             </div>
             <div className='w-7 h-7'>
-                {props.isChecked && <Check/>}
+                {props.isChecked && <AnimatedCheck/>}
             </div>
         </div>
     )
@@ -88,7 +50,7 @@ export const ChooseMarketplaceStep = () => {
     const [variant, setVariant] = useState<IOrder['marketplace']>('Яндекс маркет')
 
     return (
-        <CreateOrderTemplates.Step>
+        <CreateOrderTemplates.Step title='Какой магазин?'>
             {MARKETPLACES.map(m => <Variant
                 name={m}
                 key={m}

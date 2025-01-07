@@ -6,6 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import "./styles.css";
 import { Button } from "@shared/shadcn/components/button";
 import { ChooseMarketplaceStep } from "@features/order/create/ui/steps/ChooseMarketplaceStep";
+import { ChooseShipmentStep } from "@features/order/create/ui/steps/ChooseShipmentStep";
+import { ChoosePackingStep } from "@features/order/create/ui/steps/ChoosePackingStep";
+import { SetDimensionsStep } from "@features/order/create/ui/steps/SetDimensionsStep";
+import { SetAddressesStep } from "@features/order/create/ui/steps/SetAddressesStep";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -30,10 +34,18 @@ const sliderTransition = {
 const App = () => {
     const [[imageCount, direction], setImageCount] = useState([0, 0]);
 
+    const blocks = [
+        <ChooseShipmentStep key={'ChooseShipmentStep'}/>,
+        <ChooseMarketplaceStep key={'ChooseMarketplaceStep'}/>,
+        <ChoosePackingStep key={'ChoosePackingStep'}/>,
+        <SetDimensionsStep key={'SetDimensionsStep'}/>,
+        <SetAddressesStep key={'SetAddressesStep'}/>
+    ]
+
     const swipeToImage = (swipeDirection: number) => {
         setImageCount(([prevCount]) => {
             const newCount = prevCount + swipeDirection;
-            return [newCount < 0 ? 5 - 1 : newCount % 5, swipeDirection];
+            return [newCount < 0 ? blocks.length - 1 : newCount % blocks.length, swipeDirection];
         });
     };
 
@@ -54,7 +66,7 @@ const App = () => {
                             exit="exit"
                             transition={sliderTransition}
                         >
-                            <ChooseMarketplaceStep/>
+                            {blocks[imageCount]}
                         </motion.div>
                     </AnimatePresence>
                     <div
@@ -62,7 +74,7 @@ const App = () => {
                 </div>
 
                 <div className="flex flex-col px-8 w-full max-w-[600px] gap-4">
-                    <Button disabled={imageCount === 4} onClick={() => swipeToImage(1)}>Продолжить</Button>
+                    <Button disabled={imageCount === blocks.length - 1} onClick={() => swipeToImage(1)}>Продолжить</Button>
                     <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>Назад</Button>
                 </div>
             </div>

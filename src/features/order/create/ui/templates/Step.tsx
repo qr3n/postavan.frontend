@@ -1,10 +1,15 @@
 import React, { PropsWithChildren } from "react";
 
-export const Step = (props: PropsWithChildren) => {
+interface IProps extends PropsWithChildren {
+    title: string,
+    description?: string
+}
+
+export const Step = (props: IProps) => {
     return (
         <>
-            <h1 className='font-semibold text-4xl sm:text-5xl'>Какой груз?</h1>
-            <p className='text-zinc-500 text-sm sm:text-base mt-1 sm:mt-2 mb-8'>Тестовое описание</p>
+            <h1 className='font-semibold text-4xl sm:text-[42px]'>{props.title}</h1>
+            <p className='max-w-[200px] sm:max-w-[300px] text-center text-zinc-500 text-xs sm:text-sm mt-2 sm:mt-3 mb-10'>{props.description || 'Условия для каждого варианта различаются'}</p>
             {props.children}
         </>
     )

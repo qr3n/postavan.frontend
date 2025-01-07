@@ -1,13 +1,12 @@
 import { CreateOrderTemplates } from "@features/order/create/ui/templates";
-import { courierImg, itemsImg } from "@features/order/create/ui/assets";
+import { boxImg, paletteImg } from "@features/order/create/ui/assets";
 
-
-export const ChooseShipmentStep = () => {
+export const ChoosePackingStep = () => {
     return (
         <CreateOrderTemplates.Step title='Какой груз?'>
             <CreateOrderTemplates.Choice
-                firstImg={courierImg}
-                secondImg={itemsImg}
+                firstImg={boxImg}
+                secondImg={paletteImg}
                 onFirstClick={() => null}
                 onSecondClick={() => null}
             />

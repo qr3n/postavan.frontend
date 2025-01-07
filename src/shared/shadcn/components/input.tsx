@@ -41,7 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <input
                     type={type}
                     className={cn(
-                        `peer flex dark:bg-zinc-800 dark:text-white h-14 w-full rounded-xl bg-transparent px-3 py-2 text-base shadow-sm transition-colors placeholder-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-zinc-950 outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:file:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus-visible:ring-0 dark:hover:bg-zinc-900 dark:focus:bg-zinc-800 ${label ? 'pt-6' : ''}`,
+                        `peer flex dark:bg-zinc-800 dark:text-white h-12 w-full rounded-full bg-transparent px-3 pl-4 py-2 text-base shadow-sm transition-colors placeholder-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-zinc-950 outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:cursor-not-allowed disabled:opacity-50 dark:file:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus-visible:ring-0 dark:hover:bg-zinc-900 dark:focus:bg-zinc-800 ${label ? 'pt-6' : ''}`,
                         className
                     )}
                     ref={ref}
