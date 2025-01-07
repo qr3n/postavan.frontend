@@ -74,7 +74,7 @@ const AddressInput = () => {
             />
             {isLoading && (
                 <ul
-                    className="absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-52 overflow-y-auto z-10 transition-all"
+                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-52 overflow-y-auto z-10 transition-all"
                 >
                     {[...Array(5)].map((_, index) => (
                         <li
@@ -88,7 +88,7 @@ const AddressInput = () => {
             )}
             {!isLoading && suggestions.length > 0 && (
                 <ul
-                    className="absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-52 overflow-y-auto z-10 transition-all opacity-100"
+                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 pb-2 max-h-52 overflow-y-auto z-10 transition-all opacity-100"
                 >
                     {suggestions.map((suggestion: { value: string }) => (
                         <li
