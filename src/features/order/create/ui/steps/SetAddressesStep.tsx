@@ -85,7 +85,7 @@ const AddressInput = () => {
                 value={query}
                 onChange={handleInputChange}
                 placeholder="Введите адрес"
-                className="relative z-20"
+                className="relative z-10"
             />
 
             {isLoading && (
