@@ -31,8 +31,8 @@ const Variant = (props: IVariantProps) => {
             }
             <div className='flex items-center justify-center flex-col'>
                 <Image className='w-32 sm:w-40 md:w-48 lg:w-56' placeholder={'blur'} draggable={false} src={props.imgSrc} alt={'firstChoice'} width={0} height={0}/>
-                <h1 className='font-medium text-2xl mt-3 sm:mt-4 md:mt-6 xl:mt-8'>Для маркетплейса</h1>
-                <p className='text-zinc-400 text-lg'>Короб до 12 кг</p>
+                <h1 className='font-medium text-lg sm:text-2xl mt-3 sm:mt-4 md:mt-6 xl:mt-8'>Для маркетплейса</h1>
+                <p className='text-zinc-400 text-sm sm:text-lg'>Короб до 12 кг</p>
             </div>
             <div className='w-7 h-7 sm:mt-4 absolute right-8 top-1/2 sm:top-auto sm:right-auto -translate-y-1/2 sm:translate-y-0 sm:relative'>
                 {props.isChecked && <AnimatedCheck/>}
