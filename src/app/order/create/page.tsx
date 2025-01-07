@@ -28,7 +28,7 @@ const sliderVariants = {
 };
 
 const sliderTransition = {
-    duration: 0.5, // Увеличим длительность для плавного эффекта
+    duration: 0.8, // Увеличим длительность для плавного эффекта
     ease: [0.22, 1, 0.36, 1], // Кастомная кривая Bezier (easeOutExpo)
 };
 

@@ -4,13 +4,14 @@ import { useCallback, useState } from "react";
 import { cn } from "@shared/shadcn/lib/utils";
 import Image from "next/image";
 import { bg } from "@features/order/create/ui/assets";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { StaticImageData, StaticImport } from "next/dist/shared/lib/get-img-props";
 import { AnimatedCheck } from "@shared/ui/animated-check";
+import CanvasImage from "@shared/ui/canvas-image/ui/CanvasImage";
 
 interface IVariantProps {
     isChecked: boolean,
     onClick: () => unknown,
-    imgSrc: StaticImport
+    imgSrc: StaticImageData
 }
 
 const Variant = (props: IVariantProps) => {
@@ -21,7 +22,7 @@ const Variant = (props: IVariantProps) => {
             {props.isChecked &&
                 (
                     <>
-                        <Image placeholder={'blur'} draggable={false} src={bg}
+                        <Image priority fetchPriority={'high'} placeholder={'blur'} draggable={false} src={bg}
                                className='-z-50 absolute left-0 top-0 w-full h-full object-cover'
                                alt={'firstChoice'} width={400} height={400}/>
                         <div
@@ -30,7 +31,8 @@ const Variant = (props: IVariantProps) => {
                 )
             }
             <div className='flex items-center justify-center flex-col'>
-                <Image className='w-28 sm:w-40 md:w-48 lg:w-56' placeholder={'blur'} draggable={false} src={props.imgSrc} alt={'firstChoice'} width={0} height={0}/>
+                <CanvasImage src={props.imgSrc.src} width={256} height={256}/>
+                {/*<Image priority className='w-28 sm:w-40 md:w-48 lg:w-56' placeholder={'blur'} draggable={false} src={props.imgSrc} alt={'firstChoice'} width={0} height={0}/>*/}
                 <h1 className='font-medium text-lg sm:text-2xl mt-3 sm:mt-4 md:mt-6 xl:mt-8'>Для маркетплейса</h1>
                 <p className='text-zinc-400 text-sm sm:text-lg'>Короб до 12 кг</p>
             </div>
