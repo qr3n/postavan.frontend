@@ -1,10 +1,10 @@
 import { Step } from "@features/order/create/ui/templates/Step";
 
 
-import { useState } from "react";
-import { Input } from "@shared/shadcn/components/input";
+import { useState, useRef } from "react";
 import { Button } from "@shared/shadcn/components/button";
-
+import { Input } from "@shared/shadcn/components/input";
+import { AnimatePresence, motion } from 'framer-motion'
 
 const AddressInput = () => {
     const [query, setQuery] = useState(""); // Введенный адрес
@@ -12,6 +12,8 @@ const AddressInput = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setSelectedAddress] = useState<string | null>(null); // Выбранный адрес
     const [isLoading, setIsLoading] = useState(false);
+    const [isBlurActive, setIsBlurActive] = useState(false); // Затемнение экрана
+    const inputRef = useRef<HTMLDivElement | null>(null);
 
     const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -19,10 +21,12 @@ const AddressInput = () => {
 
         if (value.length < 3) {
             setSuggestions([]);
+            setIsBlurActive(false); // Убираем затемнение
             return;
         }
 
         setIsLoading(true);
+        setIsBlurActive(true); // Активируем затемнение
 
         try {
             const response = await fetch("https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address", {
@@ -30,14 +34,12 @@ const AddressInput = () => {
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
-                    "Authorization": `Token dae305d1444a59cb68acd68b223f4080a84a6dc5` // Замените на ваш API-ключ
+                    "Authorization": `Token dae305d1444a59cb68acd68b223f4080a84a6dc5`, // Замените на ваш API-ключ
                 },
                 body: JSON.stringify({
                     query: value,
-                    locations: [
-                        { city: "Москва" }
-                    ]
-                })
+                    locations: [{ city: "Москва" }],
+                }),
             });
 
             if (response.ok) {
@@ -57,24 +59,38 @@ const AddressInput = () => {
         setSelectedAddress(address);
         setQuery(address); // Отображаем выбранный адрес
         setSuggestions([]); // Очищаем подсказки
+        setIsBlurActive(false); // Убираем затемнение
     };
 
-    // Функция для стилизации "г Москва"
     const highlightCity = (text: string) => {
         return text.replace(/(г\sМосква)/i, `<span class="text-zinc-400">$1</span>`);
     };
 
+    const handleClickOutside = () => {
+        setSuggestions([]);
+        setIsBlurActive(false);
+    };
+
     return (
-        <div className="relative w-full">
+        <div ref={inputRef} className="relative w-full">
+            {/* Затемнение экрана */}
+            <AnimatePresence mode={'wait'}>
+                {isBlurActive && (
+                    <motion.div onClick={handleClickOutside} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 z-10"></motion.div>
+                )}
+            </AnimatePresence>
+
             <Input
                 type="text"
                 value={query}
                 onChange={handleInputChange}
                 placeholder="Введите адрес"
+                className="relative z-20"
             />
+
             {isLoading && (
                 <ul
-                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-52 overflow-y-auto z-10 transition-all"
+                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-52 overflow-y-auto z-20 transition-all"
                 >
                     {[...Array(5)].map((_, index) => (
                         <li
@@ -86,9 +102,10 @@ const AddressInput = () => {
                     ))}
                 </ul>
             )}
+
             {!isLoading && suggestions.length > 0 && (
                 <ul
-                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 pb-2 max-h-52 overflow-y-auto z-10 transition-all opacity-100"
+                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 pb-2 max-h-52 overflow-y-auto z-20 transition-all opacity-100"
                 >
                     {suggestions.map((suggestion: { value: string }) => (
                         <li
@@ -110,7 +127,7 @@ const AddressInput = () => {
 export const SetAddressesStep = () => {
     return (
         <Step title='Куда и откуда?' description='В заказе можно указывать несколько адресов, нажав на +'>
-            <div className='flex flex-col sm:flex-row gap-12 w-full max-w-2xl'>
+            <div className='flex flex-col sm:flex-row gap-12 w-full max-w-3xl'>
                 <div className='flex flex-col w-full sm:items-center'>
                     <h1 className='font-semibold text-2xl'>Откуда забрать?</h1>
                     <div className='w-full mt-4'>
