@@ -72,7 +72,7 @@ const Variant = (props: IVariantProps) => {
             <div className='flex items-center gap-5'>
                 <Image placeholder={'blur'} draggable={false} src={props.imgSrc} className='rounded-2xl'
                        alt={'firstChoice'} width={48} height={48}/>
-                <h1 className='font-medium text-xl font-mono'>{props.name}</h1>
+                <h1 className='font-medium text-xl'>{props.name}</h1>
             </div>
             <div className='w-7 h-7'>
                 {props.isChecked && <Check/>}
