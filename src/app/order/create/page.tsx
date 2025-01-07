@@ -10,6 +10,7 @@ import { ChooseShipmentStep } from "@features/order/create/ui/steps/ChooseShipme
 import { ChoosePackingStep } from "@features/order/create/ui/steps/ChoosePackingStep";
 import { SetDimensionsStep } from "@features/order/create/ui/steps/SetDimensionsStep";
 import { SetAddressesStep } from "@features/order/create/ui/steps/SetAddressesStep";
+import { SetDeliveryTimeStep } from "@features/order/create/ui/steps/SetDeliveryTimeStep";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -39,7 +40,8 @@ const App = () => {
         <ChooseMarketplaceStep key={'ChooseMarketplaceStep'}/>,
         <ChoosePackingStep key={'ChoosePackingStep'}/>,
         <SetDimensionsStep key={'SetDimensionsStep'}/>,
-        <SetAddressesStep key={'SetAddressesStep'}/>
+        <SetAddressesStep key={'SetAddressesStep'}/>,
+        <SetDeliveryTimeStep key={'SetDeliveryTimeStep'}/>
     ]
 
     const swipeToImage = (swipeDirection: number) => {
@@ -52,15 +54,15 @@ const App = () => {
     return (
         <main>
             <div className="slider-container ">
-                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-140px)] sm:h-[calc(100dvh-250px)]">
+                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-140px)] sm:h-[calc(100dvh-150px)]">
                     <div
                         className='absolute left-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-r from-black z-50 to-transparent'/>
-                    <AnimatePresence initial={false} custom={direction}>
+                    <AnimatePresence  initial={false} custom={direction}>
                         <motion.div
                             key={imageCount}
                             custom={direction}
                             variants={sliderVariants}
-                            className='flex flex-col pt-4 items-center h-full absolute top-0 w-full px-8 sm:px-8'
+                            className='flex flex-col pt-4 sm:pt-12 items-center h-full absolute top-0 w-full px-8 sm:px-8'
                             initial="incoming"
                             animate="active"
                             exit="exit"
