@@ -1,3 +1,5 @@
+'use client';
+
 import { CreateOrderTemplates } from "@features/order/create/ui/templates";
 import { cn } from "@shared/shadcn/lib/utils";
 import Image from "next/image";
@@ -56,7 +58,7 @@ const Check = () => {
 const Variant = (props: IVariantProps) => {
     return (
         <div onMouseDown={props.onClick}
-             className={cn(' cursor-pointer w-full py-4 max-w-[400px] rounded-full border-2 border-transparent overflow-hidden relative flex items-center justify-between px-8', props.isChecked ? 'bg-blue-500/5 border-blue-500' : '')}
+             className={cn(' cursor-pointer w-full py-3.5 max-w-[400px] rounded-full border-2 border-transparent overflow-hidden relative flex items-center justify-between px-8', props.isChecked ? 'bg-blue-500/5 border-blue-500' : '')}
         >
             {props.isChecked &&
                 (
@@ -69,10 +71,10 @@ const Variant = (props: IVariantProps) => {
                     </>
                 )
             }
-            <div className='flex items-center gap-5'>
-                <Image placeholder={'blur'} draggable={false} src={props.imgSrc} className='rounded-2xl'
-                       alt={'firstChoice'} width={48} height={48}/>
-                <h1 className='font-medium text-xl'>{props.name}</h1>
+            <div className='flex items-center gap-3 sm:gap-5'>
+                <Image placeholder={'blur'} draggable={false} src={props.imgSrc} className='w-10 sm:w-12 rounded-xl sm:rounded-2xl'
+                       alt={'firstChoice'} width={0} height={0}/>
+                <h1 className='font-medium text-lg sm:text-xl'>{props.name}</h1>
             </div>
             <div className='w-7 h-7'>
                 {props.isChecked && <Check/>}
