@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { cn } from "@shared/shadcn/lib/utils";
 import Image from "next/image";
 import { bg } from "@features/order/create/ui/assets";
-import { StaticImageData, StaticImport } from "next/dist/shared/lib/get-img-props";
+import { StaticImageData } from "next/dist/shared/lib/get-img-props";
 import { AnimatedCheck } from "@shared/ui/animated-check";
 import CanvasImage from "@shared/ui/canvas-image/ui/CanvasImage";
 
@@ -44,8 +44,8 @@ const Variant = (props: IVariantProps) => {
 }
 
 interface IProps {
-    firstImg: StaticImport,
-    secondImg: StaticImport,
+    firstImg: StaticImageData,
+    secondImg: StaticImageData,
     onFirstClick: () => unknown,
     onSecondClick: () => unknown,
 }
