@@ -60,7 +60,7 @@ const App = () => {
                             key={imageCount}
                             custom={direction}
                             variants={sliderVariants}
-                            className='flex flex-col items-center h-full absolute top-0 w-full px-4 sm:px-8'
+                            className='flex flex-col items-center h-full absolute top-0 w-full px-8 sm:px-8'
                             initial="incoming"
                             animate="active"
                             exit="exit"
