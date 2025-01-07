@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 import { Button } from "@shared/shadcn/components/button";
 import { Input } from "@shared/shadcn/components/input";
 import { AnimatePresence, motion } from 'framer-motion'
+import { PlusIcon } from "lucide-react";
 
 const AddressInput = () => {
     const [query, setQuery] = useState(""); // Введенный адрес
@@ -76,7 +77,13 @@ const AddressInput = () => {
             {/* Затемнение экрана */}
             <AnimatePresence mode={'wait'}>
                 {isBlurActive && (
-                    <motion.div onClick={handleClickOutside} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/50 z-10"></motion.div>
+                    <motion.div
+                        onClick={handleClickOutside}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/65 z-10"
+                    />
                 )}
             </AnimatePresence>
 
@@ -129,19 +136,23 @@ export const SetAddressesStep = () => {
         <Step title='Куда и откуда?' description='В заказе можно указывать несколько адресов, нажав на +'>
             <div className='flex flex-col sm:flex-row gap-12 w-full max-w-3xl'>
                 <div className='flex flex-col w-full sm:items-center'>
-                    <h1 className='font-semibold text-2xl'>Откуда забрать?</h1>
+                    <h1 className='font-semibold text-lg md:text-xl lg:text-2xl'>Откуда забрать?</h1>
                     <div className='w-full mt-4'>
                         <AddressInput/>
                     </div>
-                    <Button className='w-full mt-4 text-sm' size='sm' >+ Адрес</Button>
+                    <Button className='w-full mt-4 flex items-center justify-center' variant='outline'>
+                        <span className='p-0.5 rounded-full bg-blue-500'><PlusIcon/></span> Адрес
+                    </Button>
                 </div>
 
                 <div className='flex flex-col sm:items-center w-full'>
-                    <h1 className='font-semibold text-2xl'>Куда доставить?</h1>
+                    <h1 className='font-semibold text-lg md:text-xl lg:text-2xl'>Куда доставить?</h1>
                     <div className='w-full mt-4'>
                         <AddressInput/>
                     </div>
-                    <Button className='w-full mt-4 text-sm' size='sm' >+ Адрес</Button>
+                    <Button className='w-full mt-4 flex items-center justify-center' variant='outline'>
+                        <span className='p-0.5 rounded-full bg-blue-500'><PlusIcon/></span> Адрес
+                    </Button>
                 </div>
             </div>
         </Step>
