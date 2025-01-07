@@ -52,7 +52,7 @@ const App = () => {
     return (
         <main>
             <div className="slider-container">
-                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-220px)] sm:h-[calc(100dvh-250px)]">
+                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-190px)] sm:h-[calc(100dvh-250px)]">
                     <div
                         className='absolute left-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-r from-black z-50 to-transparent'/>
                     <AnimatePresence initial={false} custom={direction}>
