@@ -9,7 +9,8 @@ import { Button } from "@shared/shadcn/components/button";
 const AddressInput = () => {
     const [query, setQuery] = useState(""); // Введенный адрес
     const [suggestions, setSuggestions] = useState([]);
-    const [selectedAddress, setSelectedAddress] = useState<string | null>(null); // Выбранный адрес
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, setSelectedAddress] = useState<string | null>(null); // Выбранный адрес
     const [isLoading, setIsLoading] = useState(false);
 
     const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
