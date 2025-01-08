@@ -62,7 +62,7 @@ const App = () => {
                             key={imageCount}
                             custom={direction}
                             variants={sliderVariants}
-                            className='flex will-change-transform transform-gpu flex-col pt-4 sm:pt-12 items-center h-full absolute top-0 w-full px-8 sm:px-8'
+                            className='flex flex-col pt-4 sm:pt-12 items-center h-full absolute top-0 w-full px-8 sm:px-8'
                             initial="incoming"
                             animate="active"
                             exit="exit"
