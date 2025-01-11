@@ -5,10 +5,11 @@ import { cn } from "@shared/shadcn/lib/utils";
 import Image from "next/image";
 import { bg } from "@features/order/create/ui/assets";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import {  useState } from "react";
-import { IOrder, MARKETPLACES } from "@entities/order";
+import { MARKETPLACES } from "@entities/order";
 import { marketplacesMap } from "@entities/order/ui/images";
 import { AnimatedCheck } from "@shared/ui/animated-check";
+import { useAtom } from "jotai";
+import { createOrderAtoms } from "@features/order/create";
 
 interface IVariantProps {
     isChecked: boolean,
@@ -47,7 +48,7 @@ const Variant = (props: IVariantProps) => {
 
 
 export const ChooseMarketplaceStep = () => {
-    const [variant, setVariant] = useState<IOrder['marketplace']>('Яндекс маркет')
+    const [variant, setVariant] = useAtom(createOrderAtoms.marketplace)
 
     return (
         <CreateOrderTemplates.Step title='Какой магазин?'>

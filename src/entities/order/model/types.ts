@@ -8,7 +8,7 @@ export interface IOrder {
     id: string,
     shipmentType: TOrderShipmentType,
     marketplace: TOrderMarketplace,
-    packing: TOrderPacking,
+    packingType: TOrderPacking,
     whatToDeliver: string[],
     packageLength: number,
     packageWidth: number,

@@ -4,7 +4,7 @@ import { IOrder } from "@entities/order";
 const shipmentType = atom<IOrder['shipmentType']>('marketplace')
 const marketplace = atom<IOrder['marketplace']>('Яндекс маркет')
 const whatToDeliver = atom<IOrder['whatToDeliver']>([])
-const packing = atom<IOrder['packing']>('box')
+const packingType = atom<IOrder['packingType']>('box')
 const packageLength  = atom<IOrder['packageLength']>(0)
 const packageWidth = atom<IOrder['packageWidth']>(0)
 const packageHeight = atom<IOrder['packageHeight']>(0)
@@ -16,7 +16,7 @@ export const createOrderAtoms = {
     shipmentType,
     marketplace,
     whatToDeliver,
-    packing,
+    packingType,
     packageLength,
     packageWidth,
     packageHeight,

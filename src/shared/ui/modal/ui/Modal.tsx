@@ -54,7 +54,7 @@ export const Modal = (props: IProps) => {
     if (isDesktop) {
         return (
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild className='w-min'>
+                <DialogTrigger asChild className='w-full'>
                     <a href={'#modal'}>
                         {props.trigger}
                     </a>
@@ -82,7 +82,7 @@ export const Modal = (props: IProps) => {
 
     return (
         <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild className='w-min'>
+            <DrawerTrigger asChild className='w-full'>
                 <a href={'#modal'}>
                     {props.trigger}
                 </a>

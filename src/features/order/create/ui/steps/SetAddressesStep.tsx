@@ -92,12 +92,12 @@ const AddressInput = () => {
                 value={query}
                 onChange={handleInputChange}
                 placeholder="Введите адрес"
-                className="relative z-10"
+                className="relative z-[200]"
             />
 
             {isLoading && (
                 <ul
-                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-48 sm:max-h-64 overflow-y-auto z-20 transition-all"
+                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-48 sm:max-h-64 overflow-y-auto z-[200] transition-all"
                 >
                     {[...Array(5)].map((_, index) => (
                         <li
@@ -112,7 +112,7 @@ const AddressInput = () => {
 
             {!isLoading && suggestions.length > 0 && (
                 <ul
-                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 pb-2 max-h-48 sm:max-h-64 overflow-y-auto z-20 transition-all opacity-100"
+                    className="shadow-2xl absolute left-0 w-full bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 pb-2 max-h-48 sm:max-h-64 overflow-y-auto z-[200] transition-all opacity-100"
                 >
                     {suggestions.map((suggestion: { value: string }) => (
                         <li
@@ -134,9 +134,9 @@ const AddressInput = () => {
 export const SetAddressesStep = () => {
     return (
         <Step title='Куда и откуда?' description='В заказе можно указывать несколько адресов, нажав на +'>
-            <div className='flex flex-col sm:flex-row gap-12 w-full max-w-3xl'>
+            <div className='flex mt-4 flex-col sm:flex-row gap-12 w-full max-w-3xl'>
                 <div className='flex flex-col w-full sm:items-center'>
-                    <h1 className='font-semibold text-lg md:text-xl lg:text-2xl'>Откуда забрать?</h1>
+                    <h1 className='font-semibold text-lg md:text-xl lg:text-xl'>Откуда забрать?</h1>
                     <div className='w-full mt-4'>
                         <AddressInput/>
                     </div>
@@ -146,7 +146,7 @@ export const SetAddressesStep = () => {
                 </div>
 
                 <div className='flex flex-col sm:items-center w-full'>
-                    <h1 className='font-semibold text-lg md:text-xl lg:text-2xl'>Куда доставить?</h1>
+                    <h1 className='font-semibold text-lg md:text-xl lg:text-xl'>Куда доставить?</h1>
                     <div className='w-full mt-4'>
                         <AddressInput/>
                     </div>
