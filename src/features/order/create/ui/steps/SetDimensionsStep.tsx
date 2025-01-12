@@ -4,15 +4,16 @@ import { createOrderAtoms } from "@features/order/create";
 import { boxImg, paletteImg } from "@features/order/create/ui/assets";
 import Image from "next/image";
 import { Button } from "@shared/shadcn/components/button";
-import { Edit2Icon } from "lucide-react";
 import { Modal } from "@shared/ui/modal";
 import { Input } from "@shared/shadcn/components/input";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelect";
-
+import { AiFillEdit } from "react-icons/ai";
+import { useMemo } from "react";
 
 export const SetDimensionsStep = () => {
     const packingType = useAtomValue(createOrderAtoms.packingType)
+    const variants = useMemo(() => [...Array(100).keys()].map(e => (e + 1).toString()), [])
 
     return (
         <CreateOrderTemplates.Step title={'Какие габариты?'}>
@@ -30,7 +31,7 @@ export const SetDimensionsStep = () => {
                                 width={0} height={0}
                             />
 
-                            <VirtualSelect top={110} trigger={(
+                            <VirtualSelect options={variants} top={110} trigger={(
                                 <div className='text-center mb-12 group'>
                                     <h1 className='text-zinc-500'>Кол. мест</h1>
                                     <div className='flex mt-1  items-center cursor-pointer justify-center gap-3'>
@@ -45,28 +46,27 @@ export const SetDimensionsStep = () => {
                                 </div>
                             )}/>
                         </div>
-                        <div className='flex gap-3 w-full mb-6'>
+                        <div className='flex mt-6 gap-3 w-full mb-6'>
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
-                                <h1 className='text-zinc-500'>Длина</h1>
-                                <p className='font-medium text-xl'>100 <span className='text-zinc-400'>см</span></p>
+                                <h1 className='text-zinc-500 text-sm sm:text-base'>Длина</h1>
+                                <p className='font-medium text-lg sm:text-xl'>100 <span className='text-zinc-400'>см</span></p>
                             </div>
 
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
-                                <h1 className='text-zinc-500'>Ширина</h1>
-                                <p className='font-medium text-xl'>100 <span className='text-zinc-400'>см</span></p>
+                                <h1 className='text-zinc-500 text-sm sm:text-base'>Ширина</h1>
+                                <p className='font-medium text-lg sm:text-xl'>100 <span className='text-zinc-400'>см</span></p>
                             </div>
 
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
-                                <h1 className='text-zinc-500'>Высота</h1>
-                                <p className='font-medium text-xl'>100 <span className='text-zinc-400'>см</span></p>
+                                <h1 className='text-zinc-500 text-sm sm:text-base'>Высота</h1>
+                                <p className='font-medium text-lg sm:text-xl'>100 <span className='text-zinc-400'>см</span></p>
                             </div>
                         </div>
                     </div>
 
                     <Modal trigger={(
                         <Button variant='outline' className='w-full'>
-                        <span className='p-0.5 rounded-full bg-blue-500'><Edit2Icon
-                            className='w-1 h-1'/></span> Изменить размер
+                        <span className='p-0.5 rounded-full bg-blue-500'><AiFillEdit className='w-1 h-1'/></span> Изменить размер
                         </Button>
                     )} title={'Изменить габариты'} description={'Пожалуйста, вводите точные значения'}>
                         <div className='px-4 sm:px-0 sm:mt-8'>
@@ -79,17 +79,6 @@ export const SetDimensionsStep = () => {
                         </div>
                     </Modal>
                 </div>
-
-                {/*<div className='w-full'>*/}
-                {/*    <div className='w-full'>*/}
-                {/*        <h1 className='font-semibold text-lg md:text-xl lg:text-xl'>Кол. мест</h1>*/}
-                {/*        <Input className='mt-4'/>*/}
-                {/*    </div>*/}
-                {/*    <div className='w-full'>*/}
-                {/*        <h1 className='font-semibold text-lg mt-6 md:text-xl lg:text-xl'>Общий вес (кг)</h1>*/}
-                {/*        <Input className='mt-4' placeholder={'100'}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
         </CreateOrderTemplates.Step>
     )

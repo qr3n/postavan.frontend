@@ -4,19 +4,20 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 interface IProps {
     trigger: ReactElement,
-    top?: number
+    top?: number,
+    options: string[],
+    onOptionChange?: (option: string) => void
 }
 
 export const VirtualSelect = (props: IProps) => {
-    const orders: number[] = Array.from({ length: 1000 }); // Ваши данные
     const parentRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isBlurActive, setIsBlurActive] = useState(false); // Затемнение экрана
 
     const rowVirtualizer = useVirtualizer({
-        count: orders.length,
+        count: props.options.length,
         getScrollElement: () => parentRef.current,
-        estimateSize: () => 40,  // Размер каждого элемента
+        estimateSize: () => 40,
     });
 
     useEffect(() => {
@@ -90,7 +91,7 @@ export const VirtualSelect = (props: IProps) => {
                                         width: '100%',
                                     }}
                                 >
-                                    {virtualRow.index}
+                                    {props.options[virtualRow.index]}
                                 </div>
                             ))}
                         </div>

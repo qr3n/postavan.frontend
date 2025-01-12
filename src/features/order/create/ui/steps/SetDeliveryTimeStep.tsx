@@ -6,6 +6,7 @@ import { CalendarIcon } from "lucide-react";
 import { ru } from "date-fns/locale";
 import { Select, SelectValue, SelectContent, SelectItem, SelectTrigger } from "@shared/shadcn/components/select";
 import { memo } from "react";
+import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelect";
 
 type TimeSelectProps = {
     value: string;
@@ -72,6 +73,17 @@ export const SetDeliveryTimeStep: React.FC = () => {
                     <div className='flex gap-4 mt-4 w-full'>
                         <DatePicker />
 
+                        <VirtualSelect
+                            top={60}
+                            trigger={<Button>Test</Button>}
+                            options={[]}
+                        />
+
+                        <VirtualSelect
+                            top={60}
+                            trigger={<Button>Test</Button>}
+                            options={[]}
+                        />
                     </div>
                 </div>
 
@@ -79,7 +91,17 @@ export const SetDeliveryTimeStep: React.FC = () => {
                     <h1 className='font-semibold text-lg sm:text-xl mt-12'>Доставить</h1>
                     <div className='flex gap-4 mt-4'>
                         <DatePicker />
+                        <VirtualSelect
+                            top={60}
+                            trigger={<Button>Test</Button>}
+                            options={[]}
+                        />
 
+                        <VirtualSelect
+                            top={60}
+                            trigger={<Button>Test</Button>}
+                            options={[]}
+                        />
                     </div>
                 </div>
             </div>
