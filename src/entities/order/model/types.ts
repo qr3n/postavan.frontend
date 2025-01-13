@@ -16,4 +16,6 @@ export interface IOrder {
     deliveryAddresses: string[],
     pickupAddresses: string[],
     comment: string,
+    senderPhone: string,
+    recipientPhone: string,
 }

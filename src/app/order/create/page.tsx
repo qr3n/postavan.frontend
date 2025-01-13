@@ -14,6 +14,8 @@ import { SetDeliveryTimeStep } from "@features/order/create/ui/steps/SetDelivery
 import { AddCommentStep } from "@features/order/create/ui/steps/AddCommentStep";
 import { SetPhoneNumbersStep } from "@features/order/create/ui/steps/SetPhoneNumbersStep";
 import { ConfirmCostStep } from "@features/order/create/ui/steps/ConfirmCostStep";
+import { useAtomValue } from "jotai";
+import { createOrderAtoms } from "@features/order/create";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -36,6 +38,7 @@ const sliderTransition = {
 
 const App = () => {
     const [[imageCount, direction], setImageCount] = useState([0, 0]);
+    const canContinue = useAtomValue(createOrderAtoms.canContinue)
 
     const blocks = [
         <ChooseShipmentStep key={'ChooseShipmentStep'}/>,
@@ -80,7 +83,7 @@ const App = () => {
                 </div>
 
                 <div className="flex flex-col px-8 w-full max-w-[600px] gap-4">
-                    <Button disabled={imageCount === blocks.length - 1} onClick={() => swipeToImage(1)}>Продолжить</Button>
+                    <Button disabled={!canContinue} onClick={() => swipeToImage(1)}>Продолжить</Button>
                     <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>Назад</Button>
                 </div>
             </div>

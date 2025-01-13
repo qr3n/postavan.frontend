@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { cn } from "../lib/utils";
-import { useEffect } from "react";
 
 interface InputProps extends React.ComponentProps<"input"> {
     label?: string;
@@ -11,11 +10,10 @@ interface InputProps extends React.ComponentProps<"input"> {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, type, label, ...props }, ref) => {
         const [focused, setFocused] = React.useState(false);
-        const [hasValue, setHasValue] = React.useState(false);
 
-        useEffect(() => {
-            if (props.value || props.defaultValue) setHasValue(true);
-        }, []);
+        // Учитываем изначальное наличие значения в input
+        const initialHasValue = !!(props.value || props.defaultValue);
+        const [hasValue, setHasValue] = React.useState(initialHasValue);
 
         const handleFocus = () => setFocused(true);
         const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -41,7 +39,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <input
                     type={type}
                     className={cn(
-                        `peer flex dark:bg-zinc-800 dark:text-white h-12 w-full rounded-xl bg-transparent px-3 pl-4 py-2 text-base shadow-sm transition-colors placeholder-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-zinc-950 outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:cursor-not-allowed disabled:opacity-50 dark:file:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus-visible:ring-0 dark:hover:bg-zinc-900 dark:focus:bg-zinc-800 ${label ? 'pt-6' : ''}`,
+                        `peer flex dark:bg-zinc-800 dark:text-white h-12 w-full rounded-xl bg-transparent px-3 pl-4 py-2 text-base shadow-sm transition-colors placeholder-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-zinc-950 outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:cursor-not-allowed disabled:opacity-50 dark:file:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus-visible:ring-0 dark:hover:bg-zinc-900 dark:focus:bg-zinc-800 ${
+                            label ? "pt-6" : ""
+                        }`,
                         className
                     )}
                     ref={ref}

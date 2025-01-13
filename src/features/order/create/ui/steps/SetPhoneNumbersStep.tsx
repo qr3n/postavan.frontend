@@ -1,7 +1,32 @@
 import { CreateOrderTemplates } from "@features/order/create/ui/templates";
 import { Input } from "@shared/shadcn/components/input";
+import { useEffect } from "react";
+import { useAtomValue, useSetAtom } from "jotai/index";
+import { createOrderAtoms } from "@features/order/create";
+import { useAtom } from "jotai";
+
+const CanContinue = () => {
+    const senderPhone = useAtomValue(createOrderAtoms.senderPhone)
+    const recipientPhone = useAtomValue(createOrderAtoms.recipientPhone)
+    const setCanContinue = useSetAtom(createOrderAtoms.canContinue)
+
+    useEffect(() => {
+        if (senderPhone !== '' && recipientPhone !== '') setCanContinue(true)
+        else setCanContinue(false)
+
+        return () => setCanContinue(true)
+    }, [recipientPhone, senderPhone, setCanContinue])
+
+    return (
+        <></>
+    )
+}
+
 
 export const SetPhoneNumbersStep = () => {
+    const [senderPhone, setSenderPhone] = useAtom(createOrderAtoms.senderPhone)
+    const [recipientPhone, setRecipientPhone] = useAtom(createOrderAtoms.recipientPhone)
+
     return (
         <CreateOrderTemplates.Step title='Как связаться?' description={'Укажите номера телефонов'}>
             <div className='w-full max-w-[500px]'>
@@ -19,7 +44,7 @@ export const SetPhoneNumbersStep = () => {
                         </svg>
                         +7
                     </div>
-                    <Input type='number' placeholder='9117629553'/>
+                    <Input value={senderPhone} onChange={e => setSenderPhone(e.target.value)} type='number' placeholder='9117629553'/>
                 </div>
             </div>
 
@@ -38,9 +63,10 @@ export const SetPhoneNumbersStep = () => {
                         </svg>
                         +7
                     </div>
-                    <Input type='number' placeholder='9117629553'/>
+                    <Input value={recipientPhone} onChange={e => setRecipientPhone(e.target.value)} type='number' placeholder='9117629553'/>
                 </div>
             </div>
+            <CanContinue/>
         </CreateOrderTemplates.Step>
     )
 }

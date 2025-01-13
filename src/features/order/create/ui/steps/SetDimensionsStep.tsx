@@ -1,5 +1,5 @@
 import { CreateOrderTemplates } from "@features/order/create/ui/templates";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 import { boxImg, paletteImg } from "@features/order/create/ui/assets";
 import Image from "next/image";
@@ -10,8 +10,101 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelect";
 import { AiFillEdit } from "react-icons/ai";
 import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { DialogClose } from "@shared/shadcn/components/dialog";
+import { DrawerClose } from "@shared/shadcn/components/drawer";
+
+interface IFormData {
+    length: number,
+    width: number,
+    height: number,
+}
+
+
+const SetDimensionsForm = () => {
+    const [length, setLength] = useAtom(createOrderAtoms.packageLength);
+    const [width, setWidth] = useAtom(createOrderAtoms.packageWidth);
+    const [height, setHeight] = useAtom(createOrderAtoms.packageHeight);
+
+    const { register, handleSubmit, formState: { errors } } = useForm<IFormData>({
+        defaultValues: {
+            length,
+            width,
+            height,
+        },
+    });
+
+    const onSubmit = handleSubmit((data) => {
+        setLength(data.length);
+        setWidth(data.width);
+        setHeight(data.height);
+    });
+
+    return (
+        <form onSubmit={onSubmit}>
+            <div>
+                <Input
+                    {...register('length', {
+                        required: 'Длина обязательна',
+                        min: { value: 1, message: 'Длина должна быть больше 0' },
+                    })}
+                    type="number"
+                    label="Длина"
+                />
+                   {errors.length && (
+                       <p className="text-red-500 text-sm mt-1">{errors.length.message}</p>
+                   )}
+            </div>
+
+            <div className="mt-3">
+                <Input
+                    {...register('width', {
+                        required: 'Ширина обязательна',
+                        min: { value: 1, message: 'Ширина должна быть больше 0' },
+                    })}
+                    type="number"
+                    label="Ширина"
+                />
+                {errors.width && (
+                    <p className="text-red-500 text-sm mt-1">{errors.width.message}</p>
+                )}
+            </div>
+
+            <div className="mt-3">
+                <Input
+                    {...register('height', {
+                        required: 'Высота обязательна',
+                        min: { value: 1, message: 'Высота должна быть больше 0' },
+                    })}
+                    type="number"
+                    label="Высота"
+                />
+                {errors.height && (
+                    <p className="text-red-500 text-sm mt-1">{errors.height.message}</p>
+                )}
+            </div>
+
+            <DialogClose asChild>
+                <DrawerClose asChild>
+                    <Button className="w-full mt-12" type="submit">
+                        Сохранить
+                    </Button>
+                </DrawerClose>
+            </DialogClose>
+            <Button className="w-full mt-4" variant="outline" type="button">
+                Отмена
+            </Button>
+
+            <input type="submit" className="hidden" />
+        </form>
+    );
+};
 
 export const SetDimensionsStep = () => {
+    const length = useAtomValue(createOrderAtoms.packageLength)
+    const width = useAtomValue(createOrderAtoms.packageWidth)
+    const height = useAtomValue(createOrderAtoms.packageHeight)
+
     const packingType = useAtomValue(createOrderAtoms.packingType)
     const variants = useMemo(() => [...Array(100).keys()].map(e => (e + 1).toString()), [])
 
@@ -31,7 +124,7 @@ export const SetDimensionsStep = () => {
                                 width={0} height={0}
                             />
 
-                            <VirtualSelect options={variants} top={110} trigger={(
+                            <VirtualSelect value={'1'} onOptionChange={() => null} options={variants} top={100} trigger={(
                                 <div className='text-center mb-12 group'>
                                     <h1 className='text-zinc-500'>Кол. мест</h1>
                                     <div className='flex mt-1  items-center cursor-pointer justify-center gap-3'>
@@ -49,17 +142,17 @@ export const SetDimensionsStep = () => {
                         <div className='flex mt-6 gap-3 w-full mb-6'>
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
                                 <h1 className='text-zinc-500 text-sm sm:text-base'>Длина</h1>
-                                <p className='font-medium text-lg sm:text-xl'>100 <span className='text-zinc-400'>см</span></p>
+                                <p className='font-medium text-lg sm:text-xl'>{length} <span className='text-zinc-400'>см</span></p>
                             </div>
 
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
                                 <h1 className='text-zinc-500 text-sm sm:text-base'>Ширина</h1>
-                                <p className='font-medium text-lg sm:text-xl'>100 <span className='text-zinc-400'>см</span></p>
+                                <p className='font-medium text-lg sm:text-xl'>{width} <span className='text-zinc-400'>см</span></p>
                             </div>
 
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
                                 <h1 className='text-zinc-500 text-sm sm:text-base'>Высота</h1>
-                                <p className='font-medium text-lg sm:text-xl'>100 <span className='text-zinc-400'>см</span></p>
+                                <p className='font-medium text-lg sm:text-xl'>{height} <span className='text-zinc-400'>см</span></p>
                             </div>
                         </div>
                     </div>
@@ -70,12 +163,7 @@ export const SetDimensionsStep = () => {
                         </Button>
                     )} title={'Изменить габариты'} description={'Пожалуйста, вводите точные значения'}>
                         <div className='px-4 sm:px-0 sm:mt-8'>
-                            <Input label={'Длина'} defaultValue={100}/>
-                            <Input label={'Ширина'} className='mt-3' defaultValue={100}/>
-                            <Input label={'Высота'} className='mt-3' defaultValue={100}/>
-
-                            <Button className='w-full mt-12'>Сохранить</Button>
-                            <Button className='w-full mt-4' variant='outline'>Отмена</Button>
+                            <SetDimensionsForm/>
                         </div>
                     </Modal>
                 </div>
