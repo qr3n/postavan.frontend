@@ -32,7 +32,8 @@ export const ConfirmCostStep = () => {
     return (
         <CreateOrderTemplates.Step title={'Стоимость'} description='Зависит от расстояния и количества мест'>
             <div
-                className='p-12 px-24 rounded-[4rem] overflow-hidden flex justify-center flex-col items-center relative'>
+                vaul-drawer-wrapper=""
+                className='p-12 px-4 w-full sm:w-max sm:px-16 md:px-24 rounded-[4rem] overflow-hidden flex justify-center flex-col items-center relative'>
                 <Image priority fetchPriority={'high'} placeholder={'blur'} draggable={false} src={bg}
                        className='-z-50 absolute opacity-70 left-0 top-0 w-full h-full object-cover'
                        alt={'firstChoice'} width={400} height={400}/>

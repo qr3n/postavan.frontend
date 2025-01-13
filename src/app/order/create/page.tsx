@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import "./styles.css";
@@ -16,6 +16,7 @@ import { SetPhoneNumbersStep } from "@features/order/create/ui/steps/SetPhoneNum
 import { ConfirmCostStep } from "@features/order/create/ui/steps/ConfirmCostStep";
 import { useAtomValue } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
+import { AuthModal } from "@features/session";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -37,10 +38,11 @@ const sliderTransition = {
 };
 
 const App = () => {
+    const [authModalOpen, setAuthModalOpen] = useState(false)
     const [[imageCount, direction], setImageCount] = useState([0, 0]);
     const canContinue = useAtomValue(createOrderAtoms.canContinue)
 
-    const blocks = [
+    const blocks = useMemo(() => [
         <ChooseShipmentStep key={'ChooseShipmentStep'}/>,
         <ChooseMarketplaceStep key={'ChooseMarketplaceStep'}/>,
         <ChoosePackingStep key={'ChoosePackingStep'}/>,
@@ -50,14 +52,21 @@ const App = () => {
         <AddCommentStep key={'AddCommentStep'}/>,
         <SetPhoneNumbersStep key={'SetPhoneNumberStep'}/>,
         <ConfirmCostStep key={'ConfirmCostStep'}/>,
-    ];
+    ], []);
 
-    const swipeToImage = (swipeDirection: number) => {
+    const swipeToImage = useCallback((swipeDirection: number) => {
         setImageCount(([currentIndex]) => {
             const newIndex = (currentIndex + swipeDirection + blocks.length) % blocks.length;
             return [newIndex, swipeDirection]; // Сохраняем направление для анимации
         });
-    };
+    }, [blocks.length])
+
+    const handleNext = useCallback(() => {
+        if (canContinue && imageCount < blocks.length - 1) swipeToImage(1)
+
+        else setAuthModalOpen(true)
+    }, [blocks.length, canContinue, imageCount, swipeToImage])
+
     return (
         <main>
             <div className="slider-container">
@@ -83,8 +92,9 @@ const App = () => {
                 </div>
 
                 <div className="flex flex-col px-8 w-full max-w-[600px] gap-4">
-                    <Button disabled={!canContinue} onClick={() => swipeToImage(1)}>Продолжить</Button>
+                    <Button disabled={!canContinue} onClick={handleNext}>Продолжить</Button>
                     <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>Назад</Button>
+                    <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen}/>
                 </div>
             </div>
         </main>
