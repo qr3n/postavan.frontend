@@ -18,6 +18,7 @@ import {
     DrawerTrigger
 } from "@shared/shadcn/components/drawer";
 import { cn } from "@shared/shadcn/lib/utils";
+import { useMediaQuery } from "@shared/utils/hooks";
 
 interface IProps extends PropsWithChildren {
     trigger?: ReactElement;
@@ -30,24 +31,6 @@ interface IProps extends PropsWithChildren {
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
 }
-
-const useMediaQuery = (query: string) => {
-    const [value, setValue] = useState(false);
-
-    useEffect(() => {
-        function onChange(event: MediaQueryListEvent) {
-            setValue(event.matches);
-        }
-
-        const result = matchMedia(query);
-        result.addEventListener("change", onChange);
-        setValue(result.matches);
-
-        return () => result.removeEventListener("change", onChange);
-    }, [query]);
-
-    return value;
-};
 
 export const Modal = (props: IProps) => {
     const { open: controlledOpen, onOpenChange, trigger, title, description, preHeader, footer, children, dialogStyle, modalStyle } = props;
@@ -67,10 +50,8 @@ export const Modal = (props: IProps) => {
     if (isDesktop) {
         return (
             <Dialog open={open} onOpenChange={handleOpenChange}>
-                {props.trigger && <DialogTrigger asChild className='w-full'>
-                    <a href={'#modal'}>
-                        {trigger}
-                    </a>
+                {props.trigger && <DialogTrigger asChild>
+                    {trigger}
                 </DialogTrigger>}
                 <DialogContent className={cn('max-w-[425px]', dialogStyle)}>
                     <div className='relative'>
@@ -95,10 +76,8 @@ export const Modal = (props: IProps) => {
 
     return (
         <Drawer open={open} onOpenChange={handleOpenChange}>
-            {props.trigger && <DrawerTrigger asChild className='w-full'>
-                <a href={'#modal'}>
-                    {trigger}
-                </a>
+            {props.trigger && <DrawerTrigger asChild>
+                {trigger}
             </DrawerTrigger>}
             <DrawerContent className={modalStyle}>
                 <div className='relative'>

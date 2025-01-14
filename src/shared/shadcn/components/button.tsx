@@ -16,7 +16,7 @@ const buttonVariants = cva(
                 destructive:
                     "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
                 outline:
-                    "border border-input bg-background shadow-sm dark:border-[#353535] dark:text-white dark:bg-zinc-800/80 dark:hover:bg-zinc-800/70 hover:bg-accent hover:text-accent-foreground",
+                    "border border-input bg-background shadow-sm dark:border-[#353535] dark:text-white dark:bg-[#171717] dark:hover:bg-[#141414] hover:bg-accent hover:text-accent-foreground",
                 secondary:
                     "bg-violet-700 hover:bg-violet-700/90 text-secondary-foreground shadow-sm",
                 ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -44,18 +44,18 @@ export interface ButtonProps
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
+    ({ className, variant, size, asChild = false, isLoading, ...props }, ref) => {
         const Comp = asChild ? Slot : "button";
 
         return (
             <Comp
                 className={cn(buttonVariants({ variant, size, className }))}
                 style={{ position: "relative", overflow: "hidden" }}
-                {...props}
+                {...props} // Передаём все свойства, кроме isLoading
                 ref={ref}
-                disabled={props.isLoading || props.disabled}
+                disabled={isLoading || props.disabled}
             >
-                {props.isLoading ? (
+                {isLoading ? (
                     <>
                         {props.children} <Loader2 className="text-white h-4 ml-2 w-4 animate-spin" />
                     </>
@@ -66,6 +66,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         );
     }
 );
+
 Button.displayName = "Button";
 
 export { Button, buttonVariants };

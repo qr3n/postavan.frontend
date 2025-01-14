@@ -8,3 +8,41 @@ export interface CalculateOrderCostRequest {
 export interface CalculateOrderCostResponse {
     cost: number
 }
+
+export interface CreateOrderRequest {
+    shipment_type: string;
+    marketplace?: string;
+    packing_type?: string;
+    what_to_deliver?: string[];
+    package_length: number;
+    package_width: number;
+    package_height: number;
+    places_count: number;
+    weight: number;
+    pickup_addresses: string[];
+    delivery_addresses: string[];
+    comment?: string;
+    sender_phone: string;
+    recipient_phone: string;
+}
+
+
+export interface GetUserOrderResponse {
+    recipient_phone: string;
+    package_width: number;
+    pickup_addresses: string[];
+    package_length: number;
+    package_height: number;
+    id: string;
+    places_count: number;
+    weight: number;
+    comment: string;
+    user_id: string;
+    shipment_type: 'marketplace' | 'anything';
+    what_to_deliver: string[];
+    marketplace: 'Яндекс маркет' | 'Wildberries' | 'Ozon' | 'AliExpress' | 'Lamoda';
+    cost: number;
+    delivery_addresses: string[];
+    packing_type: 'box' | 'palette';
+    sender_phone: string;
+}

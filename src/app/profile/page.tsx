@@ -6,13 +6,16 @@ import { useRef }                                   from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/shadcn/components/tabs";
 import { Button }                                   from "@shared/shadcn/components/button";
 import { OrderWrapper }                             from "@entities/order/ui/OrderWrapper";
+import { useUserOrders } from "@entities/order/model/hooks";
+import { EditOrder } from "@features/order/edit/ui/EditOrder";
 
 export default function ProfilePage() {
-    const orders = Array.from({ length: 1000 }); // Ваши данные
+    const { orders } = useUserOrders()
+
     const parentRef = useRef<HTMLDivElement>(null);
 
     const rowVirtualizer = useVirtualizer({
-        count: orders.length,
+        count: orders?.length,
         getScrollElement: () => parentRef.current,
         estimateSize: () => 85,
     });
@@ -20,18 +23,13 @@ export default function ProfilePage() {
     return (
         <div className="flex items-center justify-center mt-6 sm:mt-12 flex-col" vaul-drawer-wrapper="">
             <h1 className="font-semibold text-4xl sm:text-5xl">Мои заказы</h1>
-            <Tabs defaultValue={'phone'}>
+            <Tabs defaultValue={'active'}>
                 <TabsList className='mt-5'>
-                    <TabsTrigger value={'phone'}>Активные</TabsTrigger>
-                    <TabsTrigger value={'email'}>Запланированные</TabsTrigger>
-                    <TabsTrigger value={'closed'}>Закрытые</TabsTrigger>
+                    <TabsTrigger value={'active'}>В процессе</TabsTrigger>
+                    <TabsTrigger value={'closed'}>Завершены</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value={'phone'}>
-
-                </TabsContent>
-
-                <TabsContent value={'email'}>
+                <TabsContent value={'active'}>
 
                 </TabsContent>
 
@@ -56,8 +54,13 @@ export default function ProfilePage() {
                             }}
                         >
                             <OrderWrapper>
-                                <OrderDetailsModal />
-                                <OrderCard actions={<Button>Закрыть</Button>}/>
+                                <OrderDetailsModal order={orders[virtualRow.index]}/>
+                                <OrderCard order={orders[virtualRow.index]} actions={(
+                                    <>
+                                        <Button>Закрыть</Button>
+                                        <EditOrder order={orders[virtualRow.index]}/>
+                                    </>
+                                )}/>
                             </OrderWrapper>
                         </div>
                     ))}

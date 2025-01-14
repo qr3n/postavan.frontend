@@ -2,6 +2,7 @@ import { Providers }     from "./providers";
 import localFont         from "next/font/local";
 import { Metadata }      from "next";
 import './globals.css'
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,6 +33,9 @@ export default function RootLayout({
         <Providers>
           {/*<Navbar/>*/}
           {children}
+          <Toaster toastOptions={{
+            style: { borderRadius: '100px', backgroundColor: '#222', color: 'white' }
+          }}/>
         </Providers>
       </body>
     </html>

@@ -10,6 +10,7 @@ const packingType = atom<IOrder['packingType']>('box')
 const packageLength  = atom<IOrder['packageLength']>(100)
 const packageWidth = atom<IOrder['packageWidth']>(100)
 const packageHeight = atom<IOrder['packageHeight']>(100)
+const placesCount = atom<number>(1)
 const comment = atom<IOrder['comment']>('')
 const senderPhone = atom<IOrder['senderPhone']>('')
 const recipientPhone = atom<IOrder['recipientPhone']>('')
@@ -48,5 +49,6 @@ export const createOrderAtoms = {
     allDeliveryAddresses,
     allPickupAddresses,
     senderPhone,
-    recipientPhone
+    recipientPhone,
+    placesCount
 }

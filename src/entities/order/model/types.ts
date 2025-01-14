@@ -6,6 +6,7 @@ export const MARKETPLACES: TOrderMarketplace[] = ['Яндекс маркет', '
 
 export interface IOrder {
     id: string,
+    cost: number,
     shipmentType: TOrderShipmentType,
     marketplace: TOrderMarketplace,
     packingType: TOrderPacking,

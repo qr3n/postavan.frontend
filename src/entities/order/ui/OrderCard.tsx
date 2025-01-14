@@ -1,17 +1,19 @@
 import Image                             from 'next/image'
-import { yandexIcon } from "@shared/assets";
 import { ReactElement } from "react";
+import { IOrder } from "@entities/order";
+import { marketplacesMap } from "@entities/order/ui/images";
 
 interface IProps {
-    actions?: ReactElement
+    actions?: ReactElement,
+    order: IOrder
 }
 
 export const OrderCard = (props: IProps) => {
     return (
         <>
-            <div className='flex items-center w-full gap-5'>
+            <div className='flex justify-start items-center w-full gap-5'>
                 <Image
-                    src={yandexIcon}
+                    src={marketplacesMap[props.order.marketplace]}
                     placeholder='blur'
                     alt={'icon'}
                     width={48}
@@ -23,7 +25,7 @@ export const OrderCard = (props: IProps) => {
                     <p className='text-zinc-400 text-sm'>Test test test</p>
                 </div>
             </div>
-            <div>
+            <div className='flex gap-2 items-center'>
                 {props.actions}
             </div>
         </>

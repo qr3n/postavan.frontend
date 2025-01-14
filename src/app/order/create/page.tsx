@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import "./styles.css";
@@ -14,9 +14,14 @@ import { SetDeliveryTimeStep } from "@features/order/create/ui/steps/SetDelivery
 import { AddCommentStep } from "@features/order/create/ui/steps/AddCommentStep";
 import { SetPhoneNumbersStep } from "@features/order/create/ui/steps/SetPhoneNumbersStep";
 import { ConfirmCostStep } from "@features/order/create/ui/steps/ConfirmCostStep";
-import { useAtomValue } from "jotai";
+import { getDefaultStore, useAtom, useAtomValue } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 import { AuthModal } from "@features/session";
+import { accessTokenAtom } from "@entities/session/model/atoms";
+import { useMutation } from "@tanstack/react-query";
+import { orderService } from "@shared/api/services/order";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -33,14 +38,21 @@ const sliderVariants = {
     }),
 }
 const sliderTransition = {
-    duration: 0.8,
+    duration: 1,
     ease: [0.22, 1, 0.36, 1],
 };
 
 const App = () => {
+    const router = useRouter()
+    const { mutateAsync, isPending, isSuccess } = useMutation({
+        mutationFn: orderService.create,
+        mutationKey: ['createOrder']
+    })
+
     const [authModalOpen, setAuthModalOpen] = useState(false)
     const [[imageCount, direction], setImageCount] = useState([0, 0]);
     const canContinue = useAtomValue(createOrderAtoms.canContinue)
+    const [accessToken] = useAtom(accessTokenAtom)
 
     const blocks = useMemo(() => [
         <ChooseShipmentStep key={'ChooseShipmentStep'}/>,
@@ -61,11 +73,44 @@ const App = () => {
         });
     }, [blocks.length])
 
+    const createOrder = useCallback(() => {
+        const store = getDefaultStore()
+
+        toast.promise(mutateAsync({
+            shipment_type: store.get(createOrderAtoms.shipmentType),
+            marketplace: store.get(createOrderAtoms.marketplace),
+            packing_type: store.get(createOrderAtoms.packingType),
+            what_to_deliver: [],
+            package_length: store.get(createOrderAtoms.packageLength),
+            package_width: store.get(createOrderAtoms.packageWidth),
+            package_height: store.get(createOrderAtoms.packageHeight),
+            places_count: store.get(createOrderAtoms.placesCount),
+            weight: 100,
+            pickup_addresses: store.get(createOrderAtoms.allPickupAddresses),
+            delivery_addresses: store.get(createOrderAtoms.allDeliveryAddresses),
+            comment: store.get(createOrderAtoms.comment),
+            sender_phone: store.get(createOrderAtoms.senderPhone),
+            recipient_phone: store.get(createOrderAtoms.recipientPhone)
+        }), {
+          success: 'Заказ создан.',
+            error: 'Что-то пошло не так...',
+            loading: 'Создаем заказ...'
+        })
+    }, [mutateAsync])
+
     const handleNext = useCallback(() => {
         if (canContinue && imageCount < blocks.length - 1) swipeToImage(1)
 
+        else if (accessToken) {
+            createOrder()
+        }
+
         else setAuthModalOpen(true)
-    }, [blocks.length, canContinue, imageCount, swipeToImage])
+    }, [accessToken, blocks.length, canContinue, createOrder, imageCount, swipeToImage])
+
+    useEffect(() => {
+        if (isSuccess) router.push('/profile')
+    }, [isSuccess, router])
 
     return (
         <main>
@@ -92,9 +137,9 @@ const App = () => {
                 </div>
 
                 <div className="flex flex-col px-8 w-full max-w-[600px] gap-4">
-                    <Button disabled={!canContinue} onClick={handleNext}>Продолжить</Button>
+                    <Button disabled={!canContinue} isLoading={isPending} onClick={handleNext}>Продолжить</Button>
                     <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>Назад</Button>
-                    <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen}/>
+                    <AuthModal onAuthSuccess={createOrder} open={authModalOpen} onOpenChange={setAuthModalOpen}/>
                 </div>
             </div>
         </main>

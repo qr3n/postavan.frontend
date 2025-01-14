@@ -37,13 +37,14 @@ export const ConfirmCostStep = () => {
                 <Image priority fetchPriority={'high'} placeholder={'blur'} draggable={false} src={bg}
                        className='-z-50 absolute opacity-70 left-0 top-0 w-full h-full object-cover'
                        alt={'firstChoice'} width={400} height={400}/>
-                <div
-                    className='-z-50 absolute left-0 top-0 w-full h-full bg-gradient-to-b from-green-500/30 to-transparent'/>
-                <Image priority className='w-64' placeholder={'blur'} draggable={false} src={moneyImg}
+
+                <Image priority className='w-48 sm:w-64' placeholder={'blur'} draggable={false} src={moneyImg}
                        alt={'firstChoice'} width={0} height={0}/>
                 <div
-                    className='-z-50 absolute left-0 top-0 w-full h-full bg-gradient-to-t from-black to-10% to-transparent'/>
+                    className='-z-50 absolute left-0 top-0 w-full h-full bg-gradient-to-tl from-black to-transparent'/>
                 <div className='flex gap-4 mt-8 items-center justify-center'>
+                    <div
+                        className='-z-50 absolute left-0 top-0 w-full h-full bg-gradient-to-b from-green-500/30 to-transparent'/>
                     <AnimatedCheck/>
                     <h1 className='text-4xl font-semibold '>2555 руб.</h1>
                 </div>
