@@ -11,7 +11,8 @@ import bgMobile from './bg-mobile.webp'
 import dolphin from './dolphin.webp'
 import car from './car.png'
 import dolphinWithGlasses from './dolphin-with-glasses.webp'
-
+import houseImg from './house.png'
+import moneyForOrderModalImg from './money.webp'
 
 export {
     aliIcon,
@@ -26,5 +27,7 @@ export {
     bgMobile,
     dolphin,
     dolphinWithGlasses,
-    car
+    car,
+    houseImg,
+    moneyForOrderModalImg
 }

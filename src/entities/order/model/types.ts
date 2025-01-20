@@ -1,8 +1,10 @@
 type TOrderShipmentType = 'marketplace' | 'anything'
 type TOrderMarketplace = 'Яндекс маркет' | 'Wildberries' | 'Ozon' | 'AliExpress' | 'Lamoda'
 type TOrderPacking = 'box' | 'palette'
+type TOrderStatus = 'Поиск курьера' | 'Курьер назначен' | 'В пути' | 'На погрузке' | 'Выполняет' | 'Заказ выполнен'
 
 export const MARKETPLACES: TOrderMarketplace[] = ['Яндекс маркет', 'Wildberries', 'Ozon', 'AliExpress', 'Lamoda']
+export const ORDER_STATUSES: TOrderStatus[] = ['Поиск курьера', 'Курьер назначен', 'В пути', 'На погрузке', 'Выполняет', 'Заказ выполнен']
 
 export interface IOrder {
     id: string,
@@ -19,4 +21,12 @@ export interface IOrder {
     comment: string,
     senderPhone: string,
     recipientPhone: string,
+    status: TOrderStatus,
+    active: boolean,
+    pickupDate: Date,
+    deliveryDate: Date,
+    pickupTimeFrom: string,
+    pickupTimeTo: string,
+    deliveryTimeFrom: string,
+    deliveryTimeTo: string,
 }

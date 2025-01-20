@@ -14,6 +14,13 @@ const placesCount = atom<number>(1)
 const comment = atom<IOrder['comment']>('')
 const senderPhone = atom<IOrder['senderPhone']>('')
 const recipientPhone = atom<IOrder['recipientPhone']>('')
+const pickupDate = atom<IOrder['pickupDate']>(new Date())
+const deliveryDate = atom<IOrder['pickupDate']>(new Date())
+const pickupTimeFrom = atom<IOrder['pickupTimeFrom']>('00:00')
+const pickupTimeTo = atom<IOrder['pickupTimeTo']>('00:30')
+const deliveryTimeFrom = atom<IOrder['deliveryTimeFrom']>('00:00')
+const deliveryTimeTo = atom<IOrder['deliveryTimeTo']>('00:30')
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const deliveryAddressFamily = atomFamily((id: string) => atom(''))
@@ -50,5 +57,11 @@ export const createOrderAtoms = {
     allPickupAddresses,
     senderPhone,
     recipientPhone,
-    placesCount
+    placesCount,
+    pickupDate,
+    deliveryDate,
+    pickupTimeFrom,
+    pickupTimeTo,
+    deliveryTimeFrom,
+    deliveryTimeTo
 }

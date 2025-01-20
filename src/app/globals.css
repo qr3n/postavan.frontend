@@ -20,6 +20,14 @@ body {
 
 }
 
+svg.star-svg {
+  transition: scale 0.2s ease;
+  display: inline;
+}
+
+svg.star-svg:hover {
+  scale: 120%
+}
 
 @layer base {
   :root {

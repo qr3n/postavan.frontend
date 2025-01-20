@@ -90,7 +90,13 @@ const App = () => {
             delivery_addresses: store.get(createOrderAtoms.allDeliveryAddresses),
             comment: store.get(createOrderAtoms.comment),
             sender_phone: store.get(createOrderAtoms.senderPhone),
-            recipient_phone: store.get(createOrderAtoms.recipientPhone)
+            recipient_phone: store.get(createOrderAtoms.recipientPhone),
+            pickup_date: store.get(createOrderAtoms.pickupDate).toISOString().split('T')[0],
+            delivery_date: store.get(createOrderAtoms.deliveryDate).toISOString().split('T')[0],
+            pickup_time_from: store.get(createOrderAtoms.pickupTimeFrom),
+            pickup_time_to: store.get(createOrderAtoms.pickupTimeTo),
+            delivery_time_from: store.get(createOrderAtoms.deliveryTimeFrom),
+            delivery_time_to: store.get(createOrderAtoms.deliveryTimeTo)
         }), {
           success: 'Заказ создан.',
             error: 'Что-то пошло не так...',
@@ -115,7 +121,7 @@ const App = () => {
     return (
         <main>
             <div className="slider-container">
-                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-140px)] sm:h-[calc(100dvh-150px)]">
+                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-170px)] sm:h-[calc(100dvh-220px)]">
                     <div
                         className='absolute left-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-r from-black z-50 to-transparent'/>
                     <AnimatePresence initial={false} custom={direction}>
@@ -123,7 +129,7 @@ const App = () => {
                             key={imageCount}
                             custom={direction}
                             variants={sliderVariants}
-                            className="flex flex-col pt-4 sm:pt-12 items-center h-full absolute top-0 w-full px-8 sm:px-8"
+                            className="flex flex-col items-center h-full absolute top-0 w-full px-8 sm:px-8"
                             initial="incoming"
                             animate="active"
                             exit="exit"

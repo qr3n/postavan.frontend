@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { orderService } from "@shared/api/services/order";
+import { adminOrderService, orderService } from "@shared/api/services/order";
 import { GetUserOrderResponse } from "@shared/api/services/order/types";
 import { IOrder } from "@entities/order";
 
@@ -19,6 +19,14 @@ const convertGetUserOrderResponseToIOrder = (response: GetUserOrderResponse): IO
         comment: response.comment,
         senderPhone: response.sender_phone,
         recipientPhone: response.recipient_phone,
+        status: response.status,
+        active: response.active,
+        pickupDate: new Date(response.pickup_date),
+        deliveryDate: new Date(response.delivery_date),
+        pickupTimeFrom: response.pickup_time_from,
+        pickupTimeTo: response.pickup_time_to,
+        deliveryTimeFrom: response.delivery_time_from,
+        deliveryTimeTo: response.delivery_time_to
     };
 };
 
@@ -35,3 +43,18 @@ export const useUserOrders = () => {
         ...other
     };
 };
+
+
+export const useAdminAllOrders = () => {
+    const { data, ...other } = useQuery({
+        queryFn: adminOrderService.getAll,
+        queryKey: ['admin.orders']
+    });
+
+    const formattedData = data?.map((order: GetUserOrderResponse) => convertGetUserOrderResponseToIOrder(order)) ?? [];
+
+    return {
+        orders: formattedData,
+        ...other
+    };
+}

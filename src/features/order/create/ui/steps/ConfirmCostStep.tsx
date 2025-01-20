@@ -12,7 +12,7 @@ export const ConfirmCostStep = () => {
     const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses)
     const deliveryAddresses = useAtomValue(createOrderAtoms.allDeliveryAddresses)
 
-    const { mutate } = useMutation({
+    const { mutate, data } = useMutation({
         mutationFn: orderService.calculateCost,
         mutationKey: ['calculateCost'],
         retry: 0,
@@ -46,7 +46,7 @@ export const ConfirmCostStep = () => {
                     <div
                         className='-z-50 absolute left-0 top-0 w-full h-full bg-gradient-to-b from-green-500/30 to-transparent'/>
                     <AnimatedCheck/>
-                    <h1 className='text-4xl font-semibold '>2555 руб.</h1>
+                    <h1 className='text-4xl font-semibold '>{data && data.cost} руб.</h1>
                 </div>
                 <p className='text-zinc-400 mt-2'>Дневной тариф</p>
             </div>

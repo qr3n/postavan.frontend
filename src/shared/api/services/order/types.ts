@@ -24,6 +24,12 @@ export interface CreateOrderRequest {
     comment?: string;
     sender_phone: string;
     recipient_phone: string;
+    pickup_date: string,
+    delivery_date: string,
+    pickup_time_from: string,
+    pickup_time_to: string,
+    delivery_time_from: string,
+    delivery_time_to: string,
 }
 
 
@@ -45,4 +51,21 @@ export interface GetUserOrderResponse {
     delivery_addresses: string[];
     packing_type: 'box' | 'palette';
     sender_phone: string;
+    status: 'Поиск курьера' | 'Курьер назначен' | 'В пути' | 'На погрузке' | 'Выполняет' | 'Заказ выполнен';
+    active: boolean,
+    pickup_date: string,
+    delivery_date: string,
+    pickup_time_from: string,
+    pickup_time_to: string,
+    delivery_time_from: string,
+    delivery_time_to: string,
+}
+
+export interface ChangeOrderStatusRequest {
+    order_id: string,
+    status: 'Поиск курьера' | 'Курьер назначен' | 'В пути' | 'На погрузке' | 'Выполняет' | 'Заказ выполнен'
+}
+
+export interface ChangeOrderActiveRequest {
+    order_id: string,
 }

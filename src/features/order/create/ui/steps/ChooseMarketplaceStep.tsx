@@ -6,7 +6,7 @@ import Image from "next/image";
 import { bg } from "@features/order/create/ui/assets";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { MARKETPLACES } from "@entities/order";
-import { marketplacesMap } from "@entities/order/ui/images";
+import { marketplacesImagesMap } from "@entities/order/ui/images";
 import { AnimatedCheck } from "@shared/ui/animated-check";
 import { useAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
@@ -36,7 +36,7 @@ const Variant = (props: IVariantProps) => {
             }
             <div className='flex items-center gap-3 sm:gap-5'>
                 <Image priority placeholder={'blur'} draggable={false} src={props.imgSrc} className='w-10 sm:w-12 rounded-xl sm:rounded-2xl'
-                       alt={'firstChoice'} width={0} height={0}/>
+                       alt={'firstChoice'} width={48} height={48}/>
                 <h1 className='font-medium text-lg sm:text-xl'>{props.name}</h1>
             </div>
             <div className='w-7 h-7'>
@@ -56,7 +56,7 @@ export const ChooseMarketplaceStep = () => {
                 name={m}
                 key={m}
                 isChecked={variant === m}
-                onClick={() => setVariant(m)} imgSrc={marketplacesMap[m]}
+                onClick={() => setVariant(m)} imgSrc={marketplacesImagesMap[m]}
             />)}
         </CreateOrderTemplates.Step>
     )

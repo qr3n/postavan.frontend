@@ -8,3 +8,12 @@ export interface LoginRequest {
     phone?: string,
     code?: string,
 }
+
+export interface AdminLoginRequest {
+    login: string,
+    password: string,
+}
+
+export interface AdminLoginResponse {
+    access_token: string,
+}

@@ -49,7 +49,7 @@ const AddressInput = memo(({ id, variant }: { id: string; variant: "pickup" | "d
         async (e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;
             setQuery(value);
-            setSelectedAddress(value)
+            // setSelectedAddress(value)
 
             if (value.length < 3) {
                 setSuggestions([]);
@@ -158,27 +158,26 @@ const AddressInput = memo(({ id, variant }: { id: string; variant: "pickup" | "d
 AddressInput.displayName = 'AddressInput'
 
 const CanContinue = () => {
-    const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses)
-    const deliveryAddresses = useAtomValue(createOrderAtoms.allDeliveryAddresses)
-    const setCanContinue = useSetAtom(createOrderAtoms.canContinue)
+    const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses);
+    const deliveryAddresses = useAtomValue(createOrderAtoms.allDeliveryAddresses);
+    const setCanContinue = useSetAtom(createOrderAtoms.canContinue);
 
     useEffect(() => {
-        if (pickupAddresses.length > 0 && deliveryAddresses.length > 0) {
-            if (pickupAddresses[0] !== '' && deliveryAddresses[0] !== '')
-                setCanContinue(true)
+        // Проверка на пустые или не выбранные адреса
+        const isPickupValid = pickupAddresses.every((address) => address !== '');
+        const isDeliveryValid = deliveryAddresses.every((address) => address !== '');
 
-            else setCanContinue(false)
+        if (isPickupValid && isDeliveryValid) {
+            setCanContinue(true);
+        } else {
+            setCanContinue(false);
         }
 
-        else setCanContinue(false)
-
-        return () => setCanContinue(true)
+        return () => setCanContinue(true);
     }, [deliveryAddresses, pickupAddresses, setCanContinue]);
 
-    return (
-        <></>
-    )
-}
+    return <></>;
+};
 
 export const SetAddressesStep = () => {
     const [pickupAddressesIds, setPickupAddressesIds] = useAtom(createOrderAtoms.pickupAddressesIds);

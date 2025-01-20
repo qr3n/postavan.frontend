@@ -48,6 +48,7 @@ const SetDimensionsForm = () => {
                         required: 'Длина обязательна',
                         min: { value: 1, message: 'Длина должна быть больше 0' },
                     })}
+                    defaultValue={length}
                     type="number"
                     label="Длина"
                 />
@@ -62,6 +63,7 @@ const SetDimensionsForm = () => {
                         required: 'Ширина обязательна',
                         min: { value: 1, message: 'Ширина должна быть больше 0' },
                     })}
+                    defaultValue={width}
                     type="number"
                     label="Ширина"
                 />
@@ -76,6 +78,7 @@ const SetDimensionsForm = () => {
                         required: 'Высота обязательна',
                         min: { value: 1, message: 'Высота должна быть больше 0' },
                     })}
+                    defaultValue={height}
                     type="number"
                     label="Высота"
                 />
@@ -101,6 +104,7 @@ const SetDimensionsForm = () => {
 };
 
 export const SetDimensionsStep = () => {
+    const [placesCount, setPlacesCount] = useAtom(createOrderAtoms.placesCount)
     const length = useAtomValue(createOrderAtoms.packageLength)
     const width = useAtomValue(createOrderAtoms.packageWidth)
     const height = useAtomValue(createOrderAtoms.packageHeight)
@@ -124,12 +128,12 @@ export const SetDimensionsStep = () => {
                                 width={0} height={0}
                             />
 
-                            <VirtualSelect value={'1'} onOptionChange={() => null} options={variants} top={100} trigger={(
+                            <VirtualSelect value={placesCount.toString()} onOptionChange={(v) => setPlacesCount(Number(v))} options={variants} trigger={(
                                 <div className='text-center mb-12 group'>
                                     <h1 className='text-zinc-500'>Кол. мест</h1>
                                     <div className='flex mt-1  items-center cursor-pointer justify-center gap-3'>
                                         <h1 className='font-semibold text-4xl lg:text-5xl xl:text-6xl'>
-                                            <span className='text-3xl lg:text-4xl xl:text-5xl mr-0.5 text-zinc-400'>x</span>1
+                                            <span className='text-3xl lg:text-4xl xl:text-5xl mr-0.5 text-zinc-400'>x</span>{placesCount}
                                         </h1>
                                         <div
                                             className='p-1 w-max group-hover:bg-zinc-800 group-hover:border-zinc-700 bg-zinc-900 rounded-2xl border border-zinc-800 '>

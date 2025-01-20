@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { cn } from "@shared/shadcn/lib/utils";
 import Image from "next/image";
 import { bg } from "@features/order/create/ui/assets";
@@ -10,7 +10,9 @@ import { AnimatedCheck } from "@shared/ui/animated-check";
 interface IVariantProps {
     isChecked: boolean,
     onClick: () => unknown,
-    imgSrc: StaticImport
+    imgSrc: StaticImport,
+    text: string,
+    description: string,
 }
 
 const Variant = (props: IVariantProps) => {
@@ -30,9 +32,9 @@ const Variant = (props: IVariantProps) => {
                 )
             }
             <div className='flex items-center justify-center flex-col'>
-                <Image priority className='w-28 sm:w-40 md:w-48 lg:w-56' placeholder={'blur'} draggable={false} src={props.imgSrc} alt={'firstChoice'} width={0} height={0}/>
-                <h1 className='font-medium text-lg sm:text-2xl mt-3 sm:mt-4 md:mt-6 xl:mt-8'>Для маркетплейса</h1>
-                <p className='text-zinc-400 text-sm sm:text-lg'>Короб до 12 кг</p>
+                <Image priority className='w-24 sm:w-40 md:w-48 lg:w-56' placeholder={'blur'} draggable={false} src={props.imgSrc} alt={'firstChoice'} width={224} height={224}/>
+                <h1 className='font-medium text-lg sm:text-2xl mt-3 sm:mt-4 md:mt-6 xl:mt-8'>{props.text}</h1>
+                <p className='text-zinc-400 text-xs sm:text-lg'>{props.description}</p>
             </div>
             <div className='w-7 h-7 sm:mt-4 absolute right-8 top-1/2 sm:top-auto sm:right-auto -translate-y-1/2 sm:translate-y-0 sm:relative'>
                 {props.isChecked && <AnimatedCheck/>}
@@ -42,29 +44,31 @@ const Variant = (props: IVariantProps) => {
 }
 
 interface IProps {
+    firstSelected: boolean,
+    secondSelected: boolean,
     firstImg: StaticImport,
     secondImg: StaticImport,
     onFirstClick: () => unknown,
     onSecondClick: () => unknown,
+    firstText: string,
+    secondText: string,
+    firstDescription: string,
+    secondDescription: string,
 }
 
 export const Choice = (props: IProps) => {
-    const [selected, setSelected] = useState(0)
-
     const handleFirstClick = useCallback(() => {
-        setSelected(0)
         props.onFirstClick()
     }, [props])
 
     const handleSecondClick = useCallback(() => {
-        setSelected(1)
         props.onSecondClick()
     }, [props])
 
     return (
         <div className='flex w-full sm:w-auto flex-col sm:flex-row gap-8'>
-            <Variant isChecked={selected === 0} onClick={handleFirstClick} imgSrc={props.firstImg}/>
-            <Variant isChecked={selected === 1} onClick={handleSecondClick} imgSrc={props.secondImg}/>
+            <Variant text={props.firstText} description={props.firstDescription} isChecked={props.firstSelected} onClick={handleFirstClick} imgSrc={props.firstImg}/>
+            <Variant text={props.secondText} description={props.secondDescription} isChecked={props.secondSelected} onClick={handleSecondClick} imgSrc={props.secondImg}/>
         </div>
     );
 };

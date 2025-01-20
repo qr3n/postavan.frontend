@@ -5,6 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { forwardRef } from "react";
+import useRipple from "use-ripple-hook";
 
 const buttonVariants = cva(
     "inline-flex text-white active:scale-[97%] transition-all items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -14,7 +15,7 @@ const buttonVariants = cva(
                 default:
                     "bg-blue-500 text-primary-foreground shadow hover:bg-blue-500/90 text-white",
                 destructive:
-                    "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+                    "bg-red-500 text-white shadow-sm hover:bg-red-500/90",
                 outline:
                     "border border-input bg-background shadow-sm dark:border-[#353535] dark:text-white dark:bg-[#171717] dark:hover:bg-[#141414] hover:bg-accent hover:text-accent-foreground",
                 secondary:
@@ -46,13 +47,17 @@ export interface ButtonProps
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, isLoading, ...props }, ref) => {
         const Comp = asChild ? Slot : "button";
+        const [ripple, event] = useRipple({
+            color: variant === 'outline' ? 'rgba(255, 255, 255,0.1)' : "rgba(255, 255, 255, .14)"
+        });
 
         return (
             <Comp
                 className={cn(buttonVariants({ variant, size, className }))}
                 style={{ position: "relative", overflow: "hidden" }}
                 {...props} // Передаём все свойства, кроме isLoading
-                ref={ref}
+                ref={ripple || ref}
+                onMouseDown={event}
                 disabled={isLoading || props.disabled}
             >
                 {isLoading ? (

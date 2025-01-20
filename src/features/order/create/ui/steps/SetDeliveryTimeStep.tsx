@@ -6,6 +6,8 @@ import { CalendarIcon } from "lucide-react";
 import { ru } from "date-fns/locale";
 import { memo, useCallback, useMemo, useState } from "react";
 import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelect";
+import { useAtom } from "jotai";
+import { createOrderAtoms } from "@features/order/create";
 
 type TimeSelectProps = {
     value: string;
@@ -15,38 +17,44 @@ type TimeSelectProps = {
 };
 
 type DatePickerProps = {
-    onDateChange?: (date: Date | undefined) => void;
+    onDateChange: (date: Date) => void;
+    value: Date,
+    minDate: Date
 };
 
+const DatePicker = memo<DatePickerProps>(({ onDateChange, value, minDate }) => {
+    const today = new Date();
+    const isToday = value.toDateString() === today.toDateString();
 
-const DatePicker = memo<DatePickerProps>(({ onDateChange }) => (
-    <Popover>
-        <PopoverTrigger asChild>
-            <Button
-                variant="outline"
-                className="justify-start w-[140px] text-left font-normal"
-            >
+    return (
+        <Popover>
+            <PopoverTrigger className="flex gap-2 rounded-2xl px-4 py-2 bg-zinc-900 border-zinc-800 justify-start w-[140px] text-left font-normal">
                 <CalendarIcon className="text-zinc-500" />
-                Сегодня
-            </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-                locale={ru}
-                mode="single"
-                initialFocus
-                onSelect={onDateChange}
-            />
-        </PopoverContent>
-    </Popover>
-));
+                {isToday ? 'Сегодня' : value.toLocaleDateString('ru-RU')}
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                    locale={ru}
+                    mode="single"
+                    initialFocus
+                    selected={value}
+                    onSelect={(v) => onDateChange(v || today)}
+                    disabled={(date) => {
+                        const currentDate = new Date();
+                        currentDate.setHours(0, 0, 0, 0);
+                        return date.getTime() < currentDate.getTime() || (minDate && date.getTime() < minDate.getTime());
+                    }}
+                />
+            </PopoverContent>
+        </Popover>
+    );
+});
 
 DatePicker.displayName = 'DatePicker';
 
 const TimeSelect = memo<TimeSelectProps>(({ onChange, value, availableTimes, prefix }) => (
     <VirtualSelect
         value={value}
-        top={60}
         trigger={<Button className='gap-1' variant='outline'><span className='text-zinc-500'>{prefix}</span>{value || "Выберите время"}</Button>}
         options={availableTimes}
         onOptionChange={onChange}
@@ -64,10 +72,12 @@ export const SetDeliveryTimeStep = () => {
         });
     }, []);
 
-    const [pickupStartTime, setPickupStartTime] = useState<string>(generateTimeOptions[0]);
-    const [pickupEndTime, setPickupEndTime] = useState<string>(generateTimeOptions[1]);
-    const [deliveryStartTime, setDeliveryStartTime] = useState<string>(generateTimeOptions[0]);
-    const [deliveryEndTime, setDeliveryEndTime] = useState<string>(generateTimeOptions[1]);
+    const [pickupDate, setPickupDate] = useAtom(createOrderAtoms.pickupDate);
+    const [deliveryDate, setDeliveryDate] = useAtom(createOrderAtoms.deliveryDate);
+    const [pickupStartTime, setPickupStartTime] = useAtom(createOrderAtoms.pickupTimeFrom);
+    const [pickupEndTime, setPickupEndTime] = useAtom(createOrderAtoms.pickupTimeTo);
+    const [deliveryStartTime, setDeliveryStartTime] = useAtom(createOrderAtoms.deliveryTimeFrom);
+    const [deliveryEndTime, setDeliveryEndTime] = useAtom(createOrderAtoms.deliveryTimeTo);
 
     const getAvailableTimes = useCallback((startTime: string): string[] => {
         const startIndex = generateTimeOptions.indexOf(startTime);
@@ -76,10 +86,10 @@ export const SetDeliveryTimeStep = () => {
 
     const handleTimeChange = useCallback(
         (
-            setter: React.Dispatch<React.SetStateAction<string>>, // Функция обновления состояния
-            dependentValue: string, // Текущее значение зависимого состояния
-            optionsGetter: (value: string) => string[], // Функция получения доступных опций
-            value: string // Новое значение
+            setter: React.Dispatch<React.SetStateAction<string>>,
+            dependentValue: string,
+            optionsGetter: (value: string) => string[],
+            value: string
         ) => {
             setter(value);
             if (generateTimeOptions.indexOf(value) >= generateTimeOptions.indexOf(dependentValue)) {
@@ -91,11 +101,11 @@ export const SetDeliveryTimeStep = () => {
 
     return (
         <Step title="Когда выполнить?" description="Время бесплатного ожидания 25 минут">
-            <div className="mt-4 w-full flex items-center flex-col">
+            <div className="mt-4 px-8 sm:px-0 w-full flex items-center flex-col">
                 <div>
                     <h1 className="font-semibold text-lg sm:text-xl">Забрать</h1>
-                    <div className="flex gap-4 mt-4 w-full">
-                        <DatePicker />
+                    <div className="flex gap-2 sm:gap-4 mt-4 w-full">
+                        <DatePicker value={pickupDate} onDateChange={setPickupDate} minDate={new Date()} />
 
                         <TimeSelect
                             value={pickupStartTime}
@@ -119,8 +129,12 @@ export const SetDeliveryTimeStep = () => {
 
                 <div>
                     <h1 className="font-semibold text-lg sm:text-xl mt-12">Доставить</h1>
-                    <div className="flex gap-4 mt-4">
-                        <DatePicker />
+                    <div className="flex gap-2 sm:gap-4 mt-4">
+                        <DatePicker
+                            onDateChange={setDeliveryDate}
+                            value={deliveryDate}
+                            minDate={pickupDate} // Устанавливаем минимальную дату для второго календаря
+                        />
 
                         <TimeSelect
                             value={deliveryStartTime}

@@ -1,6 +1,6 @@
 import { aliIcon, lamodaIcon, ozonIcon, wildberriesIcon, yandexIcon } from "@shared/assets";
 
-export const marketplacesMap = {
+export const marketplacesImagesMap = {
     'Яндекс маркет': yandexIcon,
     'Ozon': ozonIcon,
     'AliExpress': aliIcon,

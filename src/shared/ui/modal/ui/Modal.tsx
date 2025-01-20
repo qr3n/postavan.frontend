@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentProps, PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import { ComponentProps, PropsWithChildren, ReactElement, useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -30,6 +30,7 @@ interface IProps extends PropsWithChildren {
     modalStyle?: ComponentProps<'div'>['className'];
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
+    bg?: ReactElement
 }
 
 export const Modal = (props: IProps) => {

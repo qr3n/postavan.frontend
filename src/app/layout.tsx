@@ -3,6 +3,8 @@ import localFont         from "next/font/local";
 import { Metadata }      from "next";
 import './globals.css'
 import { Toaster } from "react-hot-toast";
+import { Navbar } from "@widgets/navbar";
+import NextTopLoader from 'nextjs-toploader';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,7 +33,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
         <Providers>
-          {/*<Navbar/>*/}
+          <NextTopLoader showSpinner={false} color={'#1464e6'}/>
+          <Navbar/>
           {children}
           <Toaster toastOptions={{
             style: { borderRadius: '100px', backgroundColor: '#222', color: 'white' }
