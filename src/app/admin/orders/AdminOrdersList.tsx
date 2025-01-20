@@ -1,3 +1,5 @@
+'use client';
+
 import { OrderWrapper } from "@entities/order/ui/OrderWrapper";
 import { IOrder, OrderCard, OrderDetailsModal } from "@entities/order";
 import { ChangeOrderActive } from "@features/order/change-active/ui/ChangeOrderActive";
