@@ -1,51 +1,34 @@
-'use client';
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/shadcn/components/tabs";
-import { UserOrdersList } from "@app/profile/UserOrdersList";
-import { AnimatePresence, motion } from "framer-motion";
-import { useUserOrders } from "@entities/order/model/hooks";
+import { BsFillPassportFill } from "react-icons/bs";
+import { EditPassportData } from "@features/profile/edit-passport-data/ui/EditPassportData";
 
 export default function ProfilePage() {
-    const { orders, isLoading } = useUserOrders()
-
     return (
         <div className="flex items-center justify-center mt-6 sm:mt-12 flex-col" vaul-drawer-wrapper="">
-            <h1 className="font-semibold text-4xl sm:text-5xl">Мои заказы</h1>
-            <Tabs defaultValue={'active'} className='w-full h-full flex items-center flex-col'>
-            <TabsList className='mt-5'>
-                <TabsTrigger value={'active'}>В процессе</TabsTrigger>
-                <TabsTrigger value={'closed'}>Завершены</TabsTrigger>
-            </TabsList>
-            <AnimatePresence mode={'wait'}>
-                {isLoading && (
-                    <motion.div
-                        initial={{opacity: 1}}
-                        animate={{opacity: 1}}
-                        exit={{opacity: 0}}
-                        key='template'
-                        className='w-full mt-8 max-w-4xl h-full space-y-6 overflow-hidden px-4'
-                    >
-                        {Array.from(Array(20).keys()).map(item => <div
-                            className='h-[80px] animate-pulse rounded-2xl bg-zinc-800 w-full' key={item}/>)}
-                        <div
-                            className='absolute left-0 top-0 w-full h-full bg-gradient-to-t from-black to-transparent'/>
-                    </motion.div>
-                )}
+            <h1 className="font-semibold text-4xl sm:text-5xl">Профиль</h1>
 
-                {!isLoading && (
-                    <motion.div key={'orders'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='w-full h-full'>
-                        <TabsContent value={'active'} className='w-full h-full justify-center mt-0 flex'>
-                            <UserOrdersList orders={orders}/>
-                        </TabsContent>
-
-                        <TabsContent value={'closed'} className='w-full h-full justify-center mt-0 flex'>
-                            <UserOrdersList orders={orders}/>
-                        </TabsContent>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </Tabs>
-
+            <div
+                className="max-w-4xl w-full px-8 mt-12"
+            >
+                <div className='flex items-center gap-3'>
+                    <div className='p-1 bg-blue-500 rounded-full w-7 h-7 flex items-center justify-center'>
+                        <BsFillPassportFill  className='w-4 h-4'/></div>
+                    <h1 className="font-semibold text-xl sm:text-2xl">Персональные данные</h1>
+                </div>
+                <div className='p-6 mt-4 rounded-3xl bg-zinc-900/80 relative overflow-hidden'>
+                    <div
+                        className="absolute z-10 w-36 h-36 rounded-full bg-gradient-to-r from-blue-500 via-red-500 to-red-500 blur-3xl opacity-40"></div>
+                    <div
+                        className="absolute z-10 w-36 h-36 right-0 -bottom-56 rounded-full bg-gradient-to-r from-blue-500 via-violet-500 to-blue-500 blur-3xl opacity-30 top-10 left-20"></div>
+                    <div
+                        className='p-3 z-50 px-4 relative flex-wrap rounded-2xl bg-black/30 backdrop-blur flex gap-4 justify-between items-center'>
+                        <div>
+                            <h1 className="font-medium sm:text-xl">Контактные данные</h1>
+                            <p className='text-zinc-400 text-xs sm:text-sm mt-2'>Фамилия, имя, отчество и телефон</p>
+                        </div>
+                        <EditPassportData/>
+                    </div>
+                </div>
+            </div>
         </div>
-    );
+    )
 }

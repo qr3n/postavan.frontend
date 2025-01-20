@@ -66,8 +66,11 @@ export const Navbar = () => {
                         </span> Создать заказ
                         </DropdownMenuItem>
                     </Link>
-                    <Link href={'/profile'}>
+                    <Link href={'/orders'}>
                         <DropdownMenuItem>Мои заказы</DropdownMenuItem>
+                    </Link>
+                    <Link href={'/profile'}>
+                        <DropdownMenuItem>Профиль</DropdownMenuItem>
                     </Link>
                     <Link href={'/settings'}>
                         <DropdownMenuItem>Настройки</DropdownMenuItem>

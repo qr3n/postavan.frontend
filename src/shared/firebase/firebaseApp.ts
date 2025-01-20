@@ -1,3 +1,5 @@
+'use client';
+
 import { initializeApp } from "@firebase/app";
 import { getMessaging, onMessage } from "firebase/messaging";
 
@@ -13,12 +15,17 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-const messaging = getMessaging(firebaseApp);
-
 export const onFirebaseMessageListener = () =>
-    new Promise((resolve) => {
-        onMessage(messaging, (payload) => {
-            console.log("payload", payload)
-            resolve(payload);
-        });
+    new Promise((resolve, reject) => {
+        // Check if running in the browser
+        if (typeof window !== "undefined" && typeof navigator !== "undefined") {
+            const messaging = getMessaging(firebaseApp);
+
+            onMessage(messaging, (payload) => {
+                console.log("payload", payload);
+                resolve(payload);
+            });
+        } else {
+            reject(new Error('Firebase Messaging is only supported in the browser.'));
+        }
     });

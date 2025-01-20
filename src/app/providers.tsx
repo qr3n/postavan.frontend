@@ -1,6 +1,5 @@
 'use client';
 
-
 import { PropsWithChildren, useEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";

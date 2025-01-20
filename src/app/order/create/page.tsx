@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -14,6 +14,7 @@ import { SetDeliveryTimeStep } from "@features/order/create/ui/steps/SetDelivery
 import { AddCommentStep } from "@features/order/create/ui/steps/AddCommentStep";
 import { SetPhoneNumbersStep } from "@features/order/create/ui/steps/SetPhoneNumbersStep";
 import { ConfirmCostStep } from "@features/order/create/ui/steps/ConfirmCostStep";
+import { ChooseWhatToDeliverStep } from "@features/order/create/ui/steps/ChooseWhatToDeliverStep";
 import { getDefaultStore, useAtom, useAtomValue } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 import { AuthModal } from "@features/session";
@@ -22,6 +23,7 @@ import { useMutation } from "@tanstack/react-query";
 import { orderService } from "@shared/api/services/order";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { IOrder } from "@entities/order";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -36,94 +38,104 @@ const sliderVariants = {
         x: direction > 0 ? "-100%" : "100%",
         opacity: 0,
     }),
-}
+};
 const sliderTransition = {
     duration: 1,
     ease: [0.22, 1, 0.36, 1],
 };
 
+const getBlocks = (shipmentType: IOrder['shipmentType']) => [
+    <ChooseShipmentStep key="ChooseShipmentStep" />,
+    shipmentType === "marketplace"
+        ? <ChooseMarketplaceStep key="ChooseMarketplaceStep" />
+        : <ChooseWhatToDeliverStep key="ChooseWhatToDeliverStep" />,
+    shipmentType === "marketplace" && <ChoosePackingStep key="ChoosePackingStep" />,
+    <SetDimensionsStep key="SetDimensionsStep" />,
+    <SetAddressesStep key="SetAddressesStep" />,
+    <SetDeliveryTimeStep key="SetDeliveryTimeStep" />,
+    <AddCommentStep key="AddCommentStep" />,
+    <SetPhoneNumbersStep key="SetPhoneNumbersStep" />,
+    <ConfirmCostStep key="ConfirmCostStep" />,
+].filter(Boolean);
+
 const App = () => {
-    const router = useRouter()
+    const router = useRouter();
     const { mutateAsync, isPending, isSuccess } = useMutation({
         mutationFn: orderService.create,
-        mutationKey: ['createOrder']
-    })
+        mutationKey: ["createOrder"],
+    });
 
-    const [authModalOpen, setAuthModalOpen] = useState(false)
+    const [shipmentType] = useAtom(createOrderAtoms.shipmentType);
+    const [authModalOpen, setAuthModalOpen] = useState(false);
     const [[imageCount, direction], setImageCount] = useState([0, 0]);
-    const canContinue = useAtomValue(createOrderAtoms.canContinue)
-    const [accessToken] = useAtom(accessTokenAtom)
+    const canContinue = useAtomValue(createOrderAtoms.canContinue);
+    const [accessToken] = useAtom(accessTokenAtom);
 
-    const blocks = useMemo(() => [
-        <ChooseShipmentStep key={'ChooseShipmentStep'}/>,
-        <ChooseMarketplaceStep key={'ChooseMarketplaceStep'}/>,
-        <ChoosePackingStep key={'ChoosePackingStep'}/>,
-        <SetDimensionsStep key={'SetDimensionsStep'}/>,
-        <SetAddressesStep key={'SetAddressesStep'}/>,
-        <SetDeliveryTimeStep key={'SetDeliveryTimeStep'}/>,
-        <AddCommentStep key={'AddCommentStep'}/>,
-        <SetPhoneNumbersStep key={'SetPhoneNumberStep'}/>,
-        <ConfirmCostStep key={'ConfirmCostStep'}/>,
-    ], []);
+    const blocks = useMemo(() => getBlocks(shipmentType), [shipmentType]);
 
-    const swipeToImage = useCallback((swipeDirection: number) => {
-        setImageCount(([currentIndex]) => {
-            const newIndex = (currentIndex + swipeDirection + blocks.length) % blocks.length;
-            return [newIndex, swipeDirection];
-        });
-    }, [blocks.length])
+    const swipeToImage = useCallback(
+        (swipeDirection: number) => {
+            setImageCount(([currentIndex]) => {
+                const newIndex = (currentIndex + swipeDirection + blocks.length) % blocks.length;
+                return [newIndex, swipeDirection];
+            });
+        },
+        [blocks.length]
+    );
 
     const createOrder = useCallback(() => {
-        const store = getDefaultStore()
+        const store = getDefaultStore();
 
-        toast.promise(mutateAsync({
-            shipment_type: store.get(createOrderAtoms.shipmentType),
-            marketplace: store.get(createOrderAtoms.marketplace),
-            packing_type: store.get(createOrderAtoms.packingType),
-            what_to_deliver: [],
-            package_length: store.get(createOrderAtoms.packageLength),
-            package_width: store.get(createOrderAtoms.packageWidth),
-            package_height: store.get(createOrderAtoms.packageHeight),
-            places_count: store.get(createOrderAtoms.placesCount),
-            weight: 100,
-            pickup_addresses: store.get(createOrderAtoms.allPickupAddresses),
-            delivery_addresses: store.get(createOrderAtoms.allDeliveryAddresses),
-            comment: store.get(createOrderAtoms.comment),
-            sender_phone: store.get(createOrderAtoms.senderPhone),
-            recipient_phone: store.get(createOrderAtoms.recipientPhone),
-            pickup_date: store.get(createOrderAtoms.pickupDate).toISOString().split('T')[0],
-            delivery_date: store.get(createOrderAtoms.deliveryDate).toISOString().split('T')[0],
-            pickup_time_from: store.get(createOrderAtoms.pickupTimeFrom),
-            pickup_time_to: store.get(createOrderAtoms.pickupTimeTo),
-            delivery_time_from: store.get(createOrderAtoms.deliveryTimeFrom),
-            delivery_time_to: store.get(createOrderAtoms.deliveryTimeTo)
-        }), {
-          success: 'Заказ создан.',
-            error: 'Что-то пошло не так...',
-            loading: 'Создаем заказ...'
-        })
-    }, [mutateAsync])
+        toast.promise(
+            mutateAsync({
+                shipment_type: store.get(createOrderAtoms.shipmentType),
+                marketplace: store.get(createOrderAtoms.marketplace),
+                packing_type: store.get(createOrderAtoms.packingType),
+                what_to_deliver: [],
+                package_length: store.get(createOrderAtoms.packageLength),
+                package_width: store.get(createOrderAtoms.packageWidth),
+                package_height: store.get(createOrderAtoms.packageHeight),
+                places_count: store.get(createOrderAtoms.placesCount),
+                weight: 100,
+                pickup_addresses: store.get(createOrderAtoms.allPickupAddresses),
+                delivery_addresses: store.get(createOrderAtoms.allDeliveryAddresses),
+                comment: store.get(createOrderAtoms.comment),
+                sender_phone: store.get(createOrderAtoms.senderPhone),
+                recipient_phone: store.get(createOrderAtoms.recipientPhone),
+                pickup_date: store.get(createOrderAtoms.pickupDate).toISOString().split("T")[0],
+                delivery_date: store.get(createOrderAtoms.deliveryDate).toISOString().split("T")[0],
+                pickup_time_from: store.get(createOrderAtoms.pickupTimeFrom),
+                pickup_time_to: store.get(createOrderAtoms.pickupTimeTo),
+                delivery_time_from: store.get(createOrderAtoms.deliveryTimeFrom),
+                delivery_time_to: store.get(createOrderAtoms.deliveryTimeTo),
+            }),
+            {
+                success: "Заказ создан.",
+                error: "Что-то пошло не так...",
+                loading: "Создаем заказ...",
+            }
+        );
+    }, [mutateAsync]);
 
     const handleNext = useCallback(() => {
-        if (canContinue && imageCount < blocks.length - 1) swipeToImage(1)
-
-        else if (accessToken) {
-            createOrder()
+        if (canContinue && imageCount < blocks.length - 1) {
+            swipeToImage(1);
+        } else if (accessToken) {
+            createOrder();
+        } else {
+            setAuthModalOpen(true);
         }
-
-        else setAuthModalOpen(true)
-    }, [accessToken, blocks.length, canContinue, createOrder, imageCount, swipeToImage])
+    }, [accessToken, blocks.length, canContinue, createOrder, imageCount, swipeToImage]);
 
     useEffect(() => {
-        if (isSuccess) router.push('/profile')
-    }, [isSuccess, router])
+        if (isSuccess) router.push("/orders");
+    }, [isSuccess, router]);
 
     return (
         <main>
             <div className="slider-container">
                 <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-170px)] sm:h-[calc(100dvh-220px)]">
-                    <div
-                        className='absolute left-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-r from-black z-50 to-transparent'/>
+                    <div className="absolute left-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-r from-black z-50 to-transparent" />
                     <AnimatePresence initial={false} custom={direction}>
                         <motion.div
                             key={imageCount}
@@ -138,14 +150,17 @@ const App = () => {
                             {blocks[imageCount]}
                         </motion.div>
                     </AnimatePresence>
-                    <div
-                        className='absolute right-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-l from-black z-50 to-transparent'/>
+                    <div className="absolute right-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-l from-black z-50 to-transparent" />
                 </div>
 
                 <div className="flex flex-col px-8 w-full max-w-[600px] gap-4">
-                    <Button disabled={!canContinue} isLoading={isPending} onClick={handleNext}>Продолжить</Button>
-                    <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>Назад</Button>
-                    <AuthModal onAuthSuccess={createOrder} open={authModalOpen} onOpenChange={setAuthModalOpen}/>
+                    <Button disabled={!canContinue} isLoading={isPending} onClick={handleNext}>
+                        Продолжить
+                    </Button>
+                    <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>
+                        Назад
+                    </Button>
+                    <AuthModal onAuthSuccess={createOrder} open={authModalOpen} onOpenChange={setAuthModalOpen} />
                 </div>
             </div>
         </main>
