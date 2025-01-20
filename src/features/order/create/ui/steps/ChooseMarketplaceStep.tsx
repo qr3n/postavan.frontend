@@ -26,7 +26,7 @@ const Variant = (props: IVariantProps) => {
             {props.isChecked &&
                 (
                     <>
-                        <Image priority placeholder={'blur'} draggable={false} src={bg}
+                        <Image fetchPriority={'high'} priority placeholder={'blur'} draggable={false} src={bg}
                                className='-z-50 absolute left-0 top-0 w-full h-full object-cover'
                                alt={'firstChoice'} width={220} height={220}/>
                         <div
@@ -35,7 +35,7 @@ const Variant = (props: IVariantProps) => {
                 )
             }
             <div className='flex items-center gap-3 sm:gap-5'>
-                <Image priority placeholder={'blur'} draggable={false} src={props.imgSrc} className='w-10 sm:w-12 rounded-xl sm:rounded-2xl'
+                <Image fetchPriority={'high'} priority placeholder={'blur'} draggable={false} src={props.imgSrc} className='w-10 sm:w-12 rounded-xl sm:rounded-2xl'
                        alt={'firstChoice'} width={48} height={48}/>
                 <h1 className='font-medium text-lg sm:text-xl'>{props.name}</h1>
             </div>

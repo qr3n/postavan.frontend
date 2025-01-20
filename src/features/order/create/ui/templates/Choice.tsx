@@ -32,7 +32,7 @@ const Variant = (props: IVariantProps) => {
                 )
             }
             <div className='flex items-center justify-center flex-col'>
-                <Image priority className='w-24 sm:w-40 md:w-48 lg:w-56' placeholder={'blur'} draggable={false} src={props.imgSrc} alt={'firstChoice'} width={224} height={224}/>
+                <Image fetchPriority={'high'} priority className='w-24 sm:w-40 md:w-48 lg:w-56' placeholder={'blur'} draggable={false} src={props.imgSrc} alt={'firstChoice'} width={224} height={224}/>
                 <h1 className='font-medium text-lg sm:text-2xl mt-3 sm:mt-4 md:mt-6 xl:mt-8'>{props.text}</h1>
                 <p className='text-zinc-400 text-xs sm:text-lg'>{props.description}</p>
             </div>
