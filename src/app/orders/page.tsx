@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/shadcn/compone
 import { UserOrdersList } from "@app/orders/UserOrdersList";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUserOrders } from "@entities/order/model/hooks";
+import { AdminOrdersList } from "@app/admin/orders/AdminOrdersList";
 
 export default function OrdersPage() {
     const { orders, isLoading } = useUserOrders()
@@ -33,7 +34,7 @@ export default function OrdersPage() {
                 )}
 
                 {!isLoading && (
-                    <motion.div key={'orders'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='w-full h-full'>
+                    <motion.div key={'orders'} initial={{opacity: 0}} animate={{opacity: 1}} className='w-full h-full'>
                         <TabsContent value={'active'} className='w-full h-full justify-center mt-0 flex'>
                             <UserOrdersList orders={orders}/>
                         </TabsContent>
@@ -45,7 +46,6 @@ export default function OrdersPage() {
                 )}
             </AnimatePresence>
         </Tabs>
-
         </div>
     );
 }

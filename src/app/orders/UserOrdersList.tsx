@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { OrderWrapper } from "@entities/order/ui/OrderWrapper";
 import { IOrder, OrderCard, OrderDetailsModal } from "@entities/order";
 import { Button } from "@shared/shadcn/components/button";
@@ -20,42 +20,38 @@ export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
     });
 
     return (
-        <AnimatePresence mode={'wait'}>
-            <div
-                className="px-4 max-w-4xl mt-8 h-[calc(100dvh-240px)] sm:h-[calc(100dvh-250px)] w-full overflow-auto"
-                ref={parentRef}
+        <div
+            className="px-4 max-w-4xl mt-8 h-[calc(100dvh-240px)] sm:h-[calc(100dvh-250px)] w-full overflow-auto"
+            ref={parentRef}
+        >
+            <motion.div
+                className="w-full h-full relative"
+                style={{height: `${rowVirtualizer.getTotalSize()}px`}} // Устанавливаем общую высоту
             >
-                <motion.div
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    className="w-full h-full relative"
-                    style={{height: `${rowVirtualizer.getTotalSize()}px`}} // Устанавливаем общую высоту
-                >
-                    {rowVirtualizer.getVirtualItems().map((virtualRow) => (
-                        <div
-                            key={virtualRow.key}
-                            className="absolute top-0 left-0 w-full"
-                            style={{
-                                transform: `translateY(${virtualRow.start}px)`,
-                            }}
-                        >
-                            <OrderWrapper>
-                                <OrderDetailsModal order={orders[virtualRow.index]}/>
-                                <OrderCard order={orders[virtualRow.index]} actions={(
-                                    <>
-                                        <Button className='font-medium'>
-                                            <FaCheckCircle/>
-                                            {orders[virtualRow.index].status}
-                                        </Button>
-                                        <EditOrder order={orders[virtualRow.index]}/>
-                                        <RateOrder/>
-                                    </>
-                                )}/>
-                            </OrderWrapper>
-                        </div>
-                    ))}
-                </motion.div>
-            </div>
-        </AnimatePresence>
+                {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+                    <div
+                        key={virtualRow.key}
+                        className="absolute top-0 left-0 w-full"
+                        style={{
+                            transform: `translateY(${virtualRow.start}px)`,
+                        }}
+                    >
+                        <OrderWrapper>
+                            <OrderDetailsModal order={orders[virtualRow.index]}/>
+                            <OrderCard order={orders[virtualRow.index]} actions={(
+                                <>
+                                    <Button className='font-medium'>
+                                        <FaCheckCircle/>
+                                        {orders[virtualRow.index].status}
+                                    </Button>
+                                    <EditOrder order={orders[virtualRow.index]}/>
+                                    <RateOrder/>
+                                </>
+                            )}/>
+                        </OrderWrapper>
+                    </div>
+                ))}
+            </motion.div>
+        </div>
     )
 }

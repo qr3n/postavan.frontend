@@ -1,5 +1,3 @@
-'use client';
-
 import { IoIosNotifications } from "react-icons/io";
 import { Switch } from "@shared/shadcn/components/switch";
 import { ToggleNotifications } from "@features/notifications/toggle/ui/ToggleNotifications";
