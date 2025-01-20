@@ -8,7 +8,7 @@ import { withAxiosData } from "@shared/api/utils";
 
 class OrderService {
     async calculateCost(data: CalculateOrderCostRequest): Promise<CalculateOrderCostResponse> {
-        return withAxiosData(await api.post<string>('/orders/cost', data))
+        return withAxiosData(await api.post<CalculateOrderCostResponse>('/orders/cost', data))
     }
 
     async create(data: CreateOrderRequest) {
