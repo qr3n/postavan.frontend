@@ -4,12 +4,22 @@ import { useAdminAllOrders } from "@entities/order/model/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/shadcn/components/tabs";
 import { AdminOrdersList } from "@app/admin/orders/AdminOrdersList";
 import { AnimatePresence, motion } from "framer-motion";
+import { useMemo } from "react";
 
 export default function AdminPage() {
-    const { orders, isLoading } = useAdminAllOrders()
+    const { orders, isLoading } = useAdminAllOrders();
 
-    const closedOrders = orders?.filter(order => order.active === false)
-    const allActiveOrders = orders?.filter(order => order.active === true)
+    const activeOrdersToday = useMemo(() => orders?.filter(order =>
+        order.active === true &&
+        order.pickupDate.toISOString().split("T")[0] === new Date().toISOString().split("T")[0]
+    ), [orders]);
+
+    const plannedOrders = useMemo(() => orders?.filter(order =>
+        order.active === true &&
+        order.pickupDate.toISOString().split("T")[0] !== new Date().toISOString().split("T")[0]
+    ), [orders]);
+
+    const closedOrders = useMemo(() => orders?.filter(order => order.active === false), [orders]);
 
     return (
         <div className="flex items-center justify-center mt-6 sm:mt-12 flex-col" vaul-drawer-wrapper="">
@@ -28,7 +38,7 @@ export default function AdminPage() {
                             animate={{opacity: 1}}
                             exit={{opacity: 0}}
                             key='template'
-                            className='w-full mt-8 max-w-4xl h-full space-y-6 overflow-hidden px-4'
+                            className='w-full mt-8 max-w-4xl h-[calc(100dvh-240px)] sm:h-[calc(100dvh-250px)] space-y-6 overflow-hidden px-4'
                         >
                             {Array.from(Array(20).keys()).map(item => <div
                                 className='h-[80px] animate-pulse rounded-2xl bg-zinc-800 w-full' key={item}/>)}
@@ -38,22 +48,22 @@ export default function AdminPage() {
                     )}
 
                     {!isLoading && (
-                        <motion.div key={'orders'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='w-full h-full'>
+                        <div key={'orders'} className='w-full h-full'>
                             <TabsContent className='w-full h-full justify-center mt-0 flex' value={'today'}>
-                                <AdminOrdersList orders={allActiveOrders}/>
+                                <AdminOrdersList orders={activeOrdersToday} />
                             </TabsContent>
 
                             <TabsContent className='w-full h-full justify-center mt-0 flex' value={'planned'}>
-                                <AdminOrdersList orders={allActiveOrders}/>
+                                <AdminOrdersList orders={plannedOrders} />
                             </TabsContent>
 
                             <TabsContent className='w-full h-full justify-center mt-0 flex' value={'closed'}>
-                                <AdminOrdersList orders={closedOrders}/>
+                                <AdminOrdersList orders={closedOrders} />
                             </TabsContent>
-                        </motion.div>
+                        </div>
                     )}
                 </AnimatePresence>
             </Tabs>
         </div>
-    )
+    );
 }

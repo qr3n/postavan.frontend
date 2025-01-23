@@ -1,10 +1,36 @@
+'use client';
+
 import { IoIosNotifications } from "react-icons/io";
 import { Switch } from "@shared/shadcn/components/switch";
 import { ToggleNotifications } from "@features/notifications/toggle/ui/ToggleNotifications";
+import { useAtomValue } from "jotai/index";
+import { sessionAtom } from "@entities/session/model/atoms";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import { bgImg } from "@shared/assets";
 
 export default function SettingsPage() {
-    return (
+    const session = useAtomValue(sessionAtom)
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!session) router.push('/')
+    }, [router, session])
+
+    return session ? (
         <div className="flex items-center justify-center flex-col" vaul-drawer-wrapper="">
+            <Image placeholder="blur" width={1920} height={1080} src={bgImg}
+                   className='fixed w-[100dvw] h-[100dvh] object-cover top-0 left-0 -z-50' alt='bg'/>
+
+            <div
+                className='fixed top-0 left-0 -z-50 w-screen h-screen bg-gradient-to-br from-transparent to-black'/>
+            <div
+                className='fixed top-0 left-0 -z-50 w-screen h-screen bg-gradient-to-bl from-transparent to-black'/>
+            <div
+                className='fixed top-0 left-0 -z-50 w-screen h-screen bg-gradient-to-b from-transparent to-black'/>
+
             <h1 className="font-semibold text-4xl sm:text-5xl mt-6 sm:mt-12">Настройки</h1>
             <div
                 className="max-w-4xl w-full px-8 mt-12"
@@ -35,6 +61,10 @@ export default function SettingsPage() {
                     </div>
                 </div>
             </div>
+        </div>
+    ) : (
+        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+            <Loader2 className='text-zinc-300 animate-spin'/>
         </div>
     )
 }

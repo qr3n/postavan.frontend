@@ -5,6 +5,7 @@ import './globals.css'
 import { Toaster } from "react-hot-toast";
 import { Navbar } from "@widgets/navbar";
 import NextTopLoader from 'nextjs-toploader';
+import { Toaster as ShadcnToaster } from "@shared/shadcn/components/toaster"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,6 +40,7 @@ export default function RootLayout({
           <Toaster toastOptions={{
             style: { borderRadius: '100px', backgroundColor: '#222', color: 'white' }
           }}/>
+          <ShadcnToaster/>
         </Providers>
       </body>
     </html>

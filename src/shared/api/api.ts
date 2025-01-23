@@ -1,15 +1,15 @@
 import axios from 'axios'
-import { DEV_URL } from "@shared/api/config";
+import { API_URL } from "@shared/api/config";
 import { QueryClient } from "@tanstack/react-query";
 
 export const api = axios.create({
-    baseURL: DEV_URL
+    baseURL: API_URL
 })
 
 export const queryClient = new QueryClient()
 
 export const adminApi = axios.create({
-    baseURL: `${DEV_URL}/admin`
+    baseURL: `${API_URL}/admin`
 })
 
 api.interceptors.request.use(

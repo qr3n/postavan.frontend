@@ -7,12 +7,14 @@ import { useMutation } from "@tanstack/react-query";
 import { adminOrderService } from "@shared/api/services/order";
 import toast from "react-hot-toast";
 import { queryClient } from "@shared/api";
+import { cn } from "@shared/shadcn/lib/utils";
 
 interface IProps {
-    order: IOrder
+    order: IOrder,
+    className?: string,
 }
 
-export const ChangeOrderActive = ({ order }: IProps) => {
+export const ChangeOrderActive = ({ order, className }: IProps) => {
     const [active, setActive] = useState(order.active)
 
     const { mutateAsync, isPending } = useMutation({
@@ -30,14 +32,14 @@ export const ChangeOrderActive = ({ order }: IProps) => {
             error: 'Что-то пошло не так...',
         }).then(() => queryClient.setQueryData(['admin.orders'], (oldData: IOrder[]) =>
                 oldData.map(item =>
-                    item.id === order.id ? { ...item, active: !active } : item
+                    item.id === order.id ? { ...item, status: !active ? 'Поиск курьера' : item.status, active: !active } : item
                 )
             ));
     };
 
     return (
         <>
-            <Button isLoading={isPending} className='w-full md:w-max' onClick={() => open()}>{active ? 'Закрыть' : 'Открыть'}</Button>
+            <Button isLoading={isPending} className={cn('w-full md:w-max', className)} onClick={() => open()}>{active ? 'Закрыть' : 'Открыть'}</Button>
             <ConfirmDialog
                 isOpen={isOpen}
                 onClose={close}

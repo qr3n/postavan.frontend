@@ -38,7 +38,7 @@ export const ChangeOrderStatus = ({ order }: IProps) => {
             error: 'Что-то пошло не так...',
         }).then(() => queryClient.setQueryData(['admin.orders'], (oldData: IOrder[]) =>
             oldData.map(item =>
-                item.id === order.id ? { ...item, status: newValue } : item
+                item.id === order.id ? { ...item, status: newValue, active: (newValue !== 'Заказ выполнен' && item.active) } : item
             )
         ));
     };

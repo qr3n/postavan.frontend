@@ -2,6 +2,8 @@ import Image                             from 'next/image'
 import { ReactElement } from "react";
 import { IOrder } from "@entities/order";
 import { marketplacesImagesMap } from "@entities/order/ui/images";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/shadcn/components/tooltip";
+import { anythingImg } from "@shared/assets";
 
 interface IProps {
     actions?: ReactElement,
@@ -20,7 +22,7 @@ export const OrderCard = ({ order, ...props }: IProps) => {
         <>
             <div className='flex justify-start items-center w-full gap-5'>
                 <Image
-                    src={marketplacesImagesMap[order.marketplace]}
+                    src={order.shipmentType === 'marketplace' ? marketplacesImagesMap[order.marketplace] : anythingImg}
                     placeholder='blur'
                     alt={'icon'}
                     width={48}
@@ -31,12 +33,19 @@ export const OrderCard = ({ order, ...props }: IProps) => {
                     <h1 className='font-medium'>{`${order.pickupDate.toISOString().split('T')[0]}`} <span
                         className='text-zinc-300'>с</span> {`${order.pickupTimeFrom}`} <span
                         className='text-zinc-300'>до</span> {`${order.pickupTimeTo}`}</h1>
-                    <p className='text-zinc-400 rounded-full text-sm mt-1'>{truncateString(order.pickupAddresses[0].replace('г Москва, ', ''))}</p>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <p className='text-zinc-400  rounded-full text-sm mt-1 bg-zinc-800 w-max py-1 px-4'>{truncateString(order.pickupAddresses[0].replace('г Москва, ', ''))}</p>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{order.pickupAddresses[0].replace('г Москва, ', '')}</p>
+                        </TooltipContent>
+                    </Tooltip>
                     <p className='bg-blue-900 rounded-full px-3 py-1 mt-2 text-xs w-max'>{order.cost} руб</p>
                 </div>
             </div>
             <div className='flex gap-3 items-center justify-end w-full mt-2 md:mt-0 '>
-                {props.actions}
+            {props.actions}
             </div>
         </>
     );

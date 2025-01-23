@@ -67,7 +67,6 @@ export const VirtualSelect = <T extends string>({ trigger, options, onOptionChan
                 <AnimatePresence>
                     {isOpen && (
                         <>
-                            {/* Background overlay */}
                             <motion.div
                                 onClick={handleBlur}
                                 initial={{opacity: 0}}
@@ -77,7 +76,6 @@ export const VirtualSelect = <T extends string>({ trigger, options, onOptionChan
                                 className="fixed inset-0 bg-black/65 z-[150]"
                             />
 
-                            {/* Dropdown */}
                             <motion.div
                                 ref={parentRef}
                                 initial={{opacity: 0, y: isOpenUp ? 40 : -40, scale: 0.9}}

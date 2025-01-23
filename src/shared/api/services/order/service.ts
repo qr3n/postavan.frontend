@@ -1,7 +1,7 @@
 import {
     CalculateOrderCostRequest,
     CalculateOrderCostResponse, ChangeOrderActiveRequest, ChangeOrderStatusRequest,
-    CreateOrderRequest, GetUserOrderResponse
+    CreateOrderRequest, GetUserOrderResponse, UpdateOrderRequest
 } from "./types";
 import { adminApi, api } from "@shared/api";
 import { withAxiosData } from "@shared/api/utils";
@@ -17,6 +17,10 @@ class OrderService {
 
     async get() {
         return withAxiosData(await api.get<GetUserOrderResponse[]>('/orders'))
+    }
+
+    async edit(data: UpdateOrderRequest) {
+        return withAxiosData(await api.put('/orders', data))
     }
 }
 

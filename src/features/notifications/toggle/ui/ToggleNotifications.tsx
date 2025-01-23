@@ -5,7 +5,7 @@ import { useCallback, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { notificationsService } from "@shared/api/services/notifications/service";
 import { getMessaging, getToken } from "firebase/messaging";
-import { firebaseApp, onFirebaseMessageListener } from "@shared/firebase/firebaseApp";
+import { firebaseApp } from "@shared/firebase/firebaseApp";
 import toast from "react-hot-toast";
 
 export const ToggleNotifications = () => {
@@ -64,11 +64,10 @@ export const ToggleNotifications = () => {
 
                         localStorage.setItem("notifications.token", token);
 
-                        onFirebaseMessageListener().then(() => { toast.success('Новое уведомление') });
                     })(),
                     {
                         loading: "Подключаем уведомления...",
-                        success: "Вы на связи!",
+                        success: "Успешно.",
                         error: "Что-то пошло не так...",
                     }
                 );

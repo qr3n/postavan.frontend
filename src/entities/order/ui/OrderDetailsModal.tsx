@@ -8,10 +8,14 @@ import { boxImg } from "@features/order/create/ui/assets";
 import { marketplacesImagesMap } from "@entities/order/ui/images";
 import { marketplacesColorsMap } from "@entities/order/ui/colors";
 import Image from "next/image";
-import { moneyForOrderModalImg } from "@shared/assets";
+import { anythingImg, moneyForOrderModalImg } from "@shared/assets";
+import { ReactElement } from "react";
+import { DialogClose } from "@shared/shadcn/components/dialog";
+import { DrawerClose } from "@shared/shadcn/components/drawer";
 
 interface IProps {
-    order: IOrder
+    order: IOrder,
+    action?: ReactElement
 }
 
 interface ISectionData {
@@ -60,7 +64,9 @@ const Section = (props: ISectionProps) => {
     )
 }
 
-export const OrderDetailsModal = ({order}: IProps) => {
+export const OrderDetailsModal = ({order, action }: IProps) => {
+    console.log(order.whatToDeliver)
+
     return (
         <Modal
             title={<div
@@ -68,17 +74,17 @@ export const OrderDetailsModal = ({order}: IProps) => {
                 <h1 className='sm:text-4xl'>Заказ #1</h1>
                 <div
                     className={`w-max flex gap-2 items-center py-2 mt-1 px-3 rounded-full`}
-                    style={{ backgroundColor: marketplacesColorsMap[order.marketplace] }}
+                    style={{ backgroundColor: order.shipmentType === 'marketplace' ? marketplacesColorsMap[order.marketplace] : '#181818' }}
                 >
                     <Image
                         priority
-                        src={marketplacesImagesMap[order.marketplace]}
+                        src={order.shipmentType === 'marketplace' ? marketplacesImagesMap[order.marketplace] : anythingImg}
                         alt={'christmasTree'}
                         width={22}
                         height={22}
                         className='rounded-full w-[15px] h-[15px] sm:w-[22px] sm:h-[22px]'
                     />
-                    <p className='text-[12px] sm:text-[15px]'>{order.marketplace}</p>
+                    <p className='text-[12px] sm:text-[15px]'>{order.shipmentType === 'marketplace' ? order.marketplace : 'Разные вещи'}</p>
                 </div>
 
             </div>}
@@ -91,7 +97,11 @@ export const OrderDetailsModal = ({order}: IProps) => {
                     <Section
                         title={'Основное'}
                         data={[
-                            {label: 'Упаковка', value: userAliases.packingType[order.packingType], img: boxImg},
+                            {
+                                label: order.shipmentType === 'marketplace' ? 'Упаковка' : 'Что доставить?',
+                                value: order.shipmentType === 'marketplace' ? userAliases.packingType[order.packingType] : order.whatToDeliver.join(', '),
+                                img: order.shipmentType === 'marketplace' ? boxImg : undefined
+                            },
                             {label: 'Цена', value: `${order.cost}руб`, img: moneyForOrderModalImg}
                         ]}
                     />
@@ -125,8 +135,14 @@ export const OrderDetailsModal = ({order}: IProps) => {
                     />
 
                 </ScrollArea>
-                <Button className='mt-8 w-full'>Закрыть</Button>
-                <Button className='mt-4 w-full' variant='outline'>Выйти</Button>
+                <div className='mt-8 w-full'>
+                    { action }
+                    <DialogClose asChild>
+                        <DrawerClose asChild>
+                            <Button className='mt-4 w-full' variant='outline'>Выйти</Button>
+                        </DrawerClose>
+                    </DialogClose>
+                </div>
             </div>
         </Modal>
     );

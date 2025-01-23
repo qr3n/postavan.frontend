@@ -82,7 +82,7 @@ export const SetDeliveryTimeStep = () => {
     const getAvailableTimes = useCallback((startTime: string): string[] => {
         const startIndex = generateTimeOptions.indexOf(startTime);
         return generateTimeOptions.slice(startIndex + 1);
-    }, []);
+    }, [generateTimeOptions]);
 
     const handleTimeChange = useCallback(
         (

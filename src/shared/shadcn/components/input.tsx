@@ -26,9 +26,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 {label && (
                     <label
                         className={cn(
-                            "absolute left-3 top-1/2 -translate-y-1/2 transform text-zinc-500 transition-all text-[0.9rem] duration-200 peer-placeholder-shown:translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-zinc-500 peer-focus:-translate-y-2 peer-focus:scale-75 peer-focus:text-zinc-950 dark:text-zinc-400 dark:peer-placeholder-shown:text-zinc-400 dark:peer-focus:text-zinc-300",
+                            "absolute left-4 top-1/2 -translate-y-1/2 transform text-zinc-500 transition-all text-[0.9rem] duration-200 peer-placeholder-shown:translate-y-1/2 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-zinc-500 peer-focus:-translate-y-2 peer-focus:scale-75 peer-focus:text-zinc-950 dark:text-zinc-400 dark:peer-placeholder-shown:text-zinc-400 dark:peer-focus:text-zinc-300",
                             {
-                                "-translate-y-[23px] -translate-x-0.5 scale-[83%] text-zinc-950 dark:text-zinc-300":
+                                "-translate-y-[23px] -translate-x-0.5 text-[12px] text-zinc-950 dark:text-zinc-300":
                                     focused || hasValue,
                             }
                         )}

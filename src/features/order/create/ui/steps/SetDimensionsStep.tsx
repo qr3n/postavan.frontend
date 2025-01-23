@@ -1,7 +1,7 @@
 import { CreateOrderTemplates } from "@features/order/create/ui/templates";
 import { useAtom, useAtomValue } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
-import { boxImg, paletteImg } from "@features/order/create/ui/assets";
+import { boxImg, itemsImg, paletteImg } from "@features/order/create/ui/assets";
 import Image from "next/image";
 import { Button } from "@shared/shadcn/components/button";
 import { Modal } from "@shared/ui/modal";
@@ -109,6 +109,7 @@ export const SetDimensionsStep = () => {
     const width = useAtomValue(createOrderAtoms.packageWidth)
     const height = useAtomValue(createOrderAtoms.packageHeight)
 
+    const shipmentType = useAtomValue(createOrderAtoms.shipmentType)
     const packingType = useAtomValue(createOrderAtoms.packingType)
     const variants = useMemo(() => [...Array(100).keys()].map(e => (e + 1).toString()), [])
 
@@ -123,7 +124,7 @@ export const SetDimensionsStep = () => {
                                 className='w-48 md:w-52 lg:w-64'
                                 placeholder={'blur'}
                                 draggable={false}
-                                src={packingType === 'box' ? boxImg : paletteImg}
+                                src={shipmentType === 'marketplace' ? (packingType === 'box' ? boxImg : paletteImg) : itemsImg}
                                 alt={'firstChoice'}
                                 width={0} height={0}
                             />

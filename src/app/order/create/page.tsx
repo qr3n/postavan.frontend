@@ -91,7 +91,7 @@ const App = () => {
                 shipment_type: store.get(createOrderAtoms.shipmentType),
                 marketplace: store.get(createOrderAtoms.marketplace),
                 packing_type: store.get(createOrderAtoms.packingType),
-                what_to_deliver: [],
+                what_to_deliver: store.get(createOrderAtoms.whatToDeliver),
                 package_length: store.get(createOrderAtoms.packageLength),
                 package_width: store.get(createOrderAtoms.packageWidth),
                 package_height: store.get(createOrderAtoms.packageHeight),

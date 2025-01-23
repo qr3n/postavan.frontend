@@ -32,6 +32,10 @@ export interface CreateOrderRequest {
     delivery_time_to: string,
 }
 
+export interface UpdateOrderRequest extends CreateOrderRequest {
+    order_id: string
+}
+
 
 export interface GetUserOrderResponse {
     recipient_phone: string;
