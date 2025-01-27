@@ -14,8 +14,8 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import * as Portal from "@radix-ui/react-portal";
-import { adminAccessTokenAtom, sessionAtom } from "@entities/session/model/atoms";
-import { useAtomValue } from "jotai";
+import { accessTokenAtom, adminAccessTokenAtom, sessionAtom } from "@entities/session/model/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 import { AuthModal } from "@features/session";
 import { Button } from "@shared/shadcn/components/button";
 import { useUserOrders } from "@entities/order/model/hooks";
@@ -34,6 +34,7 @@ export const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false)
     const [authModalOpen, setAuthModalOpen] = useState(false)
     const session = useAtomValue(sessionAtom)
+    const setAccessToken = useSetAtom(accessTokenAtom)
     const adminAccessToken = useAtomValue(adminAccessTokenAtom)
 
     return (
@@ -127,7 +128,12 @@ export const Navbar = () => {
                             <Link href={'/settings'}>
                                 <DropdownMenuItem>Настройки</DropdownMenuItem>
                             </Link>
-                            <DropdownMenuItem>Выйти</DropdownMenuItem>
+                            <Link href={'/'}>
+                                <DropdownMenuItem onClick={() => {
+                                    localStorage.removeItem('accessToken')
+                                    setAccessToken(null)
+                                }}>Выйти</DropdownMenuItem>
+                            </Link>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>

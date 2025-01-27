@@ -26,7 +26,9 @@ const convertGetUserOrderResponseToIOrder = (response: GetUserOrderResponse): IO
         pickupTimeFrom: response.pickup_time_from,
         pickupTimeTo: response.pickup_time_to,
         deliveryTimeFrom: response.delivery_time_from,
-        deliveryTimeTo: response.delivery_time_to
+        deliveryTimeTo: response.delivery_time_to,
+        distance: response.distance,
+        placesCount: response.places_count
     };
 };
 

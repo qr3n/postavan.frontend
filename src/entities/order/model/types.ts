@@ -29,4 +29,6 @@ export interface IOrder {
     pickupTimeTo: string,
     deliveryTimeFrom: string,
     deliveryTimeTo: string,
+    distance: number,
+    placesCount: number
 }

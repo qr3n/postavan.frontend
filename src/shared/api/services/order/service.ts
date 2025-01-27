@@ -40,6 +40,10 @@ class AdminOrderService {
     async changeStatus(data: ChangeOrderStatusRequest) {
         return await adminApi.put('/orders/status', data)
     }
+
+    async edit(data: UpdateOrderRequest) {
+        return withAxiosData(await adminApi.put('/orders', data))
+    }
 }
 
 export const orderService = new OrderService()

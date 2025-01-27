@@ -20,12 +20,13 @@ import { Calendar } from "@shared/shadcn/components/calendar";
 import { ru } from "date-fns/locale";
 import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelect";
 import { useMutation } from "@tanstack/react-query";
-import { orderService } from "@shared/api/services/order";
+import { adminOrderService, orderService } from "@shared/api/services/order";
 import toast from "react-hot-toast";
 import { queryClient } from "@shared/api";
 
 interface IProps {
     order: IOrder;
+    as: 'admin' | 'user'
 }
 
 interface ISectionData {
@@ -156,7 +157,7 @@ const AddressInput = memo(({ setValue, defaultValue }: { defaultValue: string, s
                     },
                     body: JSON.stringify({
                         query: value,
-                        locations: [{ city: "Москва" }],
+                        locations_boost: [{kladr_id: "77"}]
                     }),
                 });
 
@@ -243,10 +244,10 @@ const AddressInput = memo(({ setValue, defaultValue }: { defaultValue: string, s
 
 AddressInput.displayName = 'AddressInput'
 
-export const EditOrder = ({ order }: IProps) => {
+export const EditOrder = ({ order, as }: IProps) => {
     const [open, setOpen] = useState(false)
     const { mutateAsync, isPending, isSuccess } = useMutation({
-        mutationFn: orderService.edit
+        mutationFn: as === 'admin' ? adminOrderService.edit : orderService.edit
     })
 
     useEffect(() => { if (isSuccess) setOpen(false) }, [isSuccess])
@@ -373,7 +374,7 @@ export const EditOrder = ({ order }: IProps) => {
                         <DatePicker value={deliveryDate} onDateChange={() => null} minDate={new Date()}/>
 
                         <TimeSelect
-                            value={pickupTimeFrom}
+                            value={deliveryTimeFrom}
                             availableTimes={generateTimeOptions}
                             onChange={(value) =>
                                 null
@@ -382,7 +383,7 @@ export const EditOrder = ({ order }: IProps) => {
                         />
 
                         <TimeSelect
-                            value={pickupTimeTo}
+                            value={deliveryTimeTo}
                             availableTimes={getAvailableTimes(pickupTimeFrom)}
                             onChange={(value) => null}
                             prefix={'до'}

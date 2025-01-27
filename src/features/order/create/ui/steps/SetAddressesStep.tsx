@@ -3,7 +3,7 @@ import { useState, useRef, useCallback, memo, useEffect } from "react";
 import { Button } from "@shared/shadcn/components/button";
 import { Input } from "@shared/shadcn/components/input";
 import { AnimatePresence, motion } from "framer-motion";
-import { PlusIcon } from "lucide-react";
+import { DeleteIcon, PlusIcon } from "lucide-react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 
@@ -32,7 +32,7 @@ const SuggestionsList = memo(({ suggestions, handleSelect, highlightCity }: {
 
 SuggestionsList.displayName = 'SuggestionsList'
 
-const AddressInput = memo(({ id, variant }: { id: string; variant: "pickup" | "delivery" }) => {
+const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pickup" | "delivery", onRemove: () => void }) => {
     const [suggestions, setSuggestions] = useState<{ value: string }[]>([]);
     const [selectedAddress, setSelectedAddress] = useAtom(
         variant === "pickup"
@@ -70,7 +70,7 @@ const AddressInput = memo(({ id, variant }: { id: string; variant: "pickup" | "d
                     },
                     body: JSON.stringify({
                         query: value,
-                        locations: [{ city: "Москва" }],
+                        locations_boost: [{kladr_id: "77"}]
                     }),
                 });
 
@@ -120,14 +120,25 @@ const AddressInput = memo(({ id, variant }: { id: string; variant: "pickup" | "d
                 )}
             </AnimatePresence>
 
-            <Input
-                type="text"
-                value={query}
-                onChange={handleInputChange}
-                placeholder="Введите адрес"
-                className="relative"
-                style={{ zIndex: isBlurActive ? "200" : "1" }}
-            />
+            <div className='flex gap-2 items-center'>
+                <Input
+                    type="text"
+                    value={query}
+                    onChange={handleInputChange}
+                    placeholder="Введите адрес"
+                    className="relative"
+                    style={{ zIndex: isBlurActive ? "200" : "1" }}
+                />
+
+                <Button
+                    onClick={onRemove}
+                    variant="outline"
+                    size="icon"
+                    className="flex-shrink-0 text-sm dark:text-zinc-400"
+                >
+                    ✕
+                </Button>
+            </div>
 
             {isLoading && (
                 <ul
@@ -191,6 +202,30 @@ export const SetAddressesStep = () => {
         setDeliveryAddressesIds((prev) => [...prev, Date.now().toString()]);
     }, [setDeliveryAddressesIds]);
 
+    const removePickupAddressId = useCallback(
+        (id: string) => {
+            setPickupAddressesIds((prev) => {
+                if (prev.length > 1) {
+                    return prev.filter((addrId) => addrId !== id);
+                }
+                return prev; // Если остался один элемент, ничего не изменяем
+            });
+        },
+        [setPickupAddressesIds]
+    );
+
+    const removeDeliveryAddressId = useCallback(
+        (id: string) => {
+            setDeliveryAddressesIds((prev) => {
+                if (prev.length > 1) {
+                    return prev.filter((addrId) => addrId !== id);
+                }
+                return prev; // Если остался один элемент, ничего не изменяем
+            });
+        },
+        [setDeliveryAddressesIds]
+    );
+
     return (
         <Step title="Куда и откуда?" description="В заказе можно указывать несколько адресов, нажав на +">
             <div className="flex mt-4 flex-col sm:flex-row gap-12 w-full max-w-3xl">
@@ -198,7 +233,9 @@ export const SetAddressesStep = () => {
                     <h1 className="font-semibold text-lg md:text-xl lg:text-xl">Откуда забрать?</h1>
                     <div className="w-full mt-4 space-y-2">
                         {pickupAddressesIds.map((id) => (
-                            <AddressInput variant={"pickup"} id={id} key={id} />
+                            <AddressInput
+                                onRemove={() => removePickupAddressId(id)}
+                                variant={"pickup"} id={id} key={id} />
                         ))}
                     </div>
                     <Button
@@ -217,7 +254,12 @@ export const SetAddressesStep = () => {
                     <h1 className="font-semibold text-lg md:text-xl lg:text-xl">Куда доставить?</h1>
                     <div className="w-full mt-4 space-y-2">
                         {deliveryAddressesIds.map((id) => (
-                            <AddressInput variant={"delivery"} id={id} key={id} />
+                            <AddressInput
+                                onRemove={() => removeDeliveryAddressId(id)}
+                                variant={"delivery"}
+                                id={id}
+                                key={id}
+                            />
                         ))}
                     </div>
                     <Button

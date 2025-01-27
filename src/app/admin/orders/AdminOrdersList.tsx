@@ -74,7 +74,7 @@ export const AdminOrdersList = ({ orders }: { orders: IOrder[] }) => {
                                             <ChangeOrderStatus order={orders[virtualRow.index]} />
                                         </div>
                                         <div className="flex flex-col md:flex-row gap-3">
-                                            <EditOrder order={orders[virtualRow.index]} />
+                                            <EditOrder as={'admin'} order={orders[virtualRow.index]} />
                                             <ExportOrder order={orders[virtualRow.index]} />
                                         </div>
                                     </>

@@ -62,7 +62,7 @@ export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
                     >
                         <OrderWrapper>
                             <OrderDetailsModal
-                                action={<Button className='md:w-full'>
+                                action={<Button className='w-full'>
                                     <FaCheckCircle/>
                                     {orders[virtualRow.index].status}
                                 </Button>}
@@ -75,7 +75,7 @@ export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
                                         {orders[virtualRow.index].status}
                                     </Button>
                                     {(orders[virtualRow.index].status === 'Поиск курьера') &&
-                                        <EditOrder order={orders[virtualRow.index]}/>}
+                                        <EditOrder as={'user'} order={orders[virtualRow.index]}/>}
                                     {orders[virtualRow.index].status === 'Заказ выполнен' && <RateOrder/>}
                                 </>
                             )}/>

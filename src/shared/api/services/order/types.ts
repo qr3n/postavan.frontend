@@ -30,6 +30,7 @@ export interface CreateOrderRequest {
     pickup_time_to: string,
     delivery_time_from: string,
     delivery_time_to: string,
+
 }
 
 export interface UpdateOrderRequest extends CreateOrderRequest {
@@ -63,6 +64,7 @@ export interface GetUserOrderResponse {
     pickup_time_to: string,
     delivery_time_from: string,
     delivery_time_to: string,
+    distance: number
 }
 
 export interface ChangeOrderStatusRequest {

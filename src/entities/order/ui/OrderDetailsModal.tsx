@@ -20,7 +20,7 @@ interface IProps {
 
 interface ISectionData {
     label: string,
-    value: string,
+    value: string | ReactElement,
     img?: StaticImport,
     imgSize?: number,
     imgGap?: number
@@ -65,8 +65,6 @@ const Section = (props: ISectionProps) => {
 }
 
 export const OrderDetailsModal = ({order, action }: IProps) => {
-    console.log(order.whatToDeliver)
-
     return (
         <Modal
             title={<div
@@ -102,7 +100,8 @@ export const OrderDetailsModal = ({order, action }: IProps) => {
                                 value: order.shipmentType === 'marketplace' ? userAliases.packingType[order.packingType] : order.whatToDeliver.join(', '),
                                 img: order.shipmentType === 'marketplace' ? boxImg : undefined
                             },
-                            {label: 'Цена', value: `${order.cost}руб`, img: moneyForOrderModalImg}
+                            {label: 'Цена', value: `${order.cost}руб`, img: moneyForOrderModalImg},
+                            {label: 'Расстояние', value: `${order.distance}км`}
                         ]}
                     />
 
@@ -111,15 +110,16 @@ export const OrderDetailsModal = ({order, action }: IProps) => {
                         data={[
                             {label: 'Длина', value: `${order.packageLength}`},
                             {label: 'Ширина', value: `${order.packageWidth}`},
-                            {label: 'Высота', value: `${order.packageHeight}`}
+                            {label: 'Высота', value: `${order.packageHeight}`},
+                            {label: 'Количество', value: `${order.placesCount}`},
                         ]}
                     />
 
                     <Section
                         title={'Куда и откуда'}
                         data={[
-                            {label: 'Откуда забрать', value: `${order.pickupAddresses.join(', ')}`,},
-                            {label: 'Куда доставить', value: `${order.deliveryAddresses.join(', ')}`},
+                            {label: 'Откуда забрать', value: <a href={`geo:0,0?q=${order.pickupAddresses}`}>{`${order.pickupAddresses.join(', ')}`}</a>,},
+                            {label: 'Куда доставить', value: <a href={`geo:0,0?q=${order.deliveryAddresses}`}>{`${order.deliveryAddresses.join(', ')}`}</a>},
                             {label: 'Когда забрать', value: `${order.pickupDate.toISOString().split('T')[0]} с ${order.pickupTimeFrom} до ${order.pickupTimeTo}`},
                             {label: 'Когда доставить', value: `${order.deliveryDate.toISOString().split('T')[0]} с ${order.deliveryTimeFrom} до ${order.deliveryTimeTo}`}
                         ]}
