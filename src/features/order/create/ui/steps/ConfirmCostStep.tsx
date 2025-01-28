@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 export const ConfirmCostStep = () => {
     const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses);
     const deliveryAddresses = useAtomValue(createOrderAtoms.allDeliveryAddresses);
+    const placesCount = useAtomValue(createOrderAtoms.placesCount)
 
     const { mutate, data, isPending } = useMutation({
         mutationFn: orderService.calculateCost,
@@ -24,11 +25,11 @@ export const ConfirmCostStep = () => {
             mutate({
                 pickup_addresses: pickupAddresses,
                 delivery_addresses: deliveryAddresses,
-                places_count: 4,
+                places_count: placesCount,
                 weight: 100,
             });
         }
-    }, []);
+    }, [deliveryAddresses, mutate, pickupAddresses, placesCount]);
 
     return (
         <CreateOrderTemplates.Step
