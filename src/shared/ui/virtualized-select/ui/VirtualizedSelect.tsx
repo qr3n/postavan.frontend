@@ -58,7 +58,10 @@ export const VirtualSelect = <T extends string>({ trigger, options, onOptionChan
         <div className="relative w-full md:w-auto">
             <div
                 ref={triggerRef}
-                onMouseDown={() => setIsOpen((prev) => !prev)}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setIsOpen((prev) => !prev);
+                }}
             >
                 {trigger}
             </div>
@@ -73,7 +76,7 @@ export const VirtualSelect = <T extends string>({ trigger, options, onOptionChan
                                 animate={{opacity: 1}}
                                 exit={{opacity: 0}}
                                 transition={{duration: 0.3}}
-                                className="fixed inset-0 bg-black/65 z-[150]"
+                                className="fixed inset-0 bg-black/65 z-[150] pointer-events-none"
                             />
 
                             <motion.div
@@ -82,7 +85,7 @@ export const VirtualSelect = <T extends string>({ trigger, options, onOptionChan
                                 animate={{opacity: 1, y: 0, scale: 1}}
                                 exit={{opacity: 0, y: isOpenUp ? 40 : -40, scale: 0.9}}
                                 transition={{duration: 0.3, ease: [0.22, 1, 0.36, 1]}}
-                                className="fixed z-[150] rounded-xl mt-2 bg-zinc-900 shadow-2xl px-2 py-2"
+                                className="fixed z-[151] rounded-xl mt-2 bg-zinc-900 shadow-2xl px-2 py-2 pointer-events-auto"
                                 style={{
                                     top: `${triggerPosition.top}px`,
                                     left: isRightAligned ? `${triggerPosition.left}px` : 'auto',
@@ -101,7 +104,8 @@ export const VirtualSelect = <T extends string>({ trigger, options, onOptionChan
                                     {rowVirtualizer.getVirtualItems().map(({key, start, index}) => (
                                         <div
                                             key={key}
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 onOptionChange(options[index]);
                                                 setIsOpen(false);
                                             }}

@@ -37,6 +37,9 @@ export interface UpdateOrderRequest extends CreateOrderRequest {
     order_id: string
 }
 
+export interface CancelOrderRequest {
+    order_id: string,
+}
 
 export interface GetUserOrderResponse {
     recipient_phone: string;

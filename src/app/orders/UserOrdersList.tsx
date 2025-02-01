@@ -5,11 +5,12 @@ import { IOrder, OrderCard, OrderDetailsModal } from "@entities/order";
 import { Button } from "@shared/shadcn/components/button";
 import { FaCheckCircle } from "react-icons/fa";
 import { EditOrder } from "@features/order/edit/ui/EditOrder";
-import { RateOrder } from "@features/order/rate/ui/RateOrder";
 import { useEffect, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import Image from "next/image";
 import { bgImg, dolphin } from "@shared/assets";
+import { LeaveFeedback } from "@features/feedback/leave/ui/LeaveFeedback";
+import { CancelOrder } from "@features/order/cancel/ui/CancelOrder";
 
 export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
     const parentRef = useRef<HTMLDivElement>(null);
@@ -62,7 +63,8 @@ export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
                     >
                         <OrderWrapper>
                             <OrderDetailsModal
-                                action={<Button className='w-full'>
+                                action={
+                                <Button className='w-full'>
                                     <FaCheckCircle/>
                                     {orders[virtualRow.index].status}
                                 </Button>}
@@ -74,9 +76,11 @@ export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
                                         <FaCheckCircle/>
                                         {orders[virtualRow.index].status}
                                     </Button>
+
+                                    {orders[virtualRow.index].active && <CancelOrder orderId={orders[virtualRow.index].id}/>}
                                     {(orders[virtualRow.index].status === 'Поиск курьера') &&
                                         <EditOrder as={'user'} order={orders[virtualRow.index]}/>}
-                                    {orders[virtualRow.index].status === 'Заказ выполнен' && <RateOrder/>}
+                                    {orders[virtualRow.index].status === 'Заказ выполнен' && <LeaveFeedback order={orders[virtualRow.index]}/>}
                                 </>
                             )}/>
                         </OrderWrapper>

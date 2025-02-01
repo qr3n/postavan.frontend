@@ -1,5 +1,5 @@
 import Image                             from 'next/image'
-import { ReactElement } from "react";
+import { memo, ReactElement } from "react";
 import { IOrder } from "@entities/order";
 import { marketplacesImagesMap } from "@entities/order/ui/images";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@shared/shadcn/components/tooltip";
@@ -17,7 +17,7 @@ function truncateString(str: string) {
     return str;
 }
 
-export const OrderCard = ({ order, ...props }: IProps) => {
+export const OrderCard = memo(({ order, ...props }: IProps) => {
     return (
         <>
             <div className='flex justify-start items-center w-full gap-5'>
@@ -49,4 +49,6 @@ export const OrderCard = ({ order, ...props }: IProps) => {
             </div>
         </>
     );
-};
+})
+
+OrderCard.displayName = 'OrderCard'

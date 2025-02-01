@@ -9,7 +9,7 @@ import { marketplacesImagesMap } from "@entities/order/ui/images";
 import { marketplacesColorsMap } from "@entities/order/ui/colors";
 import Image from "next/image";
 import { anythingImg, moneyForOrderModalImg } from "@shared/assets";
-import { ReactElement } from "react";
+import { memo, ReactElement } from "react";
 import { DialogClose } from "@shared/shadcn/components/dialog";
 import { DrawerClose } from "@shared/shadcn/components/drawer";
 
@@ -32,7 +32,7 @@ interface ISectionProps {
 }
 
 
-const Section = (props: ISectionProps) => {
+const Section = memo((props: ISectionProps) => {
     return (
         <div className='mb-12'>
             <div className='flex items-center gap-2'>
@@ -62,9 +62,11 @@ const Section = (props: ISectionProps) => {
             </div>
         </div>
     )
-}
+})
 
-export const OrderDetailsModal = ({order, action }: IProps) => {
+Section.displayName = 'Section'
+
+export const OrderDetailsModal = memo(({order, action }: IProps) => {
     return (
         <Modal
             title={<div
@@ -146,4 +148,6 @@ export const OrderDetailsModal = ({order, action }: IProps) => {
             </div>
         </Modal>
     );
-};
+});
+
+OrderDetailsModal.displayName = 'OrderDetailsModal'

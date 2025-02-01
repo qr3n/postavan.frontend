@@ -60,20 +60,31 @@ type DatePickerProps = {
 const DatePicker = memo<DatePickerProps>(({ onDateChange, value, minDate }) => {
     const today = new Date();
     const isToday = value.toDateString() === today.toDateString();
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Popover>
-            <PopoverTrigger className="flex gap-2 rounded-2xl px-4 py-2 bg-zinc-900 border-zinc-800 justify-start w-[140px] text-left font-normal">
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+            <PopoverTrigger
+                className="flex gap-2 rounded-2xl px-4 py-2 bg-zinc-900 border-zinc-800 justify-start w-[140px] text-left font-normal"
+                onClick={() => setIsOpen((prev) => !prev)} // Открываем вручную
+            >
                 <CalendarIcon className="text-zinc-500" />
                 {isToday ? 'Сегодня' : value.toLocaleDateString('ru-RU')}
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent
+                className="w-auto p-0 z-[240]"
+                align="start"
+                onClick={(e) => e.stopPropagation()} // Останавливаем всплытие
+            >
                 <Calendar
                     locale={ru}
                     mode="single"
                     initialFocus
                     selected={value}
-                    onSelect={(v) => onDateChange(v || today)}
+                    onSelect={(v) => {
+                        onDateChange(v || today);
+                        setIsOpen(false); // Закрываем после выбора даты
+                    }}
                     disabled={(date) => {
                         const currentDate = new Date();
                         currentDate.setHours(0, 0, 0, 0);
@@ -90,7 +101,7 @@ DatePicker.displayName = 'DatePicker';
 const TimeSelect = memo<TimeSelectProps>(({ onChange, value, availableTimes, prefix }) => (
     <VirtualSelect
         value={value}
-        trigger={<Button className='gap-1' variant='outline'><span className='text-zinc-500'>{prefix}</span>{value || "Выберите время"}</Button>}
+        trigger={<Button type={'button'} className='gap-1' variant='outline'><span className='text-zinc-500'>{prefix}</span>{value || "Выберите время"}</Button>}
         options={availableTimes}
         onOptionChange={onChange}
     />
@@ -281,7 +292,7 @@ export const EditOrder = ({ order, as }: IProps) => {
             package_length: data.packageLength,
             package_width: data.packageWidth,
             package_height: data.packageHeight,
-            places_count: 100,
+            places_count: data.placesCount,
             weight: 100,
             pickup_addresses: data.pickupAddresses,
             delivery_addresses: data.deliveryAddresses,
@@ -338,7 +349,7 @@ export const EditOrder = ({ order, as }: IProps) => {
             dialogStyle={'max-w-[500px]'}
         >
             <form onSubmit={handleSubmit(onSubmit)} className="px-6 sm:px-0 flex flex-col gap-4">
-                <ScrollArea className='h-[calc(60dvh-100px)] mt-4 pr-16'>
+                <ScrollArea className='h-[calc(60dvh-100px)] mt-4 pr-4 sm:pr-8'>
                     <h1 className='text-2xl font-semibold text-white'>Размеры</h1>
                     <Input {...register('packageWidth')} defaultValue={order.packageLength} className='mt-4' label={'Длина'}/>
                     <Input {...register('packageLength')} defaultValue={order.packageWidth} label={'Ширина'} className='mt-4'/>
@@ -351,41 +362,37 @@ export const EditOrder = ({ order, as }: IProps) => {
                     <AddressInput defaultValue={order.deliveryAddresses[0]} setValue={(v) => setValue('deliveryAddresses', [v])}/>
                     <h1 className='mt-4 text-zinc-400'>Когда забрать</h1>
                     <div className="flex gap-2 sm:gap-2 mt-4 w-full">
-                        <DatePicker value={pickupDate} onDateChange={() => null} minDate={new Date()}/>
+                        <DatePicker value={pickupDate} onDateChange={(v) => setValue('pickupDate', v)} minDate={new Date()}/>
 
                         <TimeSelect
                             value={pickupTimeFrom}
                             availableTimes={generateTimeOptions}
-                            onChange={(value) =>
-                                null
-                            }
+                            onChange={(value) => setValue('pickupTimeFrom', value)}
                             prefix={'с'}
                         />
 
                         <TimeSelect
                             value={pickupTimeTo}
                             availableTimes={getAvailableTimes(pickupTimeFrom)}
-                            onChange={(value) => null}
+                            onChange={(value) => setValue('pickupTimeTo', value)}
                             prefix={'до'}
                         />
                     </div>
                     <h1 className='mt-4 text-zinc-400'>Когда доставить</h1>
                     <div className="flex gap-2 sm:gap-2 mt-4 w-full">
-                        <DatePicker value={deliveryDate} onDateChange={() => null} minDate={new Date()}/>
+                        <DatePicker value={deliveryDate} onDateChange={(v) => setValue('deliveryDate', v)} minDate={new Date()}/>
 
                         <TimeSelect
                             value={deliveryTimeFrom}
                             availableTimes={generateTimeOptions}
-                            onChange={(value) =>
-                                null
-                            }
+                            onChange={(value) => setValue('deliveryTimeFrom', value)}
                             prefix={'с'}
                         />
 
                         <TimeSelect
                             value={deliveryTimeTo}
                             availableTimes={getAvailableTimes(pickupTimeFrom)}
-                            onChange={(value) => null}
+                            onChange={(value) => setValue('deliveryTimeTo', value)}
                             prefix={'до'}
                         />
                     </div>
