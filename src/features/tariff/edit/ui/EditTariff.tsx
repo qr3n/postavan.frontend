@@ -28,7 +28,7 @@ export const EditTariff = () => {
     const onSubmit = handleSubmit((formData) => {
         toast.promise(
             mutateAsync(formData).then(() => {
-                queryClient.setQueryData(['tariff'], (oldData: GetProfileResponse) => ({ ...oldData, ...formData }));
+                queryClient.setQueryData(['tariff'], (oldData: GetTariffResponse) => ({ ...oldData, ...formData }));
                 setOpen(false);
             }),
             {
