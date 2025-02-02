@@ -6,6 +6,22 @@ type TOrderStatus = 'Поиск курьера' | 'Курьер назначен
 export const MARKETPLACES: TOrderMarketplace[] = ['Яндекс маркет', 'Wildberries', 'Ozon', 'AliExpress', 'Lamoda']
 export const ORDER_STATUSES: TOrderStatus[] = ['Поиск курьера', 'Курьер назначен', 'В пути', 'На погрузке', 'Выполняет', 'Заказ выполнен']
 
+interface IOrderDriverProfile {
+    name: string,
+    surname: string,
+    patronymic: string,
+    passportNumber: string,
+    passportGiven: string,
+    passportGiven_date: string,
+    phone: string
+}
+
+interface IOrderDriverCar {
+    color: string,
+    model: string,
+    number: string
+}
+
 export interface IOrder {
     id: string,
     cost: number,
@@ -30,5 +46,8 @@ export interface IOrder {
     deliveryTimeFrom: string,
     deliveryTimeTo: string,
     distance: number,
-    placesCount: number
+    placesCount: number,
+    weight: number,
+    driverProfile?: IOrderDriverProfile,
+    driverCar?: IOrderDriverCar
 }

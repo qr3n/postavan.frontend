@@ -136,6 +136,19 @@ export const OrderDetailsModal = memo(({order, action }: IProps) => {
                         ]}
                     />
 
+                    <Section
+                        title={'Информация о водителе'}
+                        data={[
+                            {label: 'Имя', value: `${order.driverProfile?.name || 'Отсутствует'}`,},
+                            {label: 'Фамилия', value: `${order.driverProfile?.surname || 'Отсутствует'}`,},
+                            {label: 'Отчество', value: `${order.driverProfile?.patronymic || 'Отсутствует'}`,},
+                            {label: 'Телефон', value: `${order.driverProfile?.phone || 'Отсутствует'}`,},
+                            {label: 'Цвет машины', value: `${order.driverCar?.color || 'Отсутствует'}`,},
+                            {label: 'Модель машины', value: `${order.driverCar?.model || 'Отсутствует'}`,},
+                            {label: 'Номер машины', value: `${order.driverCar?.number || 'Отсутствует'}`,},
+                        ]}
+                    />
+
                 </ScrollArea>
                 <div className='mt-8 w-full'>
                     { action }

@@ -13,6 +13,7 @@ export const ConfirmCostStep = () => {
     const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses);
     const deliveryAddresses = useAtomValue(createOrderAtoms.allDeliveryAddresses);
     const placesCount = useAtomValue(createOrderAtoms.placesCount)
+    const weight = useAtomValue(createOrderAtoms.weight)
 
     const { mutate, data, isPending } = useMutation({
         mutationFn: orderService.calculateCost,
@@ -26,10 +27,10 @@ export const ConfirmCostStep = () => {
                 pickup_addresses: pickupAddresses,
                 delivery_addresses: deliveryAddresses,
                 places_count: placesCount,
-                weight: 100,
+                weight: weight,
             });
         }
-    }, [deliveryAddresses, mutate, pickupAddresses, placesCount]);
+    }, [deliveryAddresses, mutate, pickupAddresses, placesCount, weight]);
 
     return (
         <CreateOrderTemplates.Step

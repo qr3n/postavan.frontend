@@ -41,6 +41,22 @@ export interface CancelOrderRequest {
     order_id: string,
 }
 
+interface GetUserOrderResponseDriverInfo {
+    name: string,
+    surname: string,
+    patronymic: string,
+    passport_number: string,
+    passport_given: string,
+    passport_given_date: string,
+    phone: string
+}
+
+interface GetUserOrderResponseDriverCar {
+    color: string,
+    model: string,
+    number: string
+}
+
 export interface GetUserOrderResponse {
     recipient_phone: string;
     package_width: number;
@@ -67,7 +83,9 @@ export interface GetUserOrderResponse {
     pickup_time_to: string,
     delivery_time_from: string,
     delivery_time_to: string,
-    distance: number
+    distance: number,
+    driver_profile?: GetUserOrderResponseDriverInfo,
+    driver_car?: GetUserOrderResponseDriverCar
 }
 
 export interface ChangeOrderStatusRequest {

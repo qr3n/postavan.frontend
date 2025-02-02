@@ -6,7 +6,13 @@ export const api = axios.create({
     baseURL: API_URL
 })
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: 0
+        }
+    }
+})
 
 export const adminApi = axios.create({
     baseURL: `${API_URL}/admin`

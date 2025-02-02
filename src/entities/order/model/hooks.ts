@@ -28,7 +28,15 @@ const convertGetUserOrderResponseToIOrder = (response: GetUserOrderResponse): IO
         deliveryTimeFrom: response.delivery_time_from,
         deliveryTimeTo: response.delivery_time_to,
         distance: response.distance,
-        placesCount: response.places_count
+        placesCount: response.places_count,
+        weight: response.weight,
+        driverProfile: response.driver_profile && {
+            ...response.driver_profile,
+            passportNumber: response.driver_profile?.passport_number,
+            passportGiven: response.driver_profile?.passport_given,
+            passportGiven_date: response.driver_profile?.passport_given_date,
+        },
+        driverCar: response.driver_car
     };
 };
 

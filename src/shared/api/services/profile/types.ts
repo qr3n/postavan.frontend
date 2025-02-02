@@ -1,11 +1,19 @@
-interface ChangeProfileInfoRequest {
+export interface ChangeProfileInfoRequest {
     name: string,
     surname: string,
     patronymic: string,
     phone: string,
 }
 
-interface GetProfileResponse {
+export interface ChangeProfileInfoByAdminRequest {
+    user_id: string,
+    name: string,
+    surname: string,
+    patronymic: string,
+    phone: string,
+}
+
+export interface GetProfileResponse {
     id: string,
     name: string,
     surname: string,

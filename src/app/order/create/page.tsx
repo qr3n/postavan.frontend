@@ -96,7 +96,7 @@ const App = () => {
                 package_width: store.get(createOrderAtoms.packageWidth),
                 package_height: store.get(createOrderAtoms.packageHeight),
                 places_count: store.get(createOrderAtoms.placesCount),
-                weight: 100,
+                weight: store.get(createOrderAtoms.weight),
                 pickup_addresses: store.get(createOrderAtoms.allPickupAddresses),
                 delivery_addresses: store.get(createOrderAtoms.allDeliveryAddresses),
                 comment: store.get(createOrderAtoms.comment),

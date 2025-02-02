@@ -32,9 +32,9 @@ export const LeaveFeedback = (props: IProps) => {
             order_id: props.order.id
         }).then(() => setOpen(false)),
             {
-                success: "Заказ создан.",
+                success: "Отзыв отправлен.",
                 error: "Что-то пошло не так...",
-                loading: "Создаем заказ...",
+                loading: "Отправляем отзыв...",
             })
     })
 

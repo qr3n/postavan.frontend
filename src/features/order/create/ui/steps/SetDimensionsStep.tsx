@@ -18,6 +18,7 @@ interface IFormData {
     length: number,
     width: number,
     height: number,
+    weight: number
 }
 
 
@@ -25,12 +26,14 @@ const SetDimensionsForm = () => {
     const [length, setLength] = useAtom(createOrderAtoms.packageLength);
     const [width, setWidth] = useAtom(createOrderAtoms.packageWidth);
     const [height, setHeight] = useAtom(createOrderAtoms.packageHeight);
+    const [weight, setWeight] = useAtom(createOrderAtoms.weight);
 
     const { register, handleSubmit, formState: { errors } } = useForm<IFormData>({
         defaultValues: {
             length,
             width,
             height,
+            weight
         },
     });
 
@@ -38,6 +41,7 @@ const SetDimensionsForm = () => {
         setLength(data.length);
         setWidth(data.width);
         setHeight(data.height);
+        setWeight(data.weight)
     });
 
     return (
@@ -46,22 +50,22 @@ const SetDimensionsForm = () => {
                 <Input
                     {...register('length', {
                         required: 'Длина обязательна',
-                        min: { value: 1, message: 'Длина должна быть больше 0' },
+                        min: {value: 1, message: 'Длина должна быть больше 0'},
                     })}
                     defaultValue={length}
                     type="number"
                     label="Длина"
                 />
-                   {errors.length && (
-                       <p className="text-red-500 text-sm mt-1">{errors.length.message}</p>
-                   )}
+                {errors.length && (
+                    <p className="text-red-500 text-sm mt-1">{errors.length.message}</p>
+                )}
             </div>
 
             <div className="mt-3">
                 <Input
                     {...register('width', {
                         required: 'Ширина обязательна',
-                        min: { value: 1, message: 'Ширина должна быть больше 0' },
+                        min: {value: 1, message: 'Ширина должна быть больше 0'},
                     })}
                     defaultValue={width}
                     type="number"
@@ -76,11 +80,26 @@ const SetDimensionsForm = () => {
                 <Input
                     {...register('height', {
                         required: 'Высота обязательна',
-                        min: { value: 1, message: 'Высота должна быть больше 0' },
+                        min: {value: 1, message: 'Высота должна быть больше 0'},
                     })}
                     defaultValue={height}
                     type="number"
                     label="Высота"
+                />
+                {errors.height && (
+                    <p className="text-red-500 text-sm mt-1">{errors.height.message}</p>
+                )}
+            </div>
+
+            <div className="mt-3">
+                <Input
+                    {...register('weight', {
+                        required: 'Вес обязателен',
+                        min: {value: 1, message: 'Вес должен быть больше 0'},
+                    })}
+                    defaultValue={weight}
+                    type="number"
+                    label="Вес"
                 />
                 {errors.height && (
                     <p className="text-red-500 text-sm mt-1">{errors.height.message}</p>
@@ -98,7 +117,7 @@ const SetDimensionsForm = () => {
                 Отмена
             </Button>
 
-            <input type="submit" className="hidden" />
+            <input type="submit" className="hidden"/>
         </form>
     );
 };
@@ -108,6 +127,7 @@ export const SetDimensionsStep = () => {
     const length = useAtomValue(createOrderAtoms.packageLength)
     const width = useAtomValue(createOrderAtoms.packageWidth)
     const height = useAtomValue(createOrderAtoms.packageHeight)
+    const weight = useAtomValue(createOrderAtoms.weight)
 
     const shipmentType = useAtomValue(createOrderAtoms.shipmentType)
     const packingType = useAtomValue(createOrderAtoms.packingType)
@@ -144,27 +164,37 @@ export const SetDimensionsStep = () => {
                                 </div>
                             )}/>
                         </div>
-                        <div className='flex mt-6 gap-3 w-full mb-6'>
-                            <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
-                                <h1 className='text-zinc-500 text-sm sm:text-base'>Длина</h1>
-                                <p className='font-medium text-lg sm:text-xl'>{length} <span className='text-zinc-400'>см</span></p>
+                        <div className='flex flex-wrap sm:flex-nowrap justify-center mt-6 gap-3 w-full mb-6'>
+                            <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
+                                <h1 className='text-zinc-500 text-xs sm:text-base'>Длина</h1>
+                                <p className='font-medium text-md sm:text-xl'>{length} <span
+                                    className='text-zinc-400'>см</span></p>
                             </div>
 
-                            <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
-                                <h1 className='text-zinc-500 text-sm sm:text-base'>Ширина</h1>
-                                <p className='font-medium text-lg sm:text-xl'>{width} <span className='text-zinc-400'>см</span></p>
+                            <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
+                                <h1 className='text-zinc-500 text-xs sm:text-base'>Ширина</h1>
+                                <p className='font-medium text-md sm:text-xl'>{width} <span
+                                    className='text-zinc-400'>см</span></p>
                             </div>
 
-                            <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-full'>
-                                <h1 className='text-zinc-500 text-sm sm:text-base'>Высота</h1>
-                                <p className='font-medium text-lg sm:text-xl'>{height} <span className='text-zinc-400'>см</span></p>
+                            <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
+                                <h1 className='text-zinc-500 text-xs sm:text-base'>Высота</h1>
+                                <p className='font-medium text-md sm:text-xl'>{height} <span
+                                    className='text-zinc-400'>см</span></p>
+                            </div>
+
+                            <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
+                                <h1 className='text-zinc-500 text-xs sm:text-base'>Вес</h1>
+                                <p className='font-medium text-md sm:text-xl'>{weight} <span
+                                    className='text-zinc-400'>кг</span></p>
                             </div>
                         </div>
                     </div>
 
                     <Modal trigger={(
                         <Button variant='outline' className='w-full'>
-                        <span className='p-0.5 rounded-full bg-blue-500'><AiFillEdit className='w-1 h-1'/></span> Изменить размер
+                            <span className='p-0.5 rounded-full bg-blue-500'><AiFillEdit
+                                className='w-1 h-1'/></span> Изменить размер
                         </Button>
                     )} title={'Изменить габариты'} description={'Пожалуйста, вводите точные значения'}>
                         <div className='px-4 sm:px-0 sm:mt-8'>

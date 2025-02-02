@@ -5,7 +5,7 @@ import { MdEdit } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { IOrder } from "@entities/order";
 import Image from "next/image";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { anythingImg } from "@shared/assets";
 import { ScrollArea } from "@shared/shadcn/components/scroll-area";
@@ -14,7 +14,6 @@ import { DrawerClose } from "@shared/shadcn/components/drawer";
 import { marketplacesColorsMap } from "@entities/order/ui/colors";
 import { marketplacesImagesMap } from "@entities/order/ui/images";
 import { AnimatePresence, motion } from "framer-motion";
-import { Popover, PopoverContent, PopoverTrigger } from "@shared/shadcn/components/popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@shared/shadcn/components/calendar";
 import { ru } from "date-fns/locale";
@@ -63,35 +62,27 @@ const DatePicker = memo<DatePickerProps>(({ onDateChange, value, minDate }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
-            <PopoverTrigger
-                className="flex gap-2 rounded-2xl px-4 py-2 bg-zinc-900 border-zinc-800 justify-start w-[140px] text-left font-normal"
-                onClick={() => setIsOpen((prev) => !prev)} // Открываем вручную
-            >
+        <Popover trigger={
+            <Button type={'button'} variant='outline'>
                 <CalendarIcon className="text-zinc-500" />
                 {isToday ? 'Сегодня' : value.toLocaleDateString('ru-RU')}
-            </PopoverTrigger>
-            <PopoverContent
-                className="w-auto p-0 z-[240]"
-                align="start"
-                onClick={(e) => e.stopPropagation()} // Останавливаем всплытие
-            >
-                <Calendar
-                    locale={ru}
-                    mode="single"
-                    initialFocus
-                    selected={value}
-                    onSelect={(v) => {
-                        onDateChange(v || today);
-                        setIsOpen(false); // Закрываем после выбора даты
-                    }}
-                    disabled={(date) => {
-                        const currentDate = new Date();
-                        currentDate.setHours(0, 0, 0, 0);
-                        return date.getTime() < currentDate.getTime() || (minDate && date.getTime() < minDate.getTime());
-                    }}
-                />
-            </PopoverContent>
+            </Button>
+        }>
+            <Calendar
+                locale={ru}
+                mode="single"
+                initialFocus
+                selected={value}
+                onSelect={(v) => {
+                    onDateChange(v || today);
+                    setIsOpen(false); // Закрываем после выбора даты
+                }}
+                disabled={(date) => {
+                    const currentDate = new Date();
+                    currentDate.setHours(0, 0, 0, 0);
+                    return date.getTime() < currentDate.getTime() || (minDate && date.getTime() < minDate.getTime());
+                }}
+            />
         </Popover>
     );
 });
@@ -189,6 +180,7 @@ const AddressInput = memo(({ setValue, defaultValue }: { defaultValue: string, s
 
     const handleSelect = useCallback((address: string) => {
         setSelectedAddress(address);
+        setValue(address)
         setQuery(address);
         setSuggestions([]);
         setIsBlurActive(false);
@@ -255,6 +247,53 @@ const AddressInput = memo(({ setValue, defaultValue }: { defaultValue: string, s
 
 AddressInput.displayName = 'AddressInput'
 
+
+interface PopoverProps {
+    trigger: ReactNode;
+    children: ReactNode;
+    className?: string;
+}
+
+export const Popover = ({ trigger, children, className }: PopoverProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const popoverRef = useRef<HTMLDivElement>(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isOpen]);
+
+    return (
+        <div className="relative" ref={popoverRef}>
+            <div onClick={() => setIsOpen((prev) => !prev)}>{trigger}</div>
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className={`absolute left-0 mt-2 bg-zinc-900 border border-zinc-800 shadow-2xl rounded-2xl z-[200] p-3 ${className}`}
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+
 export const EditOrder = ({ order, as }: IProps) => {
     const [open, setOpen] = useState(false)
     const { mutateAsync, isPending, isSuccess } = useMutation({
@@ -293,7 +332,7 @@ export const EditOrder = ({ order, as }: IProps) => {
             package_width: data.packageWidth,
             package_height: data.packageHeight,
             places_count: data.placesCount,
-            weight: 100,
+            weight: data.weight,
             pickup_addresses: data.pickupAddresses,
             delivery_addresses: data.deliveryAddresses,
             comment: data.comment,
@@ -351,9 +390,10 @@ export const EditOrder = ({ order, as }: IProps) => {
             <form onSubmit={handleSubmit(onSubmit)} className="px-6 sm:px-0 flex flex-col gap-4">
                 <ScrollArea className='h-[calc(60dvh-100px)] mt-4 pr-4 sm:pr-8'>
                     <h1 className='text-2xl font-semibold text-white'>Размеры</h1>
-                    <Input {...register('packageWidth')} defaultValue={order.packageLength} className='mt-4' label={'Длина'}/>
-                    <Input {...register('packageLength')} defaultValue={order.packageWidth} label={'Ширина'} className='mt-4'/>
-                    <Input {...register('packageHeight')} defaultValue={order.packageHeight} label={'Высота'} className='mt-4'/>
+                    <Input {...register('packageWidth', { valueAsNumber: true })} defaultValue={order.packageLength} className='mt-4' label={'Длина'}/>
+                    <Input {...register('packageLength', { valueAsNumber: true })} defaultValue={order.packageWidth} label={'Ширина'} className='mt-4'/>
+                    <Input {...register('packageHeight', { valueAsNumber: true })} defaultValue={order.packageHeight} label={'Высота'} className='mt-4'/>
+                    <Input {...register('weight', { valueAsNumber: true })} defaultValue={order.weight} label={'Вес'} className='mt-4'/>
 
                     <h1 className='text-2xl font-semibold text-white mt-12'>Куда и откуда</h1>
                     <h1 className='mt-4 text-zinc-400'>Откуда забрать</h1>

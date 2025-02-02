@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import { queryClient } from "@shared/api";
 import { useState } from "react";
 import { GetProfileResponse } from "@shared/api/services/profile/types";
+import { MdEdit } from "react-icons/md";
+import { GetUserResponse } from "@shared/api/services/users/types";
 
 interface IFormData {
     name: string,
@@ -20,30 +22,25 @@ interface IFormData {
     phone: string,
 }
 
-export const EditPassportData = () => {
+export const EditUserProfileByAdmin = ({ data, userId } : { data?: GetProfileResponse, userId: string }) => {
     const [open, setOpen] = useState(false)
-    const { data } = useQuery({
-        queryFn: profileService.getProfile,
-        queryKey: ['profile'],
-        retry: false
-    })
 
     const { handleSubmit, register } = useForm<IFormData>({ defaultValues: data })
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: profileService.changeProfile,
+        mutationFn: profileService.changeProfileByAdmin,
     })
 
     const onSubmit = handleSubmit((formData) => {
-        toast.promise(mutateAsync(formData).then(() => {
-                queryClient.setQueryData(['profile'], (oldData: GetProfileResponse) => ({...oldData, formData}))
+        toast.promise(mutateAsync({ ...formData, user_id: userId }).then(() => {
+                queryClient.setQueryData(['users'], (oldData: GetUserResponse[]) => oldData.map(user => user.id === userId ? { ...user, profile: formData } : user))
                 setOpen(false)
             })
             , {
-            loading: 'Изменение данных...',
-            success: 'Успешно!',
-            error: 'Что-то пошло не так...'
-        })
+                loading: 'Изменение данных...',
+                success: 'Успешно!',
+                error: 'Что-то пошло не так...'
+            })
     })
 
     return (
@@ -52,7 +49,10 @@ export const EditPassportData = () => {
             onOpenChange={setOpen}
             title={'Контактные данные'}
             description={'Эта информация будет передана водителю'}
-            trigger={<Button>Изменить</Button>}
+            trigger={<Button size={'icon'}>
+                <MdEdit/>
+            </Button>
+        }
         >
             <form onSubmit={onSubmit} className='px-4 mt-4 sm:mt-8 sm:px-0 flex flex-col gap-4'>
                 <div className='flex gap-2'>
