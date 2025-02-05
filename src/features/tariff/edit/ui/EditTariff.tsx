@@ -64,6 +64,7 @@ export const EditTariff = () => {
                         <p className="text-red-500/80 text-sm mt-2">{errors.price_per_km_rub.message}</p>
                     )}
                 </div>
+                
 
                 <div>
                     <h1 className="text-zinc-500 text-sm">Дополнительные места</h1>

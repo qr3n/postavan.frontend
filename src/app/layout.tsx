@@ -42,8 +42,8 @@ export default function RootLayout({
             name="viewport"
             content={"minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"}
         />
-        <link rel={"apple-touch-icon"} href={"icons/icon-128x128.png"}/>
-        <link rel={"icon"} href={"icons/icon-128x128.png"}/>
+        <link rel={"apple-touch-icon"} href={"/icons/icon-128x128.png"}/>
+        <link rel={"icon"} href={"/icons/icon-128x128.png"}/>
       </head>
       <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}

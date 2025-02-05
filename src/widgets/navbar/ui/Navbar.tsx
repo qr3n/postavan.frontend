@@ -9,7 +9,7 @@ import {
 } from "@shared/shadcn/components/dropdown-menu";
 import { Avatar } from "@shared/ui/avatar/ui/Avatar";
 import { RiShoppingBag4Fill } from "react-icons/ri";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Share } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
@@ -28,6 +28,11 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@shared/shadcn/components/sheet"
+import { Modal } from "@shared/ui/modal";
+import { PiExportBold } from "react-icons/pi";
+import { TelegramShareButton, WhatsappShareButton } from "react-share";
+import Image from 'next/image'
+import { telegramImg, whatsappImg } from "@widgets/navbar/ui/assets";
 
 export const Navbar = () => {
     const { orders } = useUserOrders()
@@ -96,7 +101,7 @@ export const Navbar = () => {
                                 </div>
                             </div>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className='mr-4 pb-2 mt-2 pt-4'>
+                        <DropdownMenuContent className='bg-black mr-4 pb-2 mt-2 pt-4'>
                             <div className='px-8 flex justify-center items-center flex-col'>
                                 <div className='p-2 bg-blue-400/30 rounded-full'>
                                     <Avatar size={56}/>
@@ -114,11 +119,41 @@ export const Navbar = () => {
                             <DropdownMenuSeparator className='mt-4'/>
                             <Link href='/order/create'>
                                 <DropdownMenuItem className='mt-2'>
-                        <span className="p-0.5 rounded-full bg-blue-500">
-                            <PlusIcon className='w-4 h-4'/>
-                        </span> Создать заказ
+                                    <span className="p-0.5 rounded-full bg-blue-500">
+                                        <PlusIcon className='w-4 h-4'/>
+                                    </span> Создать заказ
                                 </DropdownMenuItem>
                             </Link>
+                            <Modal trigger={<Button variant='ghost'
+                                                    className='font-normal justify-start pl-1.5 px-1.5 p-1.5 md:pl-1.5 md:px-1.5 md:p-1.5'>
+                                <span className='p-1 rounded-full bg-violet-500/50'>
+                                    <PiExportBold className='text-violet-400 w-7 h-7'/>
+                                </span>
+                                Поделиться
+                            </Button>} title={'Поделиться'} description={'Отправьте приложение своим знакомым'}>
+                                <div className='flex p-4 flex-col gap-3'>
+                                    <h1 className='font-medium'>Поделиться с помощью</h1>
+                                    <div
+                                        className='flex gap-4 mt-2 bg-[#222] border border-[#333] rounded-2xl px-3 py-2'>
+                                        <TelegramShareButton url={'https://primibox.com'}>
+                                            <div className='p-3 bg-[#333] rounded-full'>
+                                                <Image src={telegramImg} alt={'telegram'} width={32} height={32}/>
+                                            </div>
+                                        </TelegramShareButton>
+                                        <WhatsappShareButton url={'https://primibox.com'} title='Test'
+                                                             separator={'Test'}>
+                                            <div className='p-3 bg-[#333] rounded-full'>
+                                                <Image src={whatsappImg} alt={'whatsapp'} width={32} height={32}/>
+                                            </div>
+                                        </WhatsappShareButton>
+                                    </div>
+                                    <h1 className='font-medium mt-2'>Скопировать ссылку</h1>
+                                    <div
+                                        className='flex relative gap-4 items-center text-[#aaa] mt-2 bg-[#222] border border-[#333] rounded-2xl p-3'>
+                                        https://primibox.com
+                                    </div>
+                                </div>
+                            </Modal>
                             <Link href={'/orders'}>
                                 <DropdownMenuItem>Мои заказы</DropdownMenuItem>
                             </Link>
@@ -134,6 +169,7 @@ export const Navbar = () => {
                                     setAccessToken(null)
                                 }}>Выйти</DropdownMenuItem>
                             </Link>
+
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>
