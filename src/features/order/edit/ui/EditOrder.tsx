@@ -393,8 +393,9 @@ export const EditOrder = ({ order, as }: IProps) => {
                     <Input {...register('packageWidth', { valueAsNumber: true })} defaultValue={order.packageLength} className='mt-4' label={'Длина'}/>
                     <Input {...register('packageLength', { valueAsNumber: true })} defaultValue={order.packageWidth} label={'Ширина'} className='mt-4'/>
                     <Input {...register('packageHeight', { valueAsNumber: true })} defaultValue={order.packageHeight} label={'Высота'} className='mt-4'/>
+                    <Input {...register('placesCount', { valueAsNumber: true })} defaultValue={order.weight} label={'Количество'} className='mt-4'/>
                     <Input {...register('weight', { valueAsNumber: true })} defaultValue={order.weight} label={'Вес'} className='mt-4'/>
-
+                    
                     <h1 className='text-2xl font-semibold text-white mt-12'>Куда и откуда</h1>
                     <h1 className='mt-4 text-zinc-400'>Откуда забрать</h1>
                     <AddressInput defaultValue={order.pickupAddresses[0]} setValue={(v) => setValue('pickupAddresses', [v])}/>
