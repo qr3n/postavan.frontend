@@ -46,6 +46,8 @@ export const useUserOrders = () => {
         queryKey: ['user.orders']
     });
 
+    console.log(data)
+
     const formattedData = data?.map((order: GetUserOrderResponse) => convertGetUserOrderResponseToIOrder(order)) ?? [];
 
     return {
@@ -60,6 +62,8 @@ export const useAdminAllOrders = () => {
         queryFn: adminOrderService.getAll,
         queryKey: ['admin.orders']
     });
+
+    console.log(data)
 
     const formattedData = data?.map((order: GetUserOrderResponse) => convertGetUserOrderResponseToIOrder(order)) ?? [];
 

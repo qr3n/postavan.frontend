@@ -32,7 +32,7 @@ const SuggestionsList = memo(({ suggestions, handleSelect, highlightCity }: {
 
 SuggestionsList.displayName = 'SuggestionsList'
 
-const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pickup" | "delivery", onRemove: () => void }) => {
+const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pickup" | "delivery"; onRemove: () => void }) => {
     const [suggestions, setSuggestions] = useState<{ value: string }[]>([]);
     const [selectedAddress, setSelectedAddress] = useAtom(
         variant === "pickup"
@@ -43,51 +43,58 @@ const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pi
     const [query, setQuery] = useState(selectedAddress);
     const [isLoading, setIsLoading] = useState(false);
     const [isBlurActive, setIsBlurActive] = useState(false);
+    const [openUpwards, setOpenUpwards] = useState(false);
+
     const inputRef = useRef<HTMLDivElement | null>(null);
+    const suggestionsRef = useRef<HTMLUListElement | null>(null);
 
-    const handleInputChange = useCallback(
-        async (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            setQuery(value);
-            // setSelectedAddress(value)
+    useEffect(() => {
+        if (inputRef.current && suggestions.length > 0) {
+            const rect = inputRef.current.getBoundingClientRect();
+            const spaceBelow = window.innerHeight - rect.bottom;
+            setOpenUpwards(spaceBelow < 300);
+        }
+    }, [suggestions.length]);
 
-            if (value.length < 3) {
-                setSuggestions([]);
-                setIsBlurActive(false);
-                return;
+    const handleInputChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setQuery(value);
+
+        if (value.length < 3) {
+            setSuggestions([]);
+            setIsBlurActive(false);
+            return;
+        }
+
+        setIsLoading(true);
+        setIsBlurActive(true);
+
+        try {
+            const response = await fetch("https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: `Token dae305d1444a59cb68acd68b223f4080a84a6dc5`,
+                },
+                body: JSON.stringify({
+                    query: value,
+                    locations_boost: [{ kladr_id: "77" }],
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setSuggestions(data.suggestions || []);
+            } else {
+                console.error("Error fetching suggestions:", response.statusText);
             }
-
-            setIsLoading(true);
-            setIsBlurActive(true);
-
-            try {
-                const response = await fetch("https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        Authorization: `Token dae305d1444a59cb68acd68b223f4080a84a6dc5`,
-                    },
-                    body: JSON.stringify({
-                        query: value,
-                        locations_boost: [{kladr_id: "77"}]
-                    }),
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setSuggestions(data.suggestions || []);
-                } else {
-                    console.error("Error fetching suggestions:", response.statusText);
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        []
-    );
+        } catch (error) {
+            console.error("Error:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     const handleSelect = useCallback((address: string) => {
         setSelectedAddress(address);
@@ -95,11 +102,6 @@ const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pi
         setSuggestions([]);
         setIsBlurActive(false);
     }, [setSelectedAddress]);
-
-    const highlightCity = useCallback(
-        (text: string) => text.replace(/(г\sМосква)/i, `<span class="text-zinc-400">$1</span>`),
-        []
-    );
 
     const handleClickOutside = useCallback(() => {
         setSuggestions([]);
@@ -120,7 +122,7 @@ const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pi
                 )}
             </AnimatePresence>
 
-            <div className='flex gap-2 items-center'>
+            <div className="flex gap-2 items-center">
                 <Input
                     type="text"
                     value={query}
@@ -140,33 +142,35 @@ const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pi
                 </Button>
             </div>
 
-            {isLoading && (
+            {(isLoading || suggestions.length > 0) && (
                 <ul
-                    className="shadow-2xl absolute left-0 w-full py-2 bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-48 sm:max-h-64 z-[200] transition-all"
+                    ref={suggestionsRef}
+                    className={`shadow-2xl overflow-y-scroll absolute left-0 w-full py-2 bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-48 sm:max-h-64 z-[200] transition-all 
+                    ${openUpwards ? "bottom-full mb-1" : "top-full mt-1"}`}
                 >
-                    {[...Array(5)].map((_, index) => (
-                        <li
-                            key={index}
-                            className="p-2 border-b border-zinc-700 animate-pulse"
-                        >
-                            <div className="h-6 bg-zinc-700/80 rounded-full animate-pulse w-full"></div>
-                        </li>
-                    ))}
+                    {isLoading
+                        ? [...Array(5)].map((_, index) => (
+                            <li key={index} className="p-2 border-b border-zinc-700 animate-pulse">
+                                <div className="h-6 bg-zinc-700/80 rounded-full animate-pulse w-full"></div>
+                            </li>
+                        ))
+                        : suggestions.map((suggestion, index) => (
+                            <li
+                                key={index}
+                                onClick={() => handleSelect(suggestion.value)}
+                                className="p-2 hover:bg-zinc-800 cursor-pointer"
+                            >
+                                {suggestion.value}
+                            </li>
+                        ))}
                 </ul>
-            )}
-
-            {!isLoading && suggestions.length > 0 && (
-                <SuggestionsList
-                    suggestions={suggestions}
-                    handleSelect={handleSelect}
-                    highlightCity={highlightCity}
-                />
             )}
         </div>
     );
 });
 
-AddressInput.displayName = 'AddressInput'
+AddressInput.displayName = "AddressInput";
+
 
 const CanContinue = () => {
     const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses);
