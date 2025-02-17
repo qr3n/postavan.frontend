@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { DeleteIcon, PlusIcon } from "lucide-react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
+import { ScrollArea } from "@shared/shadcn/components/scroll-area";
+import * as Portal from "@radix-ui/react-portal";
 
 const SuggestionsList = memo(({ suggestions, handleSelect, highlightCity }: {
     suggestions: { value: string }[];
@@ -108,8 +110,34 @@ const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pi
         setIsBlurActive(false);
     }, []);
 
+    const [inputRect, setInputRect] = useState<DOMRect | null>(null);
+
+    useEffect(() => {
+        if (!inputRef.current || suggestions.length === 0) {
+            setInputRect(null);
+            return;
+        }
+
+        const updateRect = () => {
+            const rect = inputRef.current!.getBoundingClientRect();
+            setInputRect(rect);
+            const spaceBelow = window.innerHeight - rect.bottom;
+            setOpenUpwards(spaceBelow < 300);
+        };
+
+        updateRect();
+
+        window.addEventListener("resize", updateRect);
+        window.addEventListener("scroll", updateRect, true);
+
+        return () => {
+            window.removeEventListener("resize", updateRect);
+            window.removeEventListener("scroll", updateRect, true);
+        };
+    }, [suggestions.length]);
+
     return (
-        <div ref={inputRef} className="relative w-full">
+        <div ref={inputRef} className="mb-2 relative w-full">
             <AnimatePresence mode={"wait"}>
                 {isBlurActive && (
                     <motion.div
@@ -142,28 +170,38 @@ const AddressInput = memo(({ id, variant, onRemove }: { id: string; variant: "pi
                 </Button>
             </div>
 
-            {(isLoading || suggestions.length > 0) && (
-                <ul
-                    ref={suggestionsRef}
-                    className={`shadow-2xl overflow-y-scroll absolute left-0 w-full py-2 bg-zinc-900 border border-zinc-800 rounded-2xl mt-1 max-h-48 sm:max-h-64 z-[200] transition-all 
-                    ${openUpwards ? "bottom-full mb-1" : "top-full mt-1"}`}
-                >
-                    {isLoading
-                        ? [...Array(5)].map((_, index) => (
-                            <li key={index} className="p-2 border-b border-zinc-700 animate-pulse">
-                                <div className="h-6 bg-zinc-700/80 rounded-full animate-pulse w-full"></div>
-                            </li>
-                        ))
-                        : suggestions.map((suggestion, index) => (
-                            <li
-                                key={index}
-                                onClick={() => handleSelect(suggestion.value)}
-                                className="p-2 hover:bg-zinc-800 cursor-pointer"
-                            >
-                                {suggestion.value}
-                            </li>
-                        ))}
-                </ul>
+
+            {(isLoading || suggestions.length > 0) && inputRect && (
+                <Portal.Root>
+                    <ul
+                        ref={suggestionsRef}
+                        style={{
+                            position: "fixed",
+                            left: inputRect.left,
+                            width: inputRect.width,
+                            ...(openUpwards
+                                ? {bottom: window.innerHeight - inputRect.top + 4}
+                                : {top: inputRect.bottom + 4}),
+                        }}
+                        className="shadow-2xl overflow-y-auto py-2 bg-zinc-900 border border-zinc-800 rounded-2xl z-[200] max-h-48 sm:max-h-64"
+                    >
+                        {isLoading
+                            ? [...Array(5)].map((_, index) => (
+                                <li key={index} className="p-2 border-b border-zinc-700 animate-pulse">
+                                    <div className="h-6 bg-zinc-700/80 rounded-full animate-pulse w-full"></div>
+                                </li>
+                            ))
+                            : suggestions.map((suggestion, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => handleSelect(suggestion.value)}
+                                    className="p-2 hover:bg-zinc-800 cursor-pointer"
+                                >
+                                    {suggestion.value}
+                                </li>
+                            ))}
+                    </ul>
+                </Portal.Root>
             )}
         </div>
     );
@@ -235,13 +273,13 @@ export const SetAddressesStep = () => {
             <div className="flex mt-4 flex-col sm:flex-row gap-12 w-full max-w-3xl">
                 <div className="flex flex-col w-full sm:items-center">
                     <h1 className="font-semibold text-lg md:text-xl lg:text-xl">Откуда забрать?</h1>
-                    <div className="w-full mt-4 space-y-2">
+                    <ScrollArea className="max-h-[clamp(3dvh,7vh,600px)] sm-h:max-h-[clamp(3dvh,12vh,600px)] md-h:max-h-[clamp(10dvh,15vh,600px)] sm:max-h-auto! pr-4 w-full mt-4 flex flex-col gap-2">
                         {pickupAddressesIds.map((id) => (
                             <AddressInput
                                 onRemove={() => removePickupAddressId(id)}
                                 variant={"pickup"} id={id} key={id} />
                         ))}
-                    </div>
+                    </ScrollArea>
                     <Button
                         onClick={addPickupAddressId}
                         className="w-full mt-4 flex items-center justify-center"
@@ -256,7 +294,7 @@ export const SetAddressesStep = () => {
 
                 <div className="flex flex-col sm:items-center w-full">
                     <h1 className="font-semibold text-lg md:text-xl lg:text-xl">Куда доставить?</h1>
-                    <div className="w-full mt-4 space-y-2">
+                    <ScrollArea className="max-h-[clamp(3dvh,7vh,600px)] sm-h:max-h-[clamp(3dvh,12vh,600px)] md-h:max-h-[clamp(10dvh,15vh,600px)] sm:max-h-auto! pr-4 w-full mt-4 flex flex-col gap-2">
                         {deliveryAddressesIds.map((id) => (
                             <AddressInput
                                 onRemove={() => removeDeliveryAddressId(id)}
@@ -265,7 +303,7 @@ export const SetAddressesStep = () => {
                                 key={id}
                             />
                         ))}
-                    </div>
+                    </ScrollArea>
                     <Button
                         onClick={addDeliveryAddressId}
                         className="w-full mt-4 flex items-center justify-center"

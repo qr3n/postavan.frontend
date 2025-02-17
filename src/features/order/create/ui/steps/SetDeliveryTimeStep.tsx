@@ -21,7 +21,6 @@ type DatePickerProps = {
     value: Date,
     minDate: Date
 };
-
 const DatePicker = memo<DatePickerProps>(({ onDateChange, value, minDate }) => {
     const today = new Date();
     const isToday = value.toDateString() === today.toDateString();
@@ -42,14 +41,22 @@ const DatePicker = memo<DatePickerProps>(({ onDateChange, value, minDate }) => {
                     disabled={(date) => {
                         const currentDate = new Date();
                         currentDate.setHours(0, 0, 0, 0);
-                        return date.getTime() < currentDate.getTime() || (minDate && date.getTime() < minDate.getTime());
+
+                        // Нормализация minDate
+                        let minDateValue = currentDate;
+                        if (minDate) {
+                            const minDateCopy = new Date(minDate);
+                            minDateCopy.setHours(0, 0, 0, 0);
+                            minDateValue = minDateCopy > currentDate ? minDateCopy : currentDate;
+                        }
+
+                        return date.getTime() < minDateValue.getTime();
                     }}
                 />
             </PopoverContent>
         </Popover>
     );
 });
-
 DatePicker.displayName = 'DatePicker';
 
 const TimeSelect = memo<TimeSelectProps>(({ onChange, value, availableTimes, prefix }) => (

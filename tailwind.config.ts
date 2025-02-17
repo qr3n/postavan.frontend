@@ -7,6 +7,26 @@ export default {
   ],
   theme: {
   	extend: {
+		screens: {
+			'xs-h': {
+				raw: '(min-height: 480px)'
+			},
+			'sm-h': {
+				raw: '(min-height: 640px)'
+			},
+			'md-h': {
+				raw: '(min-height: 768px)'
+			},
+			'lg-h': {
+				raw: '(min-height: 1024px)'
+			},
+			'xl-h': {
+				raw: '(min-height: 1280px)'
+			},
+			'2xl-h': {
+				raw: '(min-height: 1536px)'
+			}
+		},
   		colors: {
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
