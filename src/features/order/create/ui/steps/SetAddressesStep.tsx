@@ -269,7 +269,7 @@ export const SetAddressesStep = () => {
     );
 
     return (
-        <Step title="Куда и откуда?" description="В заказе можно указывать несколько адресов, нажав на +">
+        <Step title="Откуда и куда?" description="В заказе можно указывать несколько адресов, нажав на +">
             <div className="flex mt-4 flex-col sm:flex-row gap-12 w-full max-w-3xl">
                 <div className="flex flex-col w-full sm:items-center">
                     <h1 className="font-semibold text-lg md:text-xl lg:text-xl">Откуда забрать?</h1>

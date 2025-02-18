@@ -119,7 +119,7 @@ export const OrderDetailsModal = memo(({order, action }: IProps) => {
                     />
 
                     <Section
-                        title={'Куда и откуда'}
+                        title={'Откуда и куда'}
                         data={[
                             {label: 'Откуда забрать', value: <a href={`geo:0,0?q=${order.pickupAddresses}`}>{`${order.pickupAddresses.join(', ')}`}</a>,},
                             {label: 'Куда доставить', value: <a href={`geo:0,0?q=${order.deliveryAddresses}`}>{`${order.deliveryAddresses.join(', ')}`}</a>},
