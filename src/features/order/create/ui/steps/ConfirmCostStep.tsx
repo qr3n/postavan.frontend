@@ -15,22 +15,24 @@ export const ConfirmCostStep = () => {
     const placesCount = useAtomValue(createOrderAtoms.placesCount)
     const weight = useAtomValue(createOrderAtoms.weight)
 
-    const { mutate, data, isPending } = useMutation({
+    const { mutateAsync, data, isPending } = useMutation({
         mutationFn: orderService.calculateCost,
         mutationKey: ['calculateCost'],
         retry: 5,
     });
 
     useEffect(() => {
+        alert('Попытка посчитать стоимость')
+
         if (pickupAddresses.length > 0 && deliveryAddresses.length > 0) {
-            mutate({
+            mutateAsync({
                 pickup_addresses: pickupAddresses,
                 delivery_addresses: deliveryAddresses,
                 places_count: placesCount,
                 weight: weight,
-            });
+            }).then(() => alert('Успех!')).catch(() => alert('Ошибка'));
         }
-    }, [deliveryAddresses, mutate, pickupAddresses, placesCount, weight]);
+    }, [deliveryAddresses, mutateAsync, pickupAddresses, placesCount, weight]);
 
     return (
         <CreateOrderTemplates.Step
