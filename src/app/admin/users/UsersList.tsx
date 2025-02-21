@@ -14,7 +14,7 @@ export const UsersList = () => {
     })
 
     return (
-        <ScrollArea className='h-[calc(100dvh-200px)] sm:h-[calc(100dvh-250px)] pr-4'>
+        <ScrollArea className='w-full h-[calc(100dvh-200px)] mt-2 sm:h-[calc(100dvh-250px)] pr-4'>
             <div className='flex flex-col gap-4'>
                 {data?.map(user => (
                     <div className='px-5 py-4 rounded-2xl flex justify-between bg-zinc-800/70' key={user.id}>

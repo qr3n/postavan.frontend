@@ -36,7 +36,8 @@ const convertGetUserOrderResponseToIOrder = (response: GetUserOrderResponse): IO
             passportGiven: response.driver_profile?.passport_given,
             passportGiven_date: response.driver_profile?.passport_given_date,
         },
-        driverCar: response.driver_car
+        driverCar: response.driver_car,
+        driverId: response.driver_id
     };
 };
 
@@ -62,8 +63,6 @@ export const useAdminAllOrders = () => {
         queryFn: adminOrderService.getAll,
         queryKey: ['admin.orders']
     });
-
-    console.log(data)
 
     const formattedData = data?.map((order: GetUserOrderResponse) => convertGetUserOrderResponseToIOrder(order)) ?? [];
 

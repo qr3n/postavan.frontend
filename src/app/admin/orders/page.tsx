@@ -53,11 +53,11 @@ export default function AdminPage() {
                                 <AdminOrdersList orders={activeOrdersToday} />
                             </TabsContent>
 
-                            <TabsContent className='w-full h-full justify-center mt-0 flex' value={'planned'}>
+                            <TabsContent className=' w-full h-full justify-center mt-4 flex' value={'planned'}>
                                 <AdminOrdersList orders={plannedOrders} />
                             </TabsContent>
 
-                            <TabsContent className='w-full h-full justify-center mt-0 flex' value={'closed'}>
+                            <TabsContent className='w-full h-full justify-center mt-4 flex' value={'closed'}>
                                 <AdminOrdersList orders={closedOrders} />
                             </TabsContent>
                         </div>

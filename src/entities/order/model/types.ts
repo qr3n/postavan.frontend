@@ -49,5 +49,6 @@ export interface IOrder {
     placesCount: number,
     weight: number,
     driverProfile?: IOrderDriverProfile,
-    driverCar?: IOrderDriverCar
+    driverCar?: IOrderDriverCar,
+    driverId: string | null,
 }

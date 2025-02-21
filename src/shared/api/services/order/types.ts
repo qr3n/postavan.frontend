@@ -84,6 +84,7 @@ export interface GetUserOrderResponse {
     delivery_time_from: string,
     delivery_time_to: string,
     distance: number,
+    driver_id: string | null,
     driver_profile?: GetUserOrderResponseDriverInfo,
     driver_car?: GetUserOrderResponseDriverCar
 }

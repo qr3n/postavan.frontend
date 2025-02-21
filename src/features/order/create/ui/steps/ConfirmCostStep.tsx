@@ -18,7 +18,7 @@ export const ConfirmCostStep = () => {
     const { mutate, data, isPending } = useMutation({
         mutationFn: orderService.calculateCost,
         mutationKey: ['calculateCost'],
-        retry: 0,
+        retry: 5,
     });
 
     useEffect(() => {
