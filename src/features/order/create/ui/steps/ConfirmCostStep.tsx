@@ -32,6 +32,14 @@ export const ConfirmCostStep = () => {
                 weight: weight,
             }).then(() => alert('Успех!')).catch(() => alert('Ошибка'));
         }
+
+        else {
+            alert('Недостаточно данных для рассчета')
+            alert(`pickupAddresses ${pickupAddresses}`, )
+            alert(`deliveryAddresses ${deliveryAddresses}`, )
+            alert(`placesCount ${placesCount}`, )
+            alert(`weight ${weight}`, )
+        }
     }, [deliveryAddresses, mutateAsync, pickupAddresses, placesCount, weight]);
 
     return (
