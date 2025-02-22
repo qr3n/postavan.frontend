@@ -8,6 +8,8 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 import { ScrollArea } from "@shared/shadcn/components/scroll-area";
 import * as Portal from "@radix-ui/react-portal";
+import { useMutation } from "@tanstack/react-query";
+import { orderService } from "@shared/api/services/order";
 
 const SuggestionsList = memo(({ suggestions, handleSelect, highlightCity }: {
     suggestions: { value: string }[];

@@ -1,6 +1,6 @@
 import { CreateOrderTemplates } from "@features/order/create/ui/templates";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAtomValue } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 import { orderService } from "@shared/api/services/order";
@@ -12,35 +12,34 @@ import { motion } from "framer-motion";
 export const ConfirmCostStep = () => {
     const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses);
     const deliveryAddresses = useAtomValue(createOrderAtoms.allDeliveryAddresses);
-    const placesCount = useAtomValue(createOrderAtoms.placesCount)
-    const weight = useAtomValue(createOrderAtoms.weight)
+    const placesCount = useAtomValue(createOrderAtoms.placesCount);
+    const weight = useAtomValue(createOrderAtoms.weight);
+
+    const stablePickup = useMemo(
+        () => pickupAddresses,
+        [JSON.stringify(pickupAddresses)]
+    );
+    const stableDelivery = useMemo(
+        () => deliveryAddresses,
+        [JSON.stringify(deliveryAddresses)]
+    );
 
     const { mutateAsync, data, isPending } = useMutation({
         mutationFn: orderService.calculateCost,
         mutationKey: ['calculateCost'],
-        retry: 5,
+        retry: 2,
     });
 
     useEffect(() => {
-        alert('Попытка посчитать стоимость')
-
-        if (pickupAddresses.length > 0 && deliveryAddresses.length > 0) {
+        if (stablePickup.length > 0 && stableDelivery.length > 0) {
             mutateAsync({
-                pickup_addresses: pickupAddresses,
-                delivery_addresses: deliveryAddresses,
+                pickup_addresses: stablePickup,
+                delivery_addresses: stableDelivery,
                 places_count: placesCount,
                 weight: weight,
-            }).then(() => alert('Успех!')).catch(() => alert('Ошибка'));
+            });
         }
-
-        else {
-            alert('Недостаточно данных для рассчета')
-            alert(`pickupAddresses ${pickupAddresses}`, )
-            alert(`deliveryAddresses ${deliveryAddresses}`, )
-            alert(`placesCount ${placesCount}`, )
-            alert(`weight ${weight}`, )
-        }
-    }, [deliveryAddresses, mutateAsync, pickupAddresses, placesCount, weight]);
+    }, [stableDelivery, stablePickup, mutateAsync, placesCount, weight]);
 
     return (
         <CreateOrderTemplates.Step
