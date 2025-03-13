@@ -9,21 +9,6 @@ import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelec
 import { useAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 
-// Константа для UTC+3 смещения в миллисекундах
-const UTC_PLUS_3_OFFSET = 3 * 60 * 60 * 1000;
-
-// Функция для конвертации даты в UTC+3
-const convertToUTC3 = (date: Date): Date => {
-    const userTimezoneOffset = date.getTimezoneOffset() * 60 * 1000;
-    return new Date(date.getTime() + userTimezoneOffset + UTC_PLUS_3_OFFSET);
-};
-
-// Функция для конвертации из UTC+3 в локальное время
-const convertFromUTC3 = (date: Date): Date => {
-    const userTimezoneOffset = date.getTimezoneOffset() * 60 * 1000;
-    return new Date(date.getTime() - userTimezoneOffset - UTC_PLUS_3_OFFSET);
-};
-
 type TimeSelectProps = {
     value: string;
     onChange: (value: string) => void;
@@ -38,45 +23,52 @@ type DatePickerProps = {
 };
 
 const DatePicker = memo<DatePickerProps>(({ onDateChange, value, minDate }) => {
-    const today = convertToUTC3(new Date());
-    const displayValue = convertToUTC3(value);
-    const isToday = displayValue.toDateString() === today.toDateString();
+    const today = new Date();
+    const isToday = value.toDateString() === today.toDateString();
 
-    const handleDateChange = (newDate: Date | undefined) => {
-        if (newDate) {
-            // Конвертируем выбранную дату в UTC+3 перед сохранением
-            onDateChange(convertFromUTC3(newDate));
-        } else {
-            onDateChange(convertFromUTC3(today));
-        }
+    // Функция для обработки выбора даты с сохранением времени в текущем часовом поясе
+    const handleDateSelect = (selectedDate: Date | undefined) => {
+        if (!selectedDate) return onDateChange(today);
+
+        // Создаем новую дату с правильным часовым поясом
+        // Устанавливаем 12:00, чтобы избежать проблем со сменой дня из-за часовых поясов
+        const newDate = new Date(selectedDate);
+        newDate.setHours(12, 0, 0, 0);
+
+        onDateChange(newDate);
     };
 
     return (
         <Popover>
             <PopoverTrigger className="flex gap-2 rounded-2xl px-4 py-2 bg-zinc-900 border-zinc-800 justify-start w-[140px] text-left font-normal">
                 <CalendarIcon className="text-zinc-500" />
-                {isToday ? 'Сегодня' : displayValue.toLocaleDateString('ru-RU')}
+                {isToday ? 'Сегодня' : value.toLocaleDateString('ru-RU')}
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                     locale={ru}
                     mode="single"
                     initialFocus
-                    selected={displayValue}
-                    onSelect={handleDateChange}
+                    selected={value}
+                    onSelect={handleDateSelect}
                     disabled={(date) => {
-                        const currentDate = convertToUTC3(new Date());
+                        // Нормализуем текущую дату (устанавливаем время в 00:00:00)
+                        const currentDate = new Date();
                         currentDate.setHours(0, 0, 0, 0);
 
                         // Нормализация minDate
                         let minDateValue = currentDate;
                         if (minDate) {
-                            const minDateCopy = convertToUTC3(new Date(minDate));
+                            const minDateCopy = new Date(minDate);
                             minDateCopy.setHours(0, 0, 0, 0);
                             minDateValue = minDateCopy > currentDate ? minDateCopy : currentDate;
                         }
 
-                        return date.getTime() < minDateValue.getTime();
+                        // Нормализуем проверяемую дату
+                        const checkDate = new Date(date);
+                        checkDate.setHours(0, 0, 0, 0);
+
+                        return checkDate.getTime() < minDateValue.getTime();
                     }}
                 />
             </PopoverContent>
@@ -112,6 +104,27 @@ export const SetDeliveryTimeStep = () => {
     const [deliveryStartTime, setDeliveryStartTime] = useAtom(createOrderAtoms.deliveryTimeFrom);
     const [deliveryEndTime, setDeliveryEndTime] = useAtom(createOrderAtoms.deliveryTimeTo);
 
+    // Обработчик изменения даты забора
+    const handlePickupDateChange = (date: Date) => {
+        // Создаем новую дату с временем 12:00 для безопасности
+        const normalizedDate = new Date(date);
+        normalizedDate.setHours(12, 0, 0, 0);
+        setPickupDate(normalizedDate);
+
+        // Обновляем дату доставки, если она раньше даты забора
+        if (deliveryDate < normalizedDate) {
+            setDeliveryDate(normalizedDate);
+        }
+    };
+
+    // Обработчик изменения даты доставки
+    const handleDeliveryDateChange = (date: Date) => {
+        // Создаем новую дату с временем 12:00 для безопасности
+        const normalizedDate = new Date(date);
+        normalizedDate.setHours(12, 0, 0, 0);
+        setDeliveryDate(normalizedDate);
+    };
+
     const getAvailableTimes = useCallback((startTime: string): string[] => {
         const startIndex = generateTimeOptions.indexOf(startTime);
         return generateTimeOptions.slice(startIndex + 1);
@@ -129,7 +142,7 @@ export const SetDeliveryTimeStep = () => {
                 setter(optionsGetter(value)[0]);
             }
         },
-        [generateTimeOptions]
+        []
     );
 
     return (
@@ -140,7 +153,7 @@ export const SetDeliveryTimeStep = () => {
                     <div className="flex gap-2 sm:gap-4 mt-4 w-full">
                         <DatePicker
                             value={pickupDate}
-                            onDateChange={setPickupDate}
+                            onDateChange={handlePickupDateChange}
                             minDate={new Date()}
                         />
 
@@ -168,7 +181,7 @@ export const SetDeliveryTimeStep = () => {
                     <h1 className="font-semibold text-lg sm:text-xl mt-12">Доставить</h1>
                     <div className="flex gap-2 sm:gap-4 mt-4">
                         <DatePicker
-                            onDateChange={setDeliveryDate}
+                            onDateChange={handleDeliveryDateChange}
                             value={deliveryDate}
                             minDate={pickupDate}
                         />
