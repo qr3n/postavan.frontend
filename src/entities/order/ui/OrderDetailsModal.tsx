@@ -66,6 +66,11 @@ const Section = memo((props: ISectionProps) => {
 
 Section.displayName = 'Section'
 
+const formatDateToUserTimezone = (utcDate: Date) => {
+    return utcDate.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+};
+
+
 export const OrderDetailsModal = memo(({order, action }: IProps) => {
     return (
         <Modal
@@ -86,7 +91,6 @@ export const OrderDetailsModal = memo(({order, action }: IProps) => {
                     />
                     <p className='text-[12px] sm:text-[15px]'>{order.shipmentType === 'marketplace' ? order.marketplace : 'Разные вещи'}</p>
                 </div>
-
             </div>}
             description=''
             trigger={<div className='cursor-pointer absolute top-0 left-0 w-full h-full'/>}

@@ -24,6 +24,7 @@ import { orderService } from "@shared/api/services/order";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { IOrder } from "@entities/order";
+import { ChooseDeliveryTypeStep } from "@features/order/create/ui/steps/ChooseDeliveryTypeStep";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -45,6 +46,7 @@ const sliderTransition = {
 };
 
 const getBlocks = (shipmentType: IOrder['shipmentType']) => [
+    <ChooseDeliveryTypeStep/>,
     <ChooseShipmentStep key="ChooseShipmentStep" />,
     shipmentType === "marketplace"
         ? <ChooseMarketplaceStep key="ChooseMarketplaceStep" />

@@ -9,6 +9,21 @@ import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelec
 import { useAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 
+// Константа для UTC+3 смещения в миллисекундах
+const UTC_PLUS_3_OFFSET = 3 * 60 * 60 * 1000;
+
+// Функция для конвертации даты в UTC+3
+const convertToUTC3 = (date: Date): Date => {
+    const userTimezoneOffset = date.getTimezoneOffset() * 60 * 1000;
+    return new Date(date.getTime() + userTimezoneOffset + UTC_PLUS_3_OFFSET);
+};
+
+// Функция для конвертации из UTC+3 в локальное время
+const convertFromUTC3 = (date: Date): Date => {
+    const userTimezoneOffset = date.getTimezoneOffset() * 60 * 1000;
+    return new Date(date.getTime() - userTimezoneOffset - UTC_PLUS_3_OFFSET);
+};
+
 type TimeSelectProps = {
     value: string;
     onChange: (value: string) => void;
@@ -21,31 +36,42 @@ type DatePickerProps = {
     value: Date,
     minDate: Date
 };
+
 const DatePicker = memo<DatePickerProps>(({ onDateChange, value, minDate }) => {
-    const today = new Date();
-    const isToday = value.toDateString() === today.toDateString();
+    const today = convertToUTC3(new Date());
+    const displayValue = convertToUTC3(value);
+    const isToday = displayValue.toDateString() === today.toDateString();
+
+    const handleDateChange = (newDate: Date | undefined) => {
+        if (newDate) {
+            // Конвертируем выбранную дату в UTC+3 перед сохранением
+            onDateChange(convertFromUTC3(newDate));
+        } else {
+            onDateChange(convertFromUTC3(today));
+        }
+    };
 
     return (
         <Popover>
             <PopoverTrigger className="flex gap-2 rounded-2xl px-4 py-2 bg-zinc-900 border-zinc-800 justify-start w-[140px] text-left font-normal">
                 <CalendarIcon className="text-zinc-500" />
-                {isToday ? 'Сегодня' : value.toLocaleDateString('ru-RU')}
+                {isToday ? 'Сегодня' : displayValue.toLocaleDateString('ru-RU')}
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                     locale={ru}
                     mode="single"
                     initialFocus
-                    selected={value}
-                    onSelect={(v) => onDateChange(v || today)}
+                    selected={displayValue}
+                    onSelect={handleDateChange}
                     disabled={(date) => {
-                        const currentDate = new Date();
+                        const currentDate = convertToUTC3(new Date());
                         currentDate.setHours(0, 0, 0, 0);
 
                         // Нормализация minDate
                         let minDateValue = currentDate;
                         if (minDate) {
-                            const minDateCopy = new Date(minDate);
+                            const minDateCopy = convertToUTC3(new Date(minDate));
                             minDateCopy.setHours(0, 0, 0, 0);
                             minDateValue = minDateCopy > currentDate ? minDateCopy : currentDate;
                         }
@@ -103,7 +129,7 @@ export const SetDeliveryTimeStep = () => {
                 setter(optionsGetter(value)[0]);
             }
         },
-        []
+        [generateTimeOptions]
     );
 
     return (
@@ -112,7 +138,11 @@ export const SetDeliveryTimeStep = () => {
                 <div>
                     <h1 className="font-semibold text-lg sm:text-xl">Забрать</h1>
                     <div className="flex gap-2 sm:gap-4 mt-4 w-full">
-                        <DatePicker value={pickupDate} onDateChange={setPickupDate} minDate={new Date()} />
+                        <DatePicker
+                            value={pickupDate}
+                            onDateChange={setPickupDate}
+                            minDate={new Date()}
+                        />
 
                         <TimeSelect
                             value={pickupStartTime}
@@ -140,7 +170,7 @@ export const SetDeliveryTimeStep = () => {
                         <DatePicker
                             onDateChange={setDeliveryDate}
                             value={deliveryDate}
-                            minDate={pickupDate} // Устанавливаем минимальную дату для второго календаря
+                            minDate={pickupDate}
                         />
 
                         <TimeSelect
