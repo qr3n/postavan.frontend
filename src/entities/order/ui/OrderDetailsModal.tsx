@@ -118,7 +118,7 @@ export const OrderDetailsModal = memo(({order, action }: IProps) => {
                             {label: 'Ширина', value: `${order.packageWidth}`},
                             {label: 'Высота', value: `${order.packageHeight}`},
                             {label: 'Количество', value: `${order.placesCount}`},
-                            {label: 'Вес', value: `${order.placesCount}`},
+                            {label: 'Вес', value: `${order.weight}кг`},
                         ]}
                     />
 
