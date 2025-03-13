@@ -46,7 +46,7 @@ const sliderTransition = {
 };
 
 const getBlocks = (shipmentType: IOrder['shipmentType']) => [
-    <ChooseDeliveryTypeStep/>,
+    <ChooseDeliveryTypeStep key={'ChooseDeliveryTypeStep'}/>,
     <ChooseShipmentStep key="ChooseShipmentStep" />,
     shipmentType === "marketplace"
         ? <ChooseMarketplaceStep key="ChooseMarketplaceStep" />
