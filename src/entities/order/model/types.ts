@@ -51,4 +51,5 @@ export interface IOrder {
     driverProfile?: IOrderDriverProfile,
     driverCar?: IOrderDriverCar,
     driverId: string | null,
+    needSplit?: boolean
 }

@@ -37,7 +37,8 @@ const convertGetUserOrderResponseToIOrder = (response: GetUserOrderResponse): IO
             passportGiven_date: response.driver_profile?.passport_given_date,
         },
         driverCar: response.driver_car,
-        driverId: response.driver_id
+        driverId: response.driver_id,
+        needSplit: response.need_split
     };
 };
 

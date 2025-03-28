@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { IOrder } from "@entities/order";
 import { ChooseDeliveryTypeStep } from "@features/order/create/ui/steps/ChooseDeliveryTypeStep";
+import { cn } from "@shared/shadcn/lib/utils";
 
 const sliderVariants = {
     incoming: (direction: number) => ({
@@ -46,7 +47,7 @@ const sliderTransition = {
 };
 
 const getBlocks = (shipmentType: IOrder['shipmentType']) => [
-    // <ChooseDeliveryTypeStep key={'ChooseDeliveryTypeStep'}/>,
+    <ChooseDeliveryTypeStep key={'ChooseDeliveryTypeStep'}/>,
     <ChooseShipmentStep key="ChooseShipmentStep" />,
     shipmentType === "marketplace"
         ? <ChooseMarketplaceStep key="ChooseMarketplaceStep" />
@@ -61,6 +62,7 @@ const getBlocks = (shipmentType: IOrder['shipmentType']) => [
 ].filter(Boolean);
 
 const App = () => {
+    const needSplit = useAtomValue(createOrderAtoms.needSplit)
     const router = useRouter();
     const { mutateAsync, isPending, isSuccess } = useMutation({
         mutationFn: orderService.create,
@@ -110,6 +112,7 @@ const App = () => {
                 pickup_time_to: store.get(createOrderAtoms.pickupTimeTo),
                 delivery_time_from: store.get(createOrderAtoms.deliveryTimeFrom),
                 delivery_time_to: store.get(createOrderAtoms.deliveryTimeTo),
+                need_split: store.get(createOrderAtoms.needSplit)
             }),
             {
                 success: "Заказ создан.",
@@ -136,7 +139,7 @@ const App = () => {
     return (
         <main>
             <div className="slider-container">
-                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-170px)] sm:h-[calc(100dvh-200px)]">
+                <div className="w-[100dvw] overflow-hidden relative h-[calc(100dvh-210px)] sm:h-[calc(100dvh-220px)]">
                     <div className="absolute left-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-r from-black z-50 to-transparent" />
                     <AnimatePresence initial={false} custom={direction}>
                         <motion.div
@@ -155,8 +158,8 @@ const App = () => {
                     <div className="absolute right-0 top-0 w-[10px] sm:w-[50px] md:w-[100px] lg:w-[200px] h-full bg-gradient-to-l from-black z-50 to-transparent" />
                 </div>
 
-                <div className="flex flex-col px-8 w-full max-w-[600px] gap-4">
-                    <Button disabled={!canContinue} isLoading={isPending} onClick={handleNext}>
+                <div className="flex flex-col  px-8 w-full max-w-[600px] gap-4">
+                    <Button className={cn(``, `${needSplit ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500'}`)} disabled={!canContinue} isLoading={isPending} onClick={handleNext}>
                         Продолжить
                     </Button>
                     <Button disabled={imageCount === 0} variant="outline" onClick={() => swipeToImage(-1)}>

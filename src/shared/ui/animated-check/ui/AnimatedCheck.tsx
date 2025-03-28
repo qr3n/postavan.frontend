@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export const AnimatedCheck = ({ clamp }: { clamp?: boolean }) => {
+export const AnimatedCheck = ({ clamp, color }: { clamp?: boolean, color?: string }) => {
     return (
         <motion.div
             initial={{ scale: 0 }}
@@ -10,7 +10,7 @@ export const AnimatedCheck = ({ clamp }: { clamp?: boolean }) => {
                 width: clamp ? 'clamp(16px, 4vh, 32px)' : '32px', // Размер зависит от высоты окна
                 height: clamp ? 'clamp(16px, 4vh, 32px)' : '32px',
                 borderRadius: '50%',
-                backgroundColor: '#1464e6',
+                backgroundColor: color || '#1464e6',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

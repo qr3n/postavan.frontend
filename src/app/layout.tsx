@@ -1,27 +1,23 @@
 import { Providers }     from "./providers";
 import localFont         from "next/font/local";
 import { Metadata }      from "next";
-import './globals.css'
 import { Toaster } from "react-hot-toast";
 import { Navbar } from "@widgets/navbar";
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster as ShadcnToaster } from "@shared/shadcn/components/toaster"
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Primi.box",
   description: "Лучший сервис доставки в мире!",
 };
+
+const myFont = localFont({
+    src: "./fonts/BebasNeue Bold.ttf",
+    variable: '--myfont'
+})
+
+import './globals.css'
 
 export default function RootLayout({
   children,
@@ -46,7 +42,7 @@ export default function RootLayout({
         <link rel={"icon"} href={"/icons/icon-128x128.png"}/>
       </head>
       <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
+          className={`${myFont.className} antialiased dark`}
       >
       <Providers>
         <NextTopLoader showSpinner={false} color={'#1464e6'}/>

@@ -6,6 +6,8 @@ import Image from "next/image";
 import { bg } from "@features/order/create/ui/assets";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { AnimatedCheck } from "@shared/ui/animated-check";
+import { useAtomValue } from "jotai/index";
+import { createOrderAtoms } from "@features/order/create";
 
 interface IVariantProps {
     isChecked: boolean,
@@ -16,12 +18,14 @@ interface IVariantProps {
 }
 
 const Variant = (props: IVariantProps) => {
+    const needSplit = useAtomValue(createOrderAtoms.needSplit)
+
     return (
         <div
             onMouseDown={props.onClick}
             className={cn(
                 'cursor-pointer flex-col p-3 px-12 pb-4 lg:pb-[clamp(0.5rem,2dvh,8rem)] rounded-[40px] border-2 border-transparent overflow-hidden relative flex items-center justify-center',
-                props.isChecked ? 'bg-blue-500/10 border-blue-500' : ''
+                props.isChecked ? needSplit ? 'bg-green-500/10 border-green-500' : 'bg-blue-500/10 border-blue-500' : ''
             )}
         >
             {props.isChecked && (
@@ -74,7 +78,7 @@ const Variant = (props: IVariantProps) => {
             <div
                 className="w-7 h-7 sm:mt-4 absolute right-8 top-1/2 sm:top-auto sm:right-auto -translate-y-1/2 sm:translate-y-0 sm:relative"
             >
-                {props.isChecked && <AnimatedCheck clamp/>}
+                {props.isChecked && <AnimatedCheck color={needSplit ? '#22c55e' : '#1464e6'} clamp/>}
             </div>
         </div>
     );

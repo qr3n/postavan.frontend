@@ -7,6 +7,7 @@ export default {
   ],
   theme: {
   	extend: {
+
 		screens: {
 			'xs-h': {
 				raw: '(min-height: 480px)'
@@ -50,6 +51,20 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		keyframes: {
+			'pulse-scale': {
+				'0%, 100%': { transform: 'scale(1)' },
+				'50%': { transform: 'scale(1.1)' },
+			},
+			spotlight: {
+				"0%": {
+					opacity: '0',
+					transform: "translate(-72%, -62%) scale(0.5)",
+				},
+				"100%": {
+					opacity: '1',
+					transform: "translate(-50%,-40%) scale(1)",
+				},
+			},
   			'accordion-down': {
   				from: {
   					height: '0'
@@ -69,8 +84,10 @@ export default {
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+			spotlight: "spotlight 2s ease .75s 1 forwards",
+			'pulse-scale': 'pulse-scale 5s infinite',
+		}
   	}
   },
 	// eslint-disable-next-line @typescript-eslint/no-require-imports

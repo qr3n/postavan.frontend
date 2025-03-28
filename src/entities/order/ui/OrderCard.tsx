@@ -41,11 +41,17 @@ export const OrderCard = memo(({ order, ...props }: IProps) => {
                             <p>{order.pickupAddresses[0].replace('г Москва, ', '')}</p>
                         </TooltipContent>
                     </Tooltip>
-                    <p className='bg-blue-900 rounded-full px-3 py-1 mt-2 text-xs w-max'>{order.cost} руб</p>
+                    <div className='flex gap-2'>
+                        <p className='bg-blue-900 rounded-full px-3 py-1 mt-2 text-xs w-max'>{order.cost} руб</p>
+                        {order.needSplit &&
+                            <p className='bg-green-700 rounded-full px-3 py-1 mt-2 text-xs w-max'>На попутке</p>
+                        }
+                    </div>
                 </div>
             </div>
             <div className='flex gap-3 items-center justify-end w-full mt-2 md:mt-0 '>
-            {props.actions}
+
+                {props.actions}
             </div>
         </>
     );

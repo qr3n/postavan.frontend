@@ -32,7 +32,7 @@ import { Modal } from "@shared/ui/modal";
 import { PiExportBold } from "react-icons/pi";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
 import Image from 'next/image'
-import { telegramImg, whatsappImg } from "@widgets/navbar/ui/assets";
+import { logoImg, telegramImg, whatsappImg } from "@widgets/navbar/ui/assets";
 
 export const Navbar = () => {
     const { orders } = useUserOrders()
@@ -43,8 +43,8 @@ export const Navbar = () => {
     const adminAccessToken = useAtomValue(adminAccessTokenAtom)
 
     return (
-        <div className='w-full pt-4 sm:pt-5 px-3 sm:px-5 h-[52px] sm:h-[56px] gap-2 sticky top-0 flex justify-between items-center flex-row'>
-            <div>
+        <div className='w-full py-4 sm:py-5 px-3 sm:px-5 h-[72px] sm:h-[76px] gap-2 sticky top-0 flex justify-between items-center z-50   border-none flex-row'>
+            <div className='flex gap-4'>
                 {adminAccessToken &&
                     <>
                         <Sheet>
@@ -74,9 +74,10 @@ export const Navbar = () => {
                         </Sheet>
                     </>
 
- }
+            }
+
             </div>
-            { session ? (
+            {session ? (
                 <>
                     <Portal.Root>
                         <AnimatePresence mode={'wait'}>

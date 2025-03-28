@@ -4,6 +4,7 @@ import { atomFamily } from "jotai/utils";
 
 const canContinue = atom(true)
 const shipmentType = atom<IOrder['shipmentType']>('marketplace')
+const needSplit = atom<IOrder['needSplit']>(false)
 const marketplace = atom<IOrder['marketplace']>('Яндекс маркет')
 const whatToDeliver = atom<IOrder['whatToDeliver']>(['Посылку'])
 const packingType = atom<IOrder['packingType']>('box')
@@ -65,5 +66,6 @@ export const createOrderAtoms = {
     pickupTimeTo,
     deliveryTimeFrom,
     deliveryTimeTo,
-    weight
+    weight,
+    needSplit
 }

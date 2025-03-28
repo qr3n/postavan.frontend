@@ -1,25 +1,26 @@
 import { CreateOrderTemplates } from "@features/order/create/ui/templates";
-import { courierImg, itemsImg } from "@features/order/create/ui/assets";
+import {  itemsImg } from "@features/order/create/ui/assets";
 import { useAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
-
+import car from '@app/car.png'
+import car2 from '@app/car7.png'
 
 export const ChooseDeliveryTypeStep = () => {
-    const [shipmentType, setShipmentType] = useAtom(createOrderAtoms.shipmentType)
+    const [needSplit, setNeedSplit] = useAtom(createOrderAtoms.needSplit)
 
     return (
-        <CreateOrderTemplates.Step title='Попутный груз'>
+        <CreateOrderTemplates.Step title='Тип заказа'>
             <CreateOrderTemplates.Choice
-                firstText={'Попутный груз'}
-                firstDescription={'Короб до 25кг'}
-                secondText={'Отправить одному'}
-                secondDescription={'Кроме запрещенных'}
-                firstSelected={shipmentType === 'marketplace'}
-                secondSelected={shipmentType === 'anything'}
-                firstImg={courierImg}
-                secondImg={itemsImg}
-                onFirstClick={() => setShipmentType('marketplace')}
-                onSecondClick={() => setShipmentType('anything')}
+                firstText={'На попутке'}
+                firstDescription={'Скидка до 300%'}
+                secondText={'Персональный'}
+                secondDescription={'Индивидуальная доставка'}
+                firstSelected={!!needSplit}
+                secondSelected={!needSplit}
+                firstImg={car}
+                secondImg={car2}
+                onFirstClick={() => setNeedSplit(true)}
+                onSecondClick={() => setNeedSplit(false)}
             />
         </CreateOrderTemplates.Step>
     )

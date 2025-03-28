@@ -11,6 +11,7 @@ import Image from "next/image";
 import { bgImg, dolphin } from "@shared/assets";
 import { LeaveFeedback } from "@features/feedback/leave/ui/LeaveFeedback";
 import { CancelOrder } from "@features/order/cancel/ui/CancelOrder";
+import { cn } from "@shared/shadcn/lib/utils";
 
 export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
     const parentRef = useRef<HTMLDivElement>(null);
@@ -72,7 +73,7 @@ export const UserOrdersList = ({ orders }: { orders: IOrder[] }) => {
                             />
                             <OrderCard order={orders[virtualRow.index]} actions={(
                                 <>
-                                    <Button className='font-medium'>
+                                    <Button className={cn('font-medium', `${orders[virtualRow.index].needSplit ? 'bg-green-500' : 'bg-blue-500'}`)}>
                                         <FaCheckCircle/>
                                         {orders[virtualRow.index].status}
                                     </Button>
