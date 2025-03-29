@@ -10,6 +10,7 @@ import { marketplacesImagesMap } from "@entities/order/ui/images";
 import { AnimatedCheck } from "@shared/ui/animated-check";
 import { useAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
+import { useAtomValue } from "jotai/index";
 
 interface IVariantProps {
     isChecked: boolean,
@@ -19,9 +20,11 @@ interface IVariantProps {
 }
 
 const Variant = (props: IVariantProps) => {
+    const needSplit = useAtomValue(createOrderAtoms.needSplit)
+
     return (
         <div onMouseDown={props.onClick}
-             className={cn(' cursor-pointer w-full py-3.5 max-w-[400px] rounded-full border-2 border-transparent overflow-hidden relative flex items-center justify-between px-8', props.isChecked ? 'bg-blue-500/10 border-blue-500' : '')}
+             className={cn(' cursor-pointer w-full py-3.5 max-w-[400px] rounded-full border-2 border-transparent overflow-hidden relative flex items-center justify-between px-8', props.isChecked ? needSplit ? 'bg-green-500/10 border-green-500' : 'bg-blue-500/10 border-blue-500' : '')}
         >
             {props.isChecked &&
                 (
@@ -40,7 +43,7 @@ const Variant = (props: IVariantProps) => {
                 <h1 className='font-medium text-lg sm:text-[clamp(1rem,2dvh,6rem)]'>{props.name}</h1>
             </div>
             <div className='w-7 h-7'>
-                {props.isChecked && <AnimatedCheck clamp/>}
+                {props.isChecked && <AnimatedCheck color={needSplit ? '#22c55e' : '#1464e6'} clamp/>}
             </div>
         </div>
     )
