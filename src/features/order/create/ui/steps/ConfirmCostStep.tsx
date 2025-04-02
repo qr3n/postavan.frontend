@@ -13,6 +13,7 @@ export const ConfirmCostStep = () => {
     const pickupAddresses = useAtomValue(createOrderAtoms.allPickupAddresses);
     const deliveryAddresses = useAtomValue(createOrderAtoms.allDeliveryAddresses);
     const placesCount = useAtomValue(createOrderAtoms.placesCount);
+    const needSplit = useAtomValue(createOrderAtoms.needSplit)
     const weight = useAtomValue(createOrderAtoms.weight);
 
     const stablePickup = useMemo(
@@ -37,6 +38,7 @@ export const ConfirmCostStep = () => {
                 delivery_addresses: stableDelivery,
                 places_count: placesCount,
                 weight: weight,
+                need_split: !!needSplit
             });
         }
     }, [stableDelivery, stablePickup, mutateAsync, placesCount, weight]);
