@@ -1,4 +1,4 @@
-export const NewPage = () => {
+export default function AdminChatsPage() {
     return (
         <>
 

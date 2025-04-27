@@ -38,7 +38,8 @@ const convertGetUserOrderResponseToIOrder = (response: GetUserOrderResponse): IO
         },
         driverCar: response.driver_car,
         driverId: response.driver_id,
-        needSplit: response.need_split
+        needSplit: response.need_split,
+        feedback: response.feedback
     };
 };
 

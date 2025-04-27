@@ -22,6 +22,7 @@ export const AnimatedCircle = () => {
         },
     };
 
+    
     const pathCheckVariants = {
         from: {
             opacity: 0,

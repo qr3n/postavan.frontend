@@ -12,15 +12,15 @@ import { Input } from "@shared/shadcn/components/input";
 import toast from "react-hot-toast";
 import { queryClient } from "@shared/api";
 
-export const EditTariff = () => {
+export const EditTariff = ({ type = 'default' }: { type?: 'default' | 'split' }) => {
     const [open, setOpen] = useState(false);
     const { data } = useQuery({
-        queryFn: tariffService.getTariff,
-        queryKey: ['tariff']
+        queryFn: type === 'default' ? tariffService.getTariff : tariffService.getSplitTariff,
+        queryKey: [type === 'default' ? 'tariff' : 'splitTariff']
     });
 
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: tariffService.updateTariff,
+        mutationFn: type === 'default' ? tariffService.updateTariff : tariffService.updateSplitTariff,
     });
 
     const { handleSubmit, register, formState: { errors } } = useForm<GetTariffResponse>({ defaultValues: data });
@@ -28,7 +28,7 @@ export const EditTariff = () => {
     const onSubmit = handleSubmit((formData) => {
         toast.promise(
             mutateAsync(formData).then(() => {
-                queryClient.setQueryData(['tariff'], (oldData: GetTariffResponse) => ({ ...oldData, ...formData }));
+                queryClient.setQueryData([type === 'default' ? 'tariff' : 'splitTariff'], (oldData: GetTariffResponse) => ({ ...oldData, ...formData }));
                 setOpen(false);
             }),
             {

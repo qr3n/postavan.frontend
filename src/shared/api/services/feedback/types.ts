@@ -3,3 +3,8 @@ export interface LeaveFeedbackRequest {
     stars: number,
     comment?: string
 }
+
+export interface IGetFeedbackResponse {
+    stars: number,
+    comment?: string
+}

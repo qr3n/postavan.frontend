@@ -69,6 +69,9 @@ export const Navbar = () => {
                                     <Link href={'/admin/users'} className='bg-zinc-800 px-4 py-2 rounded-xl'>
                                         Пользователи
                                     </Link>
+                                    <Link href={'/admin/chats'} className='bg-zinc-800 px-4 py-2 rounded-xl'>
+                                        Чаты
+                                    </Link>
                                 </div>
                             </SheetContent>
                         </Sheet>

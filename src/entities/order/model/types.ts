@@ -1,3 +1,5 @@
+import { IGetFeedbackResponse } from "@shared/api/services/feedback/types";
+
 type TOrderShipmentType = 'marketplace' | 'anything'
 type TOrderMarketplace = 'Яндекс маркет' | 'Wildberries' | 'Ozon' | 'AliExpress' | 'Lamoda'
 type TOrderPacking = 'box' | 'palette'
@@ -21,6 +23,7 @@ interface IOrderDriverCar {
     model: string,
     number: string
 }
+
 
 export interface IOrder {
     id: string,
@@ -50,6 +53,7 @@ export interface IOrder {
     weight: number,
     driverProfile?: IOrderDriverProfile,
     driverCar?: IOrderDriverCar,
+    feedback?: IGetFeedbackResponse,
     driverId: string | null,
     needSplit?: boolean
 }

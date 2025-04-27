@@ -3,7 +3,7 @@ import {  itemsImg } from "@features/order/create/ui/assets";
 import { useAtom } from "jotai";
 import { createOrderAtoms } from "@features/order/create";
 import car from '@app/car.png'
-import car2 from '@app/car7.png'
+import car2 from '@app/car7.webp'
 
 export const ChooseDeliveryTypeStep = () => {
     const [needSplit, setNeedSplit] = useAtom(createOrderAtoms.needSplit)

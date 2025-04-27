@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +7,7 @@
 
 body {
 
-  background: black;
+  background: #111;
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
@@ -23,6 +24,12 @@ body {
 .my-font {
   font-family: "myFont", sans-serif !important;
 }
+
+.montserrat {
+               font-family: "Montserrat", sans-serif !important;
+               font-style: normal;
+             }
+
 
 svg.star-svg {
   transition: scale 0.2s ease;
@@ -102,7 +109,9 @@ input[type=number] {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
-
+  .chat-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -195,4 +204,28 @@ select:-webkit-autofill:focus {
 .text-background span {
   margin-right: 20px;
   margin-bottom: 20px;
+}
+
+.gradient {
+  background: 
+	url(/noise.svg);
+}
+
+	
+	
+.image-container {
+  position: relative;
+}
+
+.image-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/noise.svg');
+  mix-blend-mode: multiply; /* или другой режим наложения */
+  opacity: 1; /* регулируйте интенсивность */
+  pointer-events: none;
 }

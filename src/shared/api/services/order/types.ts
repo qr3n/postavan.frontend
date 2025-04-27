@@ -1,3 +1,5 @@
+import { IGetFeedbackResponse } from "@shared/api/services/feedback/types";
+
 export interface CalculateOrderCostRequest {
     pickup_addresses: string[],
     delivery_addresses: string[],
@@ -88,6 +90,7 @@ export interface GetUserOrderResponse {
     driver_id: string | null,
     driver_profile?: GetUserOrderResponseDriverInfo,
     driver_car?: GetUserOrderResponseDriverCar,
+    feedback?: IGetFeedbackResponse,
     need_split: boolean
 }
 

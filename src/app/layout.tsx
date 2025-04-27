@@ -18,6 +18,7 @@ const myFont = localFont({
 })
 
 import './globals.css'
+import { HelpChat } from "@widgets/help-chat/ui/HelpChat";
 
 export default function RootLayout({
   children,
@@ -44,6 +45,7 @@ export default function RootLayout({
       <body
           className={`${myFont.className} antialiased dark`}
       >
+      <HelpChat/>
       <Providers>
         <NextTopLoader showSpinner={false} color={'#1464e6'}/>
         <Navbar/>
@@ -52,6 +54,7 @@ export default function RootLayout({
           style: {borderRadius: '100px', backgroundColor: '#222', color: 'white'}
         }}/>
         <ShadcnToaster/>
+
       </Providers>
       </body>
       </html>

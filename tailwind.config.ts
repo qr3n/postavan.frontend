@@ -34,6 +34,9 @@ export default {
 			blue: {
 				500: '#1364f1'
 			},
+			green: {
+				500: '#54B435'
+			},
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',

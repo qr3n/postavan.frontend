@@ -10,6 +10,9 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { ExportOrder } from "@features/order/export/ui/ExportOrder";
 import Image from "next/image";
 import { bgImg, dolphin } from "@shared/assets";
+import { Button } from "@shared/shadcn/components/button";
+import { StarIcon } from "lucide-react";
+import { FeedbackDetailsModal } from "@entities/feedback/ui/FeedbackDetailsModal";
 
 export const AdminOrdersList = ({ orders }: { orders: IOrder[] }) => {
     const parentRef = useRef<HTMLDivElement>(null);
@@ -77,6 +80,8 @@ export const AdminOrdersList = ({ orders }: { orders: IOrder[] }) => {
                                             <EditOrder as={'admin'} order={orders[virtualRow.index]} />
                                             <ExportOrder order={orders[virtualRow.index]} />
                                         </div>
+
+                                        {orders[virtualRow.index].feedback && <FeedbackDetailsModal feedback={orders[virtualRow.index].feedback!}/>}
                                     </>
                                 }
                             />
@@ -92,7 +97,6 @@ export const AdminOrdersList = ({ orders }: { orders: IOrder[] }) => {
                    placeholder={'blur'} draggable={false} src={dolphin} alt={'firstChoice'} width={224} height={224}/>
             <Image placeholder="blur" src={bgImg}
                    className='fixed w-[100dvw] h-[100dvh] object-cover top-0 left-0 -z-50' alt='bg'/>
-
             <div
                 className='fixed top-0 left-0 -z-50 w-screen h-screen bg-gradient-to-br from-transparent to-black'/>
             <div

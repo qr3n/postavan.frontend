@@ -15,6 +15,10 @@ class ProfileService {
         return await adminApi.put('/profile', data)
     }
 
+    async changeDriverProfileByAdmin() {
+
+    }
+
     async getProfile() {
         return withAxiosData(await api.get<GetProfileResponse>('/profile'))
     }

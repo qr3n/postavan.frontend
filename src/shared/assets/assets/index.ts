@@ -1,5 +1,5 @@
 import aliIcon from './ali.webp'
-import boxIcon from './box.webp'
+import boxIcon from './box.png'
 import lamodaIcon from './lamoda.webp'
 import ozonIcon from './ozon.webp'
 import paletteIcon from './palette.webp'
@@ -15,6 +15,7 @@ import houseImg from './house.png'
 import moneyForOrderModalImg from './money.webp'
 import bgImg from './bg-desktop.webp'
 import logoImg from './logo.png'
+import bgImg2 from './bg.png'
 
 export {
     aliIcon,
@@ -33,5 +34,6 @@ export {
     houseImg,
     moneyForOrderModalImg,
     bgImg,
-    logoImg
+    logoImg,
+    bgImg2
 }

@@ -10,7 +10,6 @@ export interface ChangeProfileInfoByAdminRequest {
     name: string,
     surname: string,
     patronymic: string,
-    phone: string,
 }
 
 export interface GetProfileResponse {

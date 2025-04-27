@@ -5,6 +5,7 @@ import { ScrollArea } from "@shared/shadcn/components/scroll-area";
 import { driverService } from "@shared/api/services/drivers/service";
 import { MdDeliveryDining } from "react-icons/md";
 import { useAdminAllOrders } from "@entities/order/model/hooks";
+import { EditDriverProfileByAdmin } from "@features/profile/edit-driver-by-admin/ui/EditDriverProfileByAdmin";
 
 export const DriversList = () => {
     const { orders, isLoading } = useAdminAllOrders();
@@ -28,6 +29,8 @@ export const DriversList = () => {
                                 <p className='text-sm text-zinc-400'>{orders.reduce((acc, v) => acc + (v.driverId === driver.id ? 1 : 0) || 0, 0)} заказ(-ов)</p>
                             </div>
                         </div>
+
+                        <EditDriverProfileByAdmin data={driver} userId={driver.id}/>
                     </div>
                 ))}
             </div>

@@ -7,7 +7,7 @@ export const ChoosePackingStep = () => {
     const [packingType, setPackingType] = useAtom(createOrderAtoms.packingType)
 
     return (
-        <CreateOrderTemplates.Step title='Какой груз?'>
+        <CreateOrderTemplates.Step title='Какая упаковка?'>
             <CreateOrderTemplates.Choice
                 firstText={'Короб'}
                 firstDescription={'До 25кг'}

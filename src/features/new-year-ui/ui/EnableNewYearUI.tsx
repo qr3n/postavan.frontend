@@ -15,6 +15,7 @@ export const EnableNewYearUI = () => {
                 <ImageLoader priority src={christmasTreeImg} alt={'christmasTree'} width={24} height={24} className='w-[24px] h-[24px]'/>
                 Новогодний UI
             </>)}
+
             preHeader={(<>
                 <Snowfall snowflakeCount={20} style={{ zIndex: '-100' }}/>
                 <div className='absolute bottom-0 left-0 bg-gradient-to-t from-zinc-950 -z-50 to-transparent w-full h-full'/>
