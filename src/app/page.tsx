@@ -23,6 +23,8 @@ interface IVariantProps {
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
 import { sampleArcs } from "./data";
+import { useSetAtom } from "jotai";
+import Link from "next/link";
 
 const World = dynamic(() => import("@shared/ui/globe/ui/Globe").then((m) => m.World), {
     ssr: false,
@@ -53,9 +55,9 @@ const World = dynamic(() => import("@shared/ui/globe/ui/Globe").then((m) => m.Wo
     };
 
     return (
-        <div className="flex flex-row items-center justify-center -z-50  h-screen    relative w-full">
+        <div className="flex flex-row items-center justify-center   h-screen    relative w-full">
             <div className="max-w-7xl mx-auto w-full relative overflow-hidden  h-[100dvh] px-4">
-                <div className="absolute w-full top-[35%] -ml-4 h-full -z-50">
+                <div className="absolute w-full top-[35%] -ml-4 h-full ">
                     <World data={sampleArcs} globeConfig={globeConfig} />
                 </div>
             </div>
@@ -64,11 +66,12 @@ const World = dynamic(() => import("@shared/ui/globe/ui/Globe").then((m) => m.Wo
 }
 
 const Variant = (props: IVariantProps) => {
+     const setNeedSplit = useSetAtom(createOrderAtoms.needSplit)
 
     return (
         <div
             className={cn(
-                'cursor-pointer  shadow-2xl z-50 hover:scale-105 flex-col w-[350px] p-3 px-6 pb-4 lg:pb-[clamp(0.5rem,2dvh,8rem)] rounded-[40px]  overflow-hidden relative flex items-center justify-center',
+                'cursor-pointer  shadow-2xl z-50 flex-col w-[350px] p-3 px-6 pb-4 lg:pb-[clamp(0.5rem,2dvh,8rem)] rounded-[40px]  overflow-hidden relative flex items-center justify-center',
                 props.variant === 'green' ? 'animate-float-green' : 'animate-float-blue'
             )}
         >
@@ -94,7 +97,7 @@ const Variant = (props: IVariantProps) => {
                     <div className="-z-50 absolute left-0 top-0 w-full h-full bg-gradient-to-b from-black to-transparent" />
                 </>
             )}
-            <div className="flex w-full items-center justify-center flex-col cursor-pointer hover:scale-105">
+            <div className="flex w-full items-center justify-center flex-col cursor-pointer hover:scale-[103%] transition-all">
                 <Image
                     loading="eager"
                     fetchPriority="high"
@@ -126,7 +129,11 @@ const Variant = (props: IVariantProps) => {
                         {props.description}
                     </p>
 
-                    <Button className={cn('w-full mt-5 z-50', props.variant === 'blue' ? 'bg-blue-500' : 'bg-green-500')}>Сделать заказ</Button>
+                    <Link href={'/order/create'} className={'w-full mt-5 z-50'}>
+                        <Button onClick={() => setNeedSplit(props.variant === 'green')} className={cn('w-full ', props.variant === 'blue' ? 'bg-blue-500' : 'bg-green-500 hover:bg-[#44a425]')}>
+                            Сделать заказ
+                        </Button>
+                    </Link>
                 </div>
             </div>
 
@@ -138,22 +145,21 @@ export default function Page() {
     return (
         <>
             <Image src={bgImg2} placeholder={'blur'} alt={'bg'} width={1920} height={1080} className={'object-cover -z-50 h-screen w-screen fixed top-0 left-0'}/>
-            <div className='w-screen h-screen fixed top-0 left-0 bg-gradient-to-br from-black to-transparent -z-50'/>
+            <div className='w-screen h-screen fixed top-0 left-0 bg-gradient-to-br from-black to-transparent -z-40'/>
             <GlobeDemo/>
-            <div className='flex flex-col items-center justify-center w-screen h-screen fixed top-0 left-0 -z-50'>
-                <div className='flex w-full sm:w-auto flex-col items-center justify-center sm:flex-row gap-24'>
+            <div className='flex flex-col items-center justify-center w-screen h-screen fixed top-0 left-0 z-10'> {/* Добавлен z-10 здесь */}
+                <div className='flex w-full sm:w-auto flex-col items-center justify-center sm:flex-row gap-24 z-20'> {/* И здесь */}
                     <Variant variant={'green'} text={'На попутке'} description={'Скидка до 75%'} isChecked  imgSrc={car}/>
                     <Variant variant={'blue'} text={'Персональный'} description={'Индивидуальная доставка'} isChecked  imgSrc={car2}/>
                 </div>
 
-                <div className='flex sm:flex-col gap-4 absolute items-center justify-center sm:mb-24'>
+                <div className='flex sm:flex-col gap-4 absolute items-center justify-center sm:mb-24 z-20'> {/* И здесь */}
                     <Image src={wildberriesIcon} alt={'wb'} width={128} height={128} className='w-16 h-16 rounded-2xl'/>
                     <Image src={yandexIcon} alt={'wb'} width={128} height={128} className='w-14 h-14 rounded-2xl'/>
                     <Image src={ozonIcon} alt={'wb'} width={128} height={128} className='w-12 h-12 rounded-2xl'/>
-                    <Image src={aliIcon} alt={'wb'} width={128} height={128} className='w-10 h-10  rounded-2xl'/>
+                    <Image src={aliIcon} alt={'wb'} width={128} height={128} className='w-10 h-10 rounded-2xl'/>
                 </div>
             </div>
-
         </>
     )
 }
