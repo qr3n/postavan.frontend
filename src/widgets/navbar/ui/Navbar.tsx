@@ -33,6 +33,9 @@ import { PiExportBold } from "react-icons/pi";
 import { TelegramShareButton, WhatsappShareButton } from "react-share";
 import Image from 'next/image'
 import { logoImg, telegramImg, whatsappImg } from "@widgets/navbar/ui/assets";
+import { createOrderAtoms } from "@features/order/create";
+import { cn } from "@shared/shadcn/lib/utils";
+import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
     const { orders } = useUserOrders()
@@ -41,9 +44,12 @@ export const Navbar = () => {
     const session = useAtomValue(sessionAtom)
     const setAccessToken = useSetAtom(accessTokenAtom)
     const adminAccessToken = useAtomValue(adminAccessTokenAtom)
+    const needSplit = useAtomValue(createOrderAtoms.needSplit)
+    const pathname = usePathname()
+
 
     return (
-        <div className='w-full py-4 sm:py-5 px-3 sm:px-5 h-[72px] sm:h-[76px] gap-2 sticky top-0 flex justify-between items-center z-50   border-none flex-row'>
+        <div className='w-full py-4 sm:py-5 px-3 sm:px-5 h-[56px] sm:h-[76px] gap-2 sticky top-0 flex justify-between items-center z-50   border-none flex-row'>
             <div className='flex gap-4'>
                 {adminAccessToken &&
                     <>
@@ -180,7 +186,7 @@ export const Navbar = () => {
             ) : (
                 <>
                     <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen}/>
-                    <Button onClick={() => setAuthModalOpen(true)} size='sm'>Авторизация</Button>
+                    <Button className={cn('h-8 px-3 text-[11px] sm:text-sm sm:h-10 sm:rounded-full ', !pathname.includes('/order/create') ? needSplit ? 'bg-green-500' : 'bg-blue-500' : needSplit ? 'border border-green-500 bg-green-500/30 text-green-300 hover:bg-green-500/40' : 'border border-blue-500 bg-blue-500/30 text-blue-300 hover:bg-blue-500/40')} onClick={() => setAuthModalOpen(true)} size='sm'>Авторизация</Button>
                 </>
             )}
         </div>

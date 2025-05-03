@@ -49,7 +49,7 @@ const Variant = (props: IVariantProps) => {
                     loading="eager"
                     fetchPriority="high"
                     priority
-                    className="w-24 sm:w-40 md:w-48 lg:w-56 max-h-[calc(100vh-480px)] object-contain"
+                    className="w-20 sm:w-40 md:w-48 lg:w-56 max-h-[calc(100vh-480px)] object-contain"
                     placeholder="blur"
                     draggable={false}
                     src={props.imgSrc}

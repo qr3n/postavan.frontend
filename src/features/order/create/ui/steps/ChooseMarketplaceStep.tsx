@@ -40,7 +40,7 @@ const Variant = (props: IVariantProps) => {
             <div className='flex items-center gap-3 sm:gap-5'>
                 <Image loading={'eager'} fetchPriority={'high'} priority placeholder={'blur'} draggable={false} src={props.imgSrc} className='w-10 sm:w-12 rounded-xl object-contain max-h-[5vh] sm:rounded-2xl'
                        alt={'firstChoice'} width={48} height={48}/>
-                <h1 className='font-medium text-lg sm:text-[clamp(1rem,2dvh,6rem)]'>{props.name}</h1>
+                <h1 className='font-medium text-sm sm:text-base md:text-[clamp(1rem,2dvh,6rem)]'>{props.name}</h1>
             </div>
             <div className='w-7 h-7'>
                 {props.isChecked && <AnimatedCheck color={needSplit ? '#22c55e' : '#1464e6'} clamp/>}

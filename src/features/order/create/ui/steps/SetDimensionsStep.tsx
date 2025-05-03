@@ -164,28 +164,28 @@ export const SetDimensionsStep = () => {
                                 </div>
                             )}/>
                         </div>
-                        <div className='flex flex-wrap sm:flex-nowrap justify-center mt-6 gap-3 w-full mb-6'>
+                        <div className='flex sm:flex-nowrap justify-center mt-6 gap-3 w-full mb-6'>
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
                                 <h1 className='text-zinc-500 text-xs sm:text-base'>Длина</h1>
-                                <p className='font-medium text-md sm:text-xl'>{length} <span
+                                <p className='font-medium text-[calc(1.2dvw+1.2dvh)] sm:text-xl'>{length} <span
                                     className='text-zinc-400'>см</span></p>
                             </div>
 
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
                                 <h1 className='text-zinc-500 text-xs sm:text-base'>Ширина</h1>
-                                <p className='font-medium text-md sm:text-xl'>{width} <span
+                                <p className='font-medium text-[calc(1.2dvw+1.2dvh)] sm:text-xl'>{width} <span
                                     className='text-zinc-400'>см</span></p>
                             </div>
 
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
                                 <h1 className='text-zinc-500 text-xs sm:text-base'>Высота</h1>
-                                <p className='font-medium text-md sm:text-xl'>{height} <span
+                                <p className='font-medium text-[calc(1.2dvw+1.2dvh)] sm:text-xl'>{height} <span
                                     className='text-zinc-400'>см</span></p>
                             </div>
 
                             <div className='text-center bg-zinc-900 rounded-2xl border border-zinc-800 p-3 w-max sm:w-full'>
                                 <h1 className='text-zinc-500 text-xs sm:text-base'>Вес</h1>
-                                <p className='font-medium text-md sm:text-xl'>{weight} <span
+                                <p className='font-medium text-[calc(1.2dvw+1.2dvh)] sm:text-xl'>{weight} <span
                                     className='text-zinc-400'>кг</span></p>
                             </div>
                         </div>
