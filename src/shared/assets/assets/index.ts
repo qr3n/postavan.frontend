@@ -16,6 +16,8 @@ import moneyForOrderModalImg from './money.webp'
 import bgImg from './bg-desktop.webp'
 import logoImg from './logo.png'
 import bgImg2 from './bg.png'
+import greenCar from './green-car.png'
+import blueCar from './blue-car.webp'
 
 export {
     aliIcon,
@@ -35,5 +37,7 @@ export {
     moneyForOrderModalImg,
     bgImg,
     logoImg,
-    bgImg2
+    bgImg2,
+    greenCar,
+    blueCar
 }

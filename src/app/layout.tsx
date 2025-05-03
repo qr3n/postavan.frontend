@@ -5,17 +5,13 @@ import { Toaster } from "react-hot-toast";
 import { Navbar } from "@widgets/navbar";
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster as ShadcnToaster } from "@shared/shadcn/components/toaster"
-
+import { blueCar, greenCar, paletteIcon, boxIcon,  } from "@shared/assets";
 
 export const metadata: Metadata = {
   title: "Primi.box",
   description: "Лучший сервис доставки в мире!",
 };
 
-const myFont = localFont({
-    src: "./fonts/BebasNeue Bold.ttf",
-    variable: '--myfont'
-})
 
 import './globals.css'
 import { HelpChat } from "@widgets/help-chat/ui/HelpChat";
@@ -28,11 +24,47 @@ export default function RootLayout({
   return (
       <html lang="en">
       <head>
+          <link
+              rel="preload"
+              href={blueCar.src}
+              as="image"
+              imageSrcSet={blueCar.src}
+              imageSizes="400px"
+          />
+          <link
+              rel="preload"
+              href={greenCar.src}
+              as="image"
+              imageSrcSet={greenCar.src}
+              imageSizes="400px"
+          />
+          <link
+              rel="preload"
+              href={paletteIcon.src}
+              as="image"
+              imageSrcSet={blueCar.src}
+              imageSizes="400px"
+          />
+          <link
+              rel="preload"
+              href={boxIcon.src}
+              as="image"
+              imageSrcSet={boxIcon.src}
+              imageSizes="400px"
+          />
+          <link
+              rel="preload"
+              href={blueCar.src}
+              as="image"
+              imageSrcSet={blueCar.src}
+              imageSizes="400px"
+          />
+
         <title>PrimiBOX</title>
-        <meta name="description" content={'PostaDriver'}/>
-        <meta name="generator" content={'PostaDriver'}/>
+        <meta name="description" content={'PrimiBOX'}/>
+        <meta name="generator" content={'PrimiBOX'}/>
         <link rel="manifest" href={"/manifest.json"}/>
-        <meta name="keywords" content={["nextjs", "nextjs14", "next14", "pwa", "next-pwa"].join(", ")}/>
+          <meta name="keywords" content={["PrimiBOX", "ПримиБОКС", "прими-бокс", "Прими бокс", "маркетплейсы"].join(", ")}/>
         <meta name="theme-color" media={"(prefers-color-scheme: dark)"} content={"#000000"}/>
         <meta name="author" content={"Primibox"}/>
         <meta
@@ -43,7 +75,7 @@ export default function RootLayout({
         <link rel={"icon"} href={"/icons/icon-128x128.png"}/>
       </head>
       <body
-          className={`${myFont.className} antialiased dark`}
+          className={`antialiased dark`}
       >
       <HelpChat/>
       <Providers>

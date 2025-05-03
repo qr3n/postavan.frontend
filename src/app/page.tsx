@@ -1,15 +1,13 @@
 'use client';
 
 import Image from "next/image";
-import { aliIcon, bgImg2, boxIcon, ozonIcon, wildberriesIcon, yandexIcon } from "@shared/assets";
+import { aliIcon, bgImg2, blueCar, boxIcon, greenCar, ozonIcon, wildberriesIcon, yandexIcon } from "@shared/assets";
 import { useAtomValue } from "jotai/index";
 import { createOrderAtoms } from "@features/order/create";
 import { cn } from "@shared/shadcn/lib/utils";
 import { bg } from "@features/order/create/ui/assets";
 import { AnimatedCheck } from "@shared/ui/animated-check";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import car from '@app/car.png'
-import car2 from '@app/car7.webp'
 import { Button } from "@shared/shadcn/components/button";
 
 interface IVariantProps {
@@ -166,13 +164,13 @@ const Variant = (props: IVariantProps) => {
 export default function Page() {
     return (
         <>
-            <Image src={bgImg2} placeholder={'blur'} alt={'bg'} width={1920} height={1080} className={'object-cover -z-50 h-screen w-screen fixed top-0 left-0'}/>
+            <Image src={bgImg2} placeholder={'blur'} alt={'bg'} width={1920} height={1080} className={'object-cover opacity-50 -z-50 h-screen w-screen fixed top-0 left-0'}/>
             <div className='w-screen h-screen fixed top-0 left-0 bg-gradient-to-br from-black to-transparent -z-40'/>
             <GlobeDemo/>
             <div className='flex flex-col items-center justify-center w-screen h-screen fixed top-0 left-0 z-10'> {/* Добавлен z-10 здесь */}
                 <div className='flex w-full sm:w-auto flex-col items-center justify-center sm:flex-row gap-24 z-20'> {/* И здесь */}
-                    <Variant variant={'green'} text={'На попутке'} description={'Скидка до 75%'} isChecked  imgSrc={car}/>
-                    <Variant variant={'blue'} text={'Персональный'} description={'Индивидуальная доставка'} isChecked  imgSrc={car2}/>
+                    <Variant variant={'green'} text={'На попутке'} description={'Скидка до 75%'} isChecked  imgSrc={greenCar}/>
+                    <Variant variant={'blue'} text={'Персональный'} description={'Индивидуальная доставка'} isChecked  imgSrc={blueCar}/>
                 </div>
 
                 <div className='flex sm:flex-col gap-4 absolute items-center justify-center sm:mb-24 z-20'> {/* И здесь */}
