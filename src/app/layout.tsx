@@ -1,5 +1,4 @@
 import { Providers }     from "./providers";
-import localFont         from "next/font/local";
 import { Metadata }      from "next";
 import { Toaster } from "react-hot-toast";
 import { Navbar } from "@widgets/navbar";

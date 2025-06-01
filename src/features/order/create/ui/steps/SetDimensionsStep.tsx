@@ -6,13 +6,15 @@ import Image from "next/image";
 import { Button } from "@shared/shadcn/components/button";
 import { Modal } from "@shared/ui/modal";
 import { Input } from "@shared/shadcn/components/input";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { MdAddAPhoto, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { VirtualSelect } from "@shared/ui/virtualized-select/ui/VirtualizedSelect";
 import { AiFillEdit } from "react-icons/ai";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { DialogClose } from "@shared/shadcn/components/dialog";
 import { DrawerClose } from "@shared/shadcn/components/drawer";
+import { IoMdPhotos } from "react-icons/io";
+import { CountItemsByAI } from "@features/ai/count-items";
 
 interface IFormData {
     length: number,
@@ -128,7 +130,7 @@ export const SetDimensionsStep = () => {
     const width = useAtomValue(createOrderAtoms.packageWidth)
     const height = useAtomValue(createOrderAtoms.packageHeight)
     const weight = useAtomValue(createOrderAtoms.weight)
-
+    const [aiModalOpen, setAiModalOpen] = useState(false)
     const shipmentType = useAtomValue(createOrderAtoms.shipmentType)
     const packingType = useAtomValue(createOrderAtoms.packingType)
     const variants = useMemo(() => [...Array(100).keys()].map(e => (e + 1).toString()), [])
@@ -191,16 +193,32 @@ export const SetDimensionsStep = () => {
                         </div>
                     </div>
 
-                    <Modal trigger={(
-                        <Button variant='outline' className='w-full'>
+                    <div className='flex gap-2 w-full px-0'>
+                        <Modal trigger={(
+                            <Button variant='outline' className='w-full'>
                             <span className='p-0.5 rounded-full bg-blue-500'><AiFillEdit
                                 className='w-1 h-1'/></span> Изменить размер
-                        </Button>
-                    )} title={'Изменить габариты'} description={'Пожалуйста, вводите точные значения'}>
-                        <div className='px-4 sm:px-0 sm:mt-8'>
-                            <SetDimensionsForm/>
-                        </div>
-                    </Modal>
+                            </Button>
+                        )} title={'Изменить габариты'} description={'Пожалуйста, вводите точные значения'}>
+                            <div className='px-4 sm:px-0 sm:mt-8'>
+                                <SetDimensionsForm/>
+                            </div>
+                        </Modal>
+                        <Modal open={aiModalOpen} onOpenChange={setAiModalOpen} title={
+                            <div className='w-full text-center items-center justify-center'>
+                                <h1>Расчитать с помощью AI</h1>
+                                <p className='font-normal text-sm text-zinc-400 mt-2 max-w-1/2'>Пожалуйста, загружайте четкие фотографии, чтобы наша система могла корректно их распознать.</p>
+                            </div>
+                        } description={''} trigger={
+                            <Button className='w-10 h-10 md:w-10 md:h-10'>
+                                <MdAddAPhoto className={'text-white fill-white'}/>
+                            </Button>
+                        }>
+                            <div className='px-4 sm:px-0 sm:mt-8 '>
+                                <CountItemsByAI setOpen={setAiModalOpen}/>
+                            </div>
+                        </Modal>
+                    </div>
                 </div>
             </div>
         </CreateOrderTemplates.Step>
