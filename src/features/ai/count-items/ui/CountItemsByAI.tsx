@@ -33,6 +33,8 @@ export const CountItemsByAI = ({ setOpen }: { setOpen: (v: boolean) => void }) =
         },
         onError: (error) => {
             console.error('Ошибка при подсчете:', error);
+            toast.error('Не удалось прочитать изображение.')
+            setOpen(false)
         }
     });
 
